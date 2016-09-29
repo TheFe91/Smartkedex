@@ -5,6 +5,7 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -12,20 +13,34 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
     TextToSpeech t1;
     Button b1, b2;
-    SoundPool mySoundPool = new SoundPool (1, AudioManager.STREAM_MUSIC, 0);
-    int pkmn;
+    //SoundPool mySoundPool = new SoundPool (1, AudioManager.STREAM_MUSIC, 0);
+    // int pkmn;
+
+    private static final String FILENAME = "C:\\Users\\TheFe\\Desktop\\example.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String textFromFileString = readFromFile();
+        Toast.makeText(getApplicationContext(), "ciao " + textFromFileString, Toast.LENGTH_SHORT).show();
+
         b1=(Button)findViewById(R.id.button1);
         b2=(Button)findViewById(R.id.button2);
 
@@ -58,6 +73,39 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private String readFromFile () {
+
+        String ret = "";
+
+        try {
+            InputStream inputStream = openFileInput(FILENAME);
+
+            if (inputStream != null) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Toast.makeText(getApplicationContext(), "File not Found", Toast.LENGTH_SHORT).show();
+        }
+        catch (IOException e) {
+            Toast.makeText(getApplicationContext(), "Cannot read the file", Toast.LENGTH_SHORT).show();
+        }
+        return ret;
+    }
+
+        /**************************************************************************
         final ArrayList<Item> items = new ArrayList<Item>();
         for(int i = 1; i < 152; i++) {
             String var = "pkmn"+i;
@@ -80,5 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 mySoundPool.play(pkmn, 1, 1, 1, 0, 1);
             }
         });
+
     };
+    ****************************************************************************/
 }
