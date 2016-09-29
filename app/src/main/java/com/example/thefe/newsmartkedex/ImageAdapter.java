@@ -7,6 +7,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 /**
  * Created by TheFe on 27/09/2016.
  */
@@ -14,7 +16,7 @@ import android.widget.ImageView;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
 
-    public ImageAdapter(Context c) {
+    public ImageAdapter(Context c, ArrayList list) {
         mContext = c;
     }
 

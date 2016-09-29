@@ -2,40 +2,83 @@ package com.example.thefe.newsmartkedex;
 
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
-    SoundPool mySound;
-    int pkmn1Id;
+    TextToSpeech t1;
+    Button b1, b2;
+    SoundPool mySoundPool = new SoundPool (1, AudioManager.STREAM_MUSIC, 0);
+    int pkmn;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mySound = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        pkmn1Id = mySound.load(this, R.raw.pkmn1, 1);
+        b1=(Button)findViewById(R.id.button1);
+        b2=(Button)findViewById(R.id.button2);
 
+        t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    t1.setLanguage(Locale.ITALIAN);
+                    //t1.setPitch((float) 0.7);
+                }
+            }
+        });
 
-        GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(this));
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                t1.setLanguage(Locale.ITALIAN);
+                String toSpeak = "Sono Caterina, e sono uno Smàrtchedex in versione alfa. Ricorda che i pòchemon non funzionano, e causano l'arresto forzato dell'app";
+                t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+            }
+        });
 
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                 int position, long id) {
-                position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex e Maryel non si prende male
-                Toast.makeText(MainActivity.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
-                mySound.play(pkmn1Id,1,1,1,0,1); //per ora riproduce sempre e solo la prima descrizione
+        b2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                t1.setLanguage(Locale.ENGLISH);
+                String toSpeak = "I'm Lily and I'm a Smartkedex in Alpha version. Be careful: pòkemons are bugged and cause the app crash";
+                t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
 
+        final ArrayList<Item> items = new ArrayList<Item>();
+        for(int i = 1; i < 152; i++) {
+            String var = "pkmn"+i;
+            items.add(new Item(getResources().getIdentifier(var, "drawable", getPackageName()), getResources().getIdentifier(var, "raw", getPackageName())));
+        }
 
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        ImageAdapter adapter = new ImageAdapter(this, items);
+        gridview.setAdapter(adapter);
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex e Maryel non si prende male
+                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+                Item selectedItem = items.get(position);
+                System.out.println(selectedItem);
+                int soundID = selectedItem.getSoundID();
+                pkmn = mySoundPool.load(getBaseContext(), soundID, 1);
+                mySoundPool.play(pkmn, 1, 1, 1, 0, 1);
+            }
+        });
     };
 }
