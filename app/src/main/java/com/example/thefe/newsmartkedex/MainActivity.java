@@ -29,20 +29,15 @@ public class MainActivity extends AppCompatActivity {
 
     TextToSpeech t1;
     Button b1, b2;
-    SoundPool mySoundPool = new SoundPool (1, AudioManager.STREAM_MUSIC, 0);
-    int pkmn;
 
-    private static final String FILENAME = "example.txt";
+    private static final String FILENAME = "descriptions.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String textFromFileString;
-        ReadFileFacade readFileFacade = new ReadFileFacade(getApplicationContext(), FILENAME);
-        textFromFileString = readFileFacade.readFromFile();
-        Toast.makeText(getApplicationContext(), "ciao " + textFromFileString, Toast.LENGTH_SHORT).show();
+        final ReadFileFacade readFileFacade = new ReadFileFacade(getApplicationContext(), FILENAME);
 
         b1=(Button)findViewById(R.id.button1);
         b2=(Button)findViewById(R.id.button2);
@@ -75,29 +70,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-        //final ArrayList<Item> items = new ArrayList<Item>();
-        /*for(int i = 1; i < 152; i++) {
-            String var = "pkmn"+i;
-            items.add(new Item(getResources().getIdentifier(var, "drawable", getPackageName()), getResources().getIdentifier(var, "raw", getPackageName())));
-        }*/
-
         GridView gridview = (GridView) findViewById(R.id.gridview);
         ImageAdapter adapter = new ImageAdapter(this);
         gridview.setAdapter(adapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex e Maryel non si prende male
-                Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-                //Item selectedItem = items.get(position);
-                //System.out.println(selectedItem);
-                //int soundID = selectedItem.getSoundID();
-                mySoundPool.play(pkmn, 1, 1, 1, 0, 1);
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex
+                String tmp = readFileFacade.getDescriptionFromId(position+"");
+                Toast.makeText(MainActivity.this, "" + tmp, Toast.LENGTH_SHORT).show();
             }
         });
 

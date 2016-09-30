@@ -52,4 +52,29 @@ public class ReadFileFacade {
         }
         return ret;
     }
+
+    public String getDescriptionFromId (String id) {
+
+        String descr = "";
+
+        //apro il file
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(context.getAssets().open(filename)));
+
+            String str = "";
+
+            while ((str = br.readLine()) != null) {
+                String[] linesplitted = str.split("-");
+                if (linesplitted[0].equals(id))
+                    return linesplitted[1];
+            }
+        }
+        catch (FileNotFoundException e) {
+            //DO SOMETHING
+        }
+        catch (IOException e) {
+            Toast.makeText(context, "Cannot read the file", Toast.LENGTH_SHORT).show();
+        }
+        return "line not found\n";
+    }
 }
