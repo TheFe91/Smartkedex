@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
 
-    public ImageAdapter(Context c, ArrayList list) {
+    public ImageAdapter(Context c) {
         mContext = c;
     }
 

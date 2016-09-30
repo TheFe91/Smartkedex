@@ -17,6 +17,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,17 +29,19 @@ public class MainActivity extends AppCompatActivity {
 
     TextToSpeech t1;
     Button b1, b2;
-    //SoundPool mySoundPool = new SoundPool (1, AudioManager.STREAM_MUSIC, 0);
-    // int pkmn;
+    SoundPool mySoundPool = new SoundPool (1, AudioManager.STREAM_MUSIC, 0);
+    int pkmn;
 
-    private static final String FILENAME = "C:\\Users\\TheFe\\Desktop\\example.txt";
+    private static final String FILENAME = "example.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String textFromFileString = readFromFile();
+        String textFromFileString;
+        ReadFileFacade readFileFacade = new ReadFileFacade(getApplicationContext(), FILENAME);
+        textFromFileString = readFileFacade.readFromFile();
         Toast.makeText(getApplicationContext(), "ciao " + textFromFileString, Toast.LENGTH_SHORT).show();
 
         b1=(Button)findViewById(R.id.button1);
@@ -73,47 +76,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-    }
 
-    private String readFromFile () {
 
-        String ret = "";
 
-        try {
-            InputStream inputStream = openFileInput(FILENAME);
-
-            if (inputStream != null) {
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                String receiveString = "";
-                StringBuilder stringBuilder = new StringBuilder();
-
-                while ( (receiveString = bufferedReader.readLine()) != null ) {
-                    stringBuilder.append(receiveString);
-                }
-
-                inputStream.close();
-                ret = stringBuilder.toString();
-            }
-        }
-        catch (FileNotFoundException e) {
-            Toast.makeText(getApplicationContext(), "File not Found", Toast.LENGTH_SHORT).show();
-        }
-        catch (IOException e) {
-            Toast.makeText(getApplicationContext(), "Cannot read the file", Toast.LENGTH_SHORT).show();
-        }
-        return ret;
-    }
-
-        /**************************************************************************
-        final ArrayList<Item> items = new ArrayList<Item>();
-        for(int i = 1; i < 152; i++) {
+        //final ArrayList<Item> items = new ArrayList<Item>();
+        /*for(int i = 1; i < 152; i++) {
             String var = "pkmn"+i;
             items.add(new Item(getResources().getIdentifier(var, "drawable", getPackageName()), getResources().getIdentifier(var, "raw", getPackageName())));
-        }
+        }*/
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
-        ImageAdapter adapter = new ImageAdapter(this, items);
+        ImageAdapter adapter = new ImageAdapter(this);
         gridview.setAdapter(adapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -121,14 +94,13 @@ public class MainActivity extends AppCompatActivity {
                                     int position, long id) {
                 position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex e Maryel non si prende male
                 Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-                Item selectedItem = items.get(position);
-                System.out.println(selectedItem);
-                int soundID = selectedItem.getSoundID();
-                pkmn = mySoundPool.load(getBaseContext(), soundID, 1);
+                //Item selectedItem = items.get(position);
+                //System.out.println(selectedItem);
+                //int soundID = selectedItem.getSoundID();
                 mySoundPool.play(pkmn, 1, 1, 1, 0, 1);
             }
         });
 
     };
-    ****************************************************************************/
+
 }

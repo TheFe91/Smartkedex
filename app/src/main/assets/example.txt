@@ -1,0 +1,4 @@
+01 cane
+02 gatto
+03 elefante
+04 giraffa
