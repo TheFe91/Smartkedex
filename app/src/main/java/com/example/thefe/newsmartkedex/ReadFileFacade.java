@@ -75,6 +75,6 @@ public class ReadFileFacade {
         catch (IOException e) {
             Toast.makeText(context, "Cannot read the file", Toast.LENGTH_SHORT).show();
         }
-        return "line not found\n";
+        return "Descrizione non ancora inserita";
     }
 }
