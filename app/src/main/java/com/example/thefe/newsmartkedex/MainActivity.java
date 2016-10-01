@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         final ReadFileFacade readFileFacade = new ReadFileFacade(getApplicationContext(), FILENAME); //creo un oggetto di classe ReadFileFacade
         final Presentation presentation = new Presentation((Button)findViewById(R.id.button1), (Button)findViewById(R.id.button2), getApplicationContext()); //creo un oggetto di classe Presentation
+        presentation.presentati();
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         ImageAdapter adapter = new ImageAdapter(this);
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex
                 final String tmp = readFileFacade.getDescriptionFromId(position+"");
-                presentation.presentati();
                 t2=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     public void onInit(int status) {
                         if(status != TextToSpeech.ERROR) {
