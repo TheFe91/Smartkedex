@@ -1,27 +1,36 @@
-/*package com.example.thefe.newsmartkedex;
+package com.example.thefe.newsmartkedex;
 
+import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 
 import java.util.Locale;
 
- *
- * Created by TheFe on 01/10/2016.
- *
+ /*
+  * Created by TheFe on 01/10/2016.
+  */
 
 public class Presentation {
 
-    public void presentati (Button b1, Button b2, final TextToSpeech t1) {
-        b1=(Button)findViewById(R.id.button1);
-        b2=(Button)findViewById(R.id.button2);
+    private Button b1, b2;
+    private Context context;
+    private TextToSpeech t1;
 
-        t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+    //metodo costruttore dell'oggetto Presentation
+    public Presentation (Button b1, Button b2, Context nContext) {
+        this.b1 = b1;
+        this.b2 = b2;
+        this.context = nContext;
+    }
+
+    public int presentati () {
+
+        t1=new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
                     t1.setLanguage(Locale.ITALIAN);
-                    //t1.setPitch((float) 0.7);
                 }
             }
         });
@@ -43,6 +52,6 @@ public class Presentation {
                 t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
+        return 0;
     }
 }
-*/

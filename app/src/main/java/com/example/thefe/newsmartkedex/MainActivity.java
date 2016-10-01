@@ -1,34 +1,18 @@
 package com.example.thefe.newsmartkedex;
 
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextToSpeech t1, t2;
-    Button b1, b2;
+    TextToSpeech t2;
 
     private static final String FILENAME = "descriptions.txt";
 
@@ -37,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ReadFileFacade readFileFacade = new ReadFileFacade(getApplicationContext(), FILENAME);
+        final ReadFileFacade readFileFacade = new ReadFileFacade(getApplicationContext(), FILENAME); //creo un oggetto di classe ReadFileFacade
+        final Presentation presentation = new Presentation((Button)findViewById(R.id.button1), (Button)findViewById(R.id.button2), getApplicationContext()); //creo un oggetto di classe Presentation
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
         ImageAdapter adapter = new ImageAdapter(this);
@@ -47,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex
                 final String tmp = readFileFacade.getDescriptionFromId(position+"");
+                presentation.presentati();
                 t2=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     public void onInit(int status) {
                         if(status != TextToSpeech.ERROR) {
