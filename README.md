@@ -22,11 +22,9 @@ Aggiunto bottone di Test per switch di Activity (100% working)
 -Eliminare il frame skipping
 
 [Versione 1.0]
--Settare il TTS in modo che alla pressione di un Pokémon, se il Pokédex sta parlando, si fermi e inizi subito la descrizione di quello nuovo
--Settare il TTS come Play/Stop
 -Gestire i click/tap incondizionati
 -Inserire tutte le descrizioni
--Disabilitare Landscape
+-Disabilitare Landscape [DONE]
 -Aggiungere feature: quando premo un Pokémon si apre una nuova schermata con i suoi dati, punti deboli e punti forti,
                      tipo debole e tipo forte e un bottone "Speak" o simile che mi legge la descrizione
 
