@@ -1,5 +1,6 @@
 package com.example.thefe.newsmartkedex;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,10 @@ public class MainActivity extends AppCompatActivity {
     TextToSpeech t2;
 
     private static final String FILENAME = "descriptions.txt";
+
+    public void goSecond (View view) {
+        startActivity(new Intent("android.intent.action.PokemonDetails"));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
