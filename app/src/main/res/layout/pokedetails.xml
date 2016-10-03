@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/forteContro"
         android:id="@+id/tsf1"
-        android:src="@drawable/tipoSmall"/>
+        android:src="@drawable/tiposmall"/>
 
     <ImageView
         android:layout_width="80dp"
@@ -84,7 +84,7 @@
         android:layout_below="@id/forteContro"
         android:layout_toRightOf="@id/tsf1"
         android:id="@+id/tsf2"
-        android:src="@drawable/tipoSmall"/>
+        android:src="@drawable/tiposmall"/>
 
     <ImageView
         android:layout_width="80dp"
@@ -92,7 +92,7 @@
         android:layout_below="@id/forteContro"
         android:layout_toRightOf="@id/tsf2"
         android:id="@+id/tsf3"
-        android:src="@drawable/tipoSmall"/>
+        android:src="@drawable/tiposmall"/>
 
     <ImageView
         android:layout_width="80dp"
@@ -100,7 +100,7 @@
         android:layout_below="@id/forteContro"
         android:layout_toRightOf="@id/tsf3"
         android:id="@+id/tsf4"
-        android:src="@drawable/tipoSmall"/>
+        android:src="@drawable/tiposmall"/>
 
     <!--tsd = tiposmalldebole-->
     <ImageView
@@ -108,7 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/deboleContro"
         android:id="@+id/tsd1"
-        android:src="@drawable/tipoSmall"/>
+        android:src="@drawable/tiposmall"/>
 
     <ImageView
         android:layout_width="80dp"
@@ -116,7 +116,7 @@
         android:layout_below="@id/deboleContro"
         android:layout_toRightOf="@id/tsd1"
         android:id="@+id/tsd2"
-        android:src="@drawable/tipoSmall"/>
+        android:src="@drawable/tiposmall"/>
 
     <ImageView
         android:layout_width="80dp"
@@ -124,7 +124,7 @@
         android:layout_below="@id/deboleContro"
         android:layout_toRightOf="@id/tsd2"
         android:id="@+id/tsd3"
-        android:src="@drawable/tipoSmall"/>
+        android:src="@drawable/tiposmall"/>
 
     <ImageView
         android:layout_width="80dp"
@@ -132,7 +132,7 @@
         android:layout_below="@id/deboleContro"
         android:layout_toRightOf="@id/tsd3"
         android:id="@+id/tsd4"
-        android:src="@drawable/tipoSmall"/>
+        android:src="@drawable/tiposmall"/>
 
     <Button
         android:text="Descrizione"
