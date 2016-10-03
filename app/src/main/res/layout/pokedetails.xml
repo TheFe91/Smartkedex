@@ -15,31 +15,41 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/pkmn102"
+        app:srcCompat="@drawable/pkmn"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="129dp"
-        android:id="@+id/prova" />
+        android:layout_alignParentStart="true"
+        android:id="@+id/tmpPkmn" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/tipo"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/tmpPkmn"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="89dp"
+        android:id="@+id/tipo1" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/tipo"
+        android:id="@+id/tipo2"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/tipo1"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/tipo1" />
 
     <TextView
-        android:text="Prova per la Seconda Activity"
+        android:text="Tipo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/tipo"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
-        android:textSize="25dp"
-        android:id="@+id/textView" />
-
-    <Button
-        android:text="Indietro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:id="@+id/backbutton"
-        android:onClick="goMain"
-        android:layout_below="@+id/prova"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="36dp"
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:layout_alignStart="@+id/tipo1" />
 
 </RelativeLayout>

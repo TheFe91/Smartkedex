@@ -21,7 +21,7 @@
         </activity>
 
         <activity android:name=".PokemonDetails"
-
+                  android:parentActivityName=".MainActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.PokemonDetails" />
