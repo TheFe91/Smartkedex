@@ -19,19 +19,11 @@ public class PokemonDetails extends AppCompatActivity {
 
         getActionBar();
 
-        setInitialImage();
     }
 
-    private void setInitialImage () {
-        ImageView imageView = (ImageView) findViewById(R.id.tmpPkmn);
-        imageView.setImageResource(R.drawable.pkmn);
-        imageView = (ImageView) findViewById(R.id.tipo1);
-        imageView.setImageResource(R.drawable.tipo);
-        imageView = (ImageView) findViewById(R.id.tipo2);
-        imageView.setImageResource(R.drawable.tipo);
+    public void printKind (String tipo) {
+        ImageView imageView = (ImageView) findViewById(R.id.tipo1);
+        imageView.setImageResource(getResources().getIdentifier(tipo, "drawable", getPackageName()));
     }
 
-    public void goMain (View view) {
-        finish();
-    }
 }

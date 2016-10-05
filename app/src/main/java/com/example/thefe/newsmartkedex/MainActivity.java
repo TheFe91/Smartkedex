@@ -17,8 +17,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String FILENAME = "descriptions.txt";
 
-    public void goSecond (View view) {
+    //ovviamente così non funziona, ma non so come farlo andare >.<
+    public void goSecond (View view, String temp) {
         startActivity(new Intent("android.intent.action.PokemonDetails"));
+        printkind (temp);
     }
 
     @Override
@@ -37,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex
-                final String tmp = readFileFacade.getDescriptionFromId(position+"");
+                final String[] tmp = readFileFacade.getDescriptionFromId(position+"");
                 t2=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     public void onInit(int status) {
                         if(status != TextToSpeech.ERROR) {
                             t2.setLanguage(Locale.ITALIAN);
-                            t2.speak(tmp, TextToSpeech.QUEUE_FLUSH, null);
+                            t2.speak(tmp[1], TextToSpeech.QUEUE_FLUSH, null);
                         }
                     }
                 });
