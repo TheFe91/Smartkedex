@@ -11,136 +11,142 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.thefe.newsmartkedex.MainActivity">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/pkmn"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/tmpPkmn" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/pkmn"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/tmpPkmn" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/tipo"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/tmpPkmn"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="89dp"
+            android:id="@+id/tipo1" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/tipo"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/tmpPkmn"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="89dp"
-        android:id="@+id/tipo1" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/tipo"
+            android:id="@+id/tipo2"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tipo1"
+            android:layout_alignParentEnd="true"
+            android:layout_alignStart="@+id/tipo1" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/tipo"
-        android:id="@+id/tipo2"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/tipo1"
-        android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/tipo1" />
+        <TextView
+            android:text="Tipo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tipo"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="36dp"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:layout_alignStart="@+id/tipo1" />
 
-    <TextView
-        android:text="Tipo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tipo"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="36dp"
-        android:textSize="20dp"
-        android:textAlignment="center"
-        android:layout_alignStart="@+id/tipo1" />
+        <TextView
+            android:text="Forte contro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:textSize="20sp"
+            android:id="@+id/forteContro" />
 
-    <TextView
-        android:text="Forte contro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:textSize="20dp"
-        android:id="@+id/forteContro" />
+        <TextView
+            android:text="Debole contro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/forteContro"
+            android:layout_marginTop="108dp"
+            android:textSize="20sp"
+            android:id="@+id/deboleContro" />
 
-    <TextView
-        android:text="Debole contro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/forteContro"
-        android:layout_marginTop="108dp"
-        android:textSize="20dp"
-        android:id="@+id/deboleContro" />
+        <!--tsf = tiposmallforte-->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forteContro"
+            android:id="@+id/tsf1"
+            android:src="@drawable/tiposmall"/>
 
-    <!--tsf = tiposmallforte-->
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/forteContro"
-        android:id="@+id/tsf1"
-        android:src="@drawable/tiposmall"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forteContro"
+            android:layout_toRightOf="@id/tsf1"
+            android:id="@+id/tsf2"
+            android:src="@drawable/tiposmall"/>
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/forteContro"
-        android:layout_toRightOf="@id/tsf1"
-        android:id="@+id/tsf2"
-        android:src="@drawable/tiposmall"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forteContro"
+            android:layout_toRightOf="@id/tsf2"
+            android:id="@+id/tsf3"
+            android:src="@drawable/tiposmall"/>
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/forteContro"
-        android:layout_toRightOf="@id/tsf2"
-        android:id="@+id/tsf3"
-        android:src="@drawable/tiposmall"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/forteContro"
+            android:layout_toRightOf="@id/tsf3"
+            android:id="@+id/tsf4"
+            android:src="@drawable/tiposmall"/>
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/forteContro"
-        android:layout_toRightOf="@id/tsf3"
-        android:id="@+id/tsf4"
-        android:src="@drawable/tiposmall"/>
+        <!--tsd = tiposmalldebole-->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/deboleContro"
+            android:id="@+id/tsd1"
+            android:src="@drawable/tiposmall"/>
 
-    <!--tsd = tiposmalldebole-->
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/deboleContro"
-        android:id="@+id/tsd1"
-        android:src="@drawable/tiposmall"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/deboleContro"
+            android:layout_toRightOf="@id/tsd1"
+            android:id="@+id/tsd2"
+            android:src="@drawable/tiposmall"/>
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/deboleContro"
-        android:layout_toRightOf="@id/tsd1"
-        android:id="@+id/tsd2"
-        android:src="@drawable/tiposmall"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/deboleContro"
+            android:layout_toRightOf="@id/tsd2"
+            android:id="@+id/tsd3"
+            android:src="@drawable/tiposmall"/>
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/deboleContro"
-        android:layout_toRightOf="@id/tsd2"
-        android:id="@+id/tsd3"
-        android:src="@drawable/tiposmall"/>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/deboleContro"
+            android:layout_toRightOf="@id/tsd3"
+            android:id="@+id/tsd4"
+            android:src="@drawable/tiposmall"/>
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/deboleContro"
-        android:layout_toRightOf="@id/tsd3"
-        android:id="@+id/tsd4"
-        android:src="@drawable/tiposmall"/>
+        <Button
+            android:text="Descrizione"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/showhidedescr"
+            android:onClick="printDescription"/>
 
-    <Button
-        android:text="Descrizione"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/descrizione" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/descriptiontext"
+            android:text="prova di stampa per sta merda di testo che deve sparire"
+            android:layout_below="@+id/showhidedescr"/>
 
 </RelativeLayout>

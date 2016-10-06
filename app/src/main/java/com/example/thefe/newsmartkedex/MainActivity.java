@@ -18,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String FILENAME = "descriptions.txt";
 
     //ovviamente così non funziona, ma non so come farlo andare >.<
-    public void goSecond (View view, String temp) {
+    public void goSecond (View view) {
         startActivity(new Intent("android.intent.action.PokemonDetails"));
-        printkind (temp);
+        //printkind (temp); //String temp passata come argomento
     }
 
     @Override
