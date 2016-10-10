@@ -14,7 +14,6 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/pkmn"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:id="@+id/tmppkmn" />
@@ -24,7 +23,7 @@
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/tipo"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/tmpPkmn"
+            android:layout_toEndOf="@+id/tmppkmn"
             android:layout_marginStart="19dp"
             android:layout_marginTop="89dp"
             android:id="@+id/tipo1" />

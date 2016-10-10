@@ -28,7 +28,7 @@ import android.widget.TextView;
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
         ImageView imageView = (ImageView) findViewById(R.id.tmppkmn);
-        imageView.setImageResource(imageAdapter.mThumbIds[pokeID]);
+        imageView.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
 
 
         getActionBar();
@@ -47,14 +47,4 @@ import android.widget.TextView;
         });
 
     }
-
-    public void printDescription () {
-
-    }
-    //momentarily disabled
-//    public void printKind (String tipo) {
-//        ImageView imageView = (ImageView) findViewById(R.id.tipo1);
-//        imageView.setImageResource(getResources().getIdentifier(tipo, "drawable", getPackageName()));
-//    }
-
 }
