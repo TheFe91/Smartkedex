@@ -39,7 +39,7 @@ public class Presentation {
             @Override
             public void onClick(View v) {
                 t1.setLanguage(Locale.ITALIAN);
-                String toSpeak = "Sono Caterina, e sono uno Smàrtchedex in versione beta";
+                String toSpeak = "Sono Caterina, e sono una dreg quin che interpreta uno Smàrtchedex in versione beta";
                 t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
             }
         });

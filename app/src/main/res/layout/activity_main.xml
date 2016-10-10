@@ -38,14 +38,4 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
-    <!--<Button
-        android:text="Switch to 2nd Activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/vaidila"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="false"
-        android:onClick="goSecond"/>-->
-
-
 </RelativeLayout>
