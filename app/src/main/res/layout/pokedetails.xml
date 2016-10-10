@@ -17,7 +17,7 @@
             app:srcCompat="@drawable/pkmn"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/tmpPkmn" />
+            android:id="@+id/tmppkmn" />
 
         <ImageView
             android:layout_width="wrap_content"

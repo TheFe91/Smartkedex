@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex
                 final String[] tmp = readFileFacade.getDescriptionFromId(position+"");
+                Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
+                i.putExtra("id", position);
+                startActivity(i);
                 t2=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     public void onInit(int status) {
                         if(status != TextToSpeech.ERROR) {
