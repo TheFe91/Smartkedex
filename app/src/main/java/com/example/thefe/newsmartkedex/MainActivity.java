@@ -17,10 +17,15 @@ public class MainActivity extends AppCompatActivity {
 
     //private static final String FILENAME = "descriptions.txt";
 
+    PokemonHelper pokemonHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        pokemonHelper = new PokemonHelper(this);
+
+        pokemonHelper.getWritableDatabase();
 
         //final ReadFileFacade readFileFacade = new ReadFileFacade(getApplicationContext(), FILENAME); //creo un oggetto di classe ReadFileFacade
         final Presentation presentation = new Presentation((Button)findViewById(R.id.button1), (Button)findViewById(R.id.button2), getApplicationContext()); //creo un oggetto di classe Presentation
