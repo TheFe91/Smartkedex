@@ -2,6 +2,7 @@ package com.example.thefe.newsmartkedex;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -38,6 +39,21 @@ public class PokemonDatabaseAdapter {
         contentValues.put(PokemonHelper.TIPO, tipo);
         long id = db.insert(PokemonHelper.TIPO, null, contentValues);
         return id;
+    }
+
+    public String getAllData() {
+        SQLiteDatabase db=helper.getWritableDatabase();
+
+        String[] columns = {PokemonHelper.ID, PokemonHelper.NAME, PokemonHelper.DESCRIPTION};
+        Cursor cursor = db.query(PokemonHelper.POKEMON, columns, null, null, null, null, null);
+        StringBuffer buffer = new StringBuffer();
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(PokemonHelper.ID));
+            String nome = cursor.getString(cursor.getColumnIndex(PokemonHelper.NAME));
+            String descrizione = cursor.getString(cursor.getColumnIndex(PokemonHelper.DESCRIPTION));
+            buffer.append(id + " " + nome + " " + descrizione + "\n");
+        }
+        return buffer.toString();
     }
 
     //classe Helper che definisce i metodi onCreate (che crea le tabelle) e onUpgrade (che le modifica strutturalmente)

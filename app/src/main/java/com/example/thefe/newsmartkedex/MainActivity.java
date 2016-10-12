@@ -24,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
 
+        String data = pokemonDatabaseAdapter.getAllData();
+        Toast.makeText(this, data, Toast.LENGTH_LONG).show();
+
 //        long id = pokemonDatabaseAdapter.insertPokemon(1, "Bulbasaur", "È possibile vedere Bulbasàur mentre schiaccia un pisolino sotto il sole. Ha un seme piantato sulla schiena. Grazie ai raggi solari, il seme crescie, ingrandendosi progressivamente.");
 //        if (id<0) {
 //            System.err.println("Something went wrong");
