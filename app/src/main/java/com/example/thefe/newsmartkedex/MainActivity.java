@@ -8,8 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
-
-import java.util.Locale;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,15 +16,48 @@ public class MainActivity extends AppCompatActivity {
 
     //private static final String FILENAME = "descriptions.txt";
 
-    PokemonHelper pokemonHelper;
+    PokemonDatabaseAdapter pokemonDatabaseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pokemonHelper = new PokemonHelper(this);
+        pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
 
-        pokemonHelper.getWritableDatabase();
+//        long id = pokemonDatabaseAdapter.insertPokemon(1, "Bulbasaur", "È possibile vedere Bulbasàur mentre schiaccia un pisolino sotto il sole. Ha un seme piantato sulla schiena. Grazie ai raggi solari, il seme crescie, ingrandendosi progressivamente.");
+//        if (id<0) {
+//            System.err.println("Something went wrong");
+//        }
+//        else {
+//            Toast.makeText(this, "Bulbasaur inserito", Toast.LENGTH_SHORT).show();
+//        }
+//
+//        id = pokemonDatabaseAdapter.insertPokemon(2, "Ivysaur", "C'è un germoglio piantato nella schiena di Ivysàur. Per sopportarne il peso, le zampe e il corpo crescono robusti. Quando inizia a passare più tempo esposto al sole, signìfica che il germoglio sboccerà présto in un grande fiore.");
+//        if (id<0) {
+//            System.err.println("Something went wrong");
+//        }
+//        else {
+//            Toast.makeText(this, "Ivysaur inserito", Toast.LENGTH_SHORT).show();
+//        }
+//        id = pokemonDatabaseAdapter.insertPokemon(3, "Venusaur", "C'è un grande fiore sulla schiena di Venusàur. Si dice che i colori diventino più vìvidi con il giusto nutrimento e i raggi solari. Il suo profumo calma le reazioni emotive delle persone.");
+//        if (id<0) {
+//            System.err.println("Something went wrong");
+//        }
+//        else {
+//            Toast.makeText(this, "Venusaur inserito", Toast.LENGTH_SHORT).show();
+//        }
+//
+//        String[] tipi = {"acciaio", "acqua", "coleottero", "drago", "elettro", "erba", "fuoco", "ghiaccio", "lotta", "normale"};
+//
+//        for (int i = 0; i < 10; i++) {
+//            id = pokemonDatabaseAdapter.insertTipo(tipi[i]);
+//            if (id<0) {
+//                System.err.println("Something went wrong at line " + i + "(" + tipi[i] + ")");
+//            }
+//            else {
+//                Toast.makeText(this, tipi[i] + " inserito", Toast.LENGTH_SHORT).show();
+//            }
+//        }
 
         //final ReadFileFacade readFileFacade = new ReadFileFacade(getApplicationContext(), FILENAME); //creo un oggetto di classe ReadFileFacade
         final Presentation presentation = new Presentation((Button)findViewById(R.id.button1), (Button)findViewById(R.id.button2), getApplicationContext()); //creo un oggetto di classe Presentation
