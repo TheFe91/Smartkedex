@@ -1,6 +1,7 @@
 package com.example.thefe.newsmartkedex;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
@@ -16,51 +17,12 @@ public class MainActivity extends AppCompatActivity {
 
     //private static final String FILENAME = "descriptions.txt";
 
-    PokemonDatabaseAdapter pokemonDatabaseAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
 
-        String data = pokemonDatabaseAdapter.getAllData();
-        Toast.makeText(this, data, Toast.LENGTH_LONG).show();
-
-//        long id = pokemonDatabaseAdapter.insertPokemon(1, "Bulbasaur", "È possibile vedere Bulbasàur mentre schiaccia un pisolino sotto il sole. Ha un seme piantato sulla schiena. Grazie ai raggi solari, il seme crescie, ingrandendosi progressivamente.");
-//        if (id<0) {
-//            System.err.println("Something went wrong");
-//        }
-//        else {
-//            Toast.makeText(this, "Bulbasaur inserito", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        id = pokemonDatabaseAdapter.insertPokemon(2, "Ivysaur", "C'è un germoglio piantato nella schiena di Ivysàur. Per sopportarne il peso, le zampe e il corpo crescono robusti. Quando inizia a passare più tempo esposto al sole, signìfica che il germoglio sboccerà présto in un grande fiore.");
-//        if (id<0) {
-//            System.err.println("Something went wrong");
-//        }
-//        else {
-//            Toast.makeText(this, "Ivysaur inserito", Toast.LENGTH_SHORT).show();
-//        }
-//        id = pokemonDatabaseAdapter.insertPokemon(3, "Venusaur", "C'è un grande fiore sulla schiena di Venusàur. Si dice che i colori diventino più vìvidi con il giusto nutrimento e i raggi solari. Il suo profumo calma le reazioni emotive delle persone.");
-//        if (id<0) {
-//            System.err.println("Something went wrong");
-//        }
-//        else {
-//            Toast.makeText(this, "Venusaur inserito", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        String[] tipi = {"acciaio", "acqua", "coleottero", "drago", "elettro", "erba", "fuoco", "ghiaccio", "lotta", "normale"};
-//
-//        for (int i = 0; i < 10; i++) {
-//            id = pokemonDatabaseAdapter.insertTipo(tipi[i]);
-//            if (id<0) {
-//                System.err.println("Something went wrong at line " + i + "(" + tipi[i] + ")");
-//            }
-//            else {
-//                Toast.makeText(this, tipi[i] + " inserito", Toast.LENGTH_SHORT).show();
-//            }
-//        }
+        //PokemonDatabaseAdapter pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
 
         //final ReadFileFacade readFileFacade = new ReadFileFacade(getApplicationContext(), FILENAME); //creo un oggetto di classe ReadFileFacade
         final Presentation presentation = new Presentation((Button)findViewById(R.id.button1), (Button)findViewById(R.id.button2), getApplicationContext()); //creo un oggetto di classe Presentation
@@ -72,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex
+                //position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex; per ora disabilitato perchè sballa tutto
                 //final String[] tmp = readFileFacade.getDescriptionFromId(position+"");
                 Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
                 i.putExtra("id", position);
@@ -90,4 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
+    public void inserimento (View view) { //perchè devo mettere (View view) se non lo uso???
+        InsertIntoDB insertIntoDB = new InsertIntoDB(getApplicationContext());
+        insertIntoDB.insert();
+    }
 }

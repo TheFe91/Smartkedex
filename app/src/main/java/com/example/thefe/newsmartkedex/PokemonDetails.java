@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -20,16 +21,20 @@ import android.widget.TextView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pokedetails);
 
+        //istanzio un oggetto di classe PokemonDatabaseAdapter
+        PokemonDatabaseAdapter pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
+
         //Prendo i dati Intent
         Intent i = getIntent();
 
-        //Seleziono l'ID dell'immagine
+        //Seleziono l'ID del Pokémon che mi servirà per prendere tutti i dati dal database e dai drawable
         int pokeID = i.getExtras().getInt("id");
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
         ImageView imageView = (ImageView) findViewById(R.id.tmppkmn);
-        imageView.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
+        imageView.setImageResource(imageAdapter.mThumbIds[pokeID]);
 
+        pokemonDatabaseAdapter.getTipo(pokeID+1);
 
         getActionBar();
 

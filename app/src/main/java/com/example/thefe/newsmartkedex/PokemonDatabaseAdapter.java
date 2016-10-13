@@ -9,6 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Message;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by TheFe on 11/10/2016.
  */
@@ -41,6 +45,35 @@ public class PokemonDatabaseAdapter {
         return id;
     }
 
+    public long insertFortezze (int pokeID, String fortezza) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PokemonHelper.ID, pokeID);
+        contentValues.put(PokemonHelper.TIPO, fortezza);
+        long id = db.insert(PokemonHelper.FORTEZZE_POKEMON, null, contentValues);
+        return id;
+    }
+
+    public long insertDebolezze (int pokeID, String debolezza) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PokemonHelper.ID, pokeID);
+        contentValues.put(PokemonHelper.TIPO, debolezza);
+        long id = db.insert(PokemonHelper.DEBOLEZZE_POKEMON, null, contentValues);
+        return id;
+    }
+
+    public long insertTipiPokemon (int pokeID, String tipo) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PokemonHelper.ID, pokeID);
+        contentValues.put(PokemonHelper.TIPO, tipo);
+        long id = db.insert(PokemonHelper.TIPI_POKEMON, null, contentValues);
+        return id;
+    }
+
+    //Metodi per fare le SELECT
+
     public String getAllData() {
         SQLiteDatabase db=helper.getWritableDatabase();
 
@@ -56,17 +89,37 @@ public class PokemonDatabaseAdapter {
         return buffer.toString();
     }
 
+    public void getTipo(int id) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+
+        String[] columns = {PokemonHelper.ID, PokemonHelper.TIPO};
+        Cursor cursor = db.query(PokemonHelper.TIPI_POKEMON, columns, PokemonHelper.ID+"='"+id+"'", null, null, null, null);
+        //StringBuffer buffer = new StringBuffer();
+        List<String> results = new ArrayList<String>();
+        while (cursor.moveToNext()) {
+           results.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.TIPO))); //cursor.getString() prende la stringa dall'indice indicato; cursor.getColumnIndex() restitusce l'intero corrispondente alla colonna dal nome indicato
+        }
+        for (String object:results) {
+            System.out.println(object);
+        }
+        return;
+    }
+
     //classe Helper che definisce i metodi onCreate (che crea le tabelle) e onUpgrade (che le modifica strutturalmente)
     static class PokemonHelper extends SQLiteOpenHelper {
 
         //definizione di tutti i campi del Database come costanti (private static final)
+
         //Dati per il Database
         private static final String DATABASE_NAME = "pokemondb.db";
-        private static final int DATABASE_VERSION = 12;
+        private static final int DATABASE_VERSION = 3;
 
         //Dati per le Tabelle
         private static final String POKEMON = "Pokemon";
         private static final String TIPO = "Tipo";
+        private static final String FORTEZZE_POKEMON = "FortezzePokemon";
+        private static final String DEBOLEZZE_POKEMON = "DebolezzePokemon";
+        private static final String TIPI_POKEMON = "TipiPokemon";
 
         //Dati per i campi delle tabelle
         private static final String ID = "ID";
@@ -115,10 +168,10 @@ public class PokemonDatabaseAdapter {
 
             query =
                     "CREATE TABLE IF NOT EXISTS TipiPokemon (" +
-                            "Nome VARCHAR(15)," +
+                            "ID INT(3)," +
                             "Tipo VARCHAR(10)," +
-                            "PRIMARY KEY (Nome, Tipo)," +
-                            "FOREIGN KEY (Nome) REFERENCES Pokemon (Nome)," +
+                            "PRIMARY KEY (ID, Tipo)," +
+                            "FOREIGN KEY (ID) REFERENCES Pokemon (ID)," +
                             "FOREIGN KEY (Tipo) REFERENCES Tipo (Tipo)" +
                             ");";
 
@@ -132,11 +185,11 @@ public class PokemonDatabaseAdapter {
 
             query =
                     "CREATE TABLE IF NOT EXISTS FortezzePokemon (" +
-                            "Nome VARCHAR(15)," +
-                            "Fortezza VARCHAR(10)," +
-                            "PRIMARY KEY (Nome, Fortezza)," +
-                            "FOREIGN KEY (Nome) REFERENCES Pokemon (Nome)," +
-                            "FOREIGN KEY (Fortezza) REFERENCES FortezzePokemon (Fortezza)" +
+                            "ID INT(3)," +
+                            "Tipo VARCHAR(10)," +
+                            "PRIMARY KEY (ID, Fortezza)," +
+                            "FOREIGN KEY (ID) REFERENCES Pokemon (ID)," +
+                            "FOREIGN KEY (Tipo) REFERENCES Tipo (Tipo)" +
                             ");";
 
             try {
@@ -149,11 +202,11 @@ public class PokemonDatabaseAdapter {
 
             query =
                     "CREATE TABLE IF NOT EXISTS DebolezzePokemon (" +
-                            "Nome VARCHAR(15)," +
-                            "Debolezza VARCHAR(10)," +
-                            "PRIMARY KEY (Nome, Debolezza)," +
-                            "FOREIGN KEY (Nome) REFERENCES Pokemon (Nome)," +
-                            "FOREIGN KEY (Debolezza) REFERENCES DebolezzePokemon (Debolezza)" +
+                            "ID INT(3)," +
+                            "Tipo VARCHAR(10)," +
+                            "PRIMARY KEY (ID, Debolezza)," +
+                            "FOREIGN KEY (ID) REFERENCES Pokemon (ID)," +
+                            "FOREIGN KEY (Tipo) REFERENCES Tipo (Tipo)" +
                             ");";
 
             try {
@@ -168,13 +221,13 @@ public class PokemonDatabaseAdapter {
 
         public void onUpgrade (SQLiteDatabase db, int oldVersion, int newVersion) {
             try {
-                String query = "DROP TABLE IF EXISTS Pokemon";
+//                String query = "DROP TABLE IF EXISTS Pokemon";
+//                db.execSQL(query);
+                String query = "DROP TABLE IF EXISTS TipiPokemon";
                 db.execSQL(query);
-                query = "DROP TABLE IF EXISTS Tipo";
+                query = "DROP TABLE IF EXISTS FortezzePokemon";
                 db.execSQL(query);
-                query = "DROP TABLE IF EXISTS Fortezza";
-                db.execSQL(query);
-                query = "DROP TABLE IF EXISTS Debolezza";
+                query = "DROP TABLE IF EXISTS DebolezzePokemon";
                 db.execSQL(query);
                 onCreate(db);
                 Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
