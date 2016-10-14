@@ -18,7 +18,7 @@
             android:layout_alignParentStart="true"
             android:id="@+id/tmppkmn" />
 
-        <!--<ImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -34,7 +34,7 @@
             android:layout_marginTop="20dp"
             android:layout_below="@+id/tipo1"
             android:layout_alignParentEnd="true"
-            android:layout_alignStart="@+id/tipo1" />-->
+            android:layout_alignStart="@+id/tipo1" />
 
         <TextView
             android:text="Tipo"

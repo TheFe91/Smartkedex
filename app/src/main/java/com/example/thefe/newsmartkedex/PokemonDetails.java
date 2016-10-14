@@ -37,7 +37,13 @@ import java.util.List;
         ImageView imageView = (ImageView) findViewById(R.id.tmppkmn);
         imageView.setImageResource(imageAdapter.mThumbIds[pokeID]);
 
-        List<String> objects = pokemonDatabaseAdapter.getTipo(pokeID+1);
+        imageView = (ImageView) findViewById(R.id.tipo1);
+        imageView.setImageResource(R.drawable.erba);
+
+        imageView = (ImageView) findViewById(R.id.tipo2);
+        imageView.setImageResource(R.drawable.acciaio);
+
+        /*List<String> objects = pokemonDatabaseAdapter.getTipo(pokeID+1);
 
         for (int j=0; j < objects.size(); j++) {
             ImageView iv = new ImageView(this);
@@ -49,9 +55,9 @@ import java.util.List;
             );
             /*lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             lp.addRule(RelativeLayout.END_OF, R.id.tmppkmn);
-            lp.setMargins(0, 89, 0, 0);*/
+            lp.setMargins(0, 89, 0, 0);
             rl.addView(iv, lp);
-        }
+        }*/
 
         getActionBar();
 
