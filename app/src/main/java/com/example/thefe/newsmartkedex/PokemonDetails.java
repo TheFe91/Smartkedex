@@ -24,9 +24,6 @@ import java.util.List;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pokedetails);
 
-        //istanzio un oggetto di classe PokemonDatabaseAdapter
-        PokemonDatabaseAdapter pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
-
         //Prendo i dati Intent
         Intent i = getIntent();
 
@@ -42,22 +39,6 @@ import java.util.List;
 
         imageView = (ImageView) findViewById(R.id.tipo2);
         imageView.setImageResource(R.drawable.acciaio);
-
-        /*List<String> objects = pokemonDatabaseAdapter.getTipo(pokeID+1);
-
-        for (int j=0; j < objects.size(); j++) {
-            ImageView iv = new ImageView(this);
-            iv.setImageResource(getResources().getIdentifier(objects.get(j), "drawable", getPackageName()));
-            RelativeLayout rl = (RelativeLayout) findViewById(R.id.activity_main);
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-            );
-            /*lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            lp.addRule(RelativeLayout.END_OF, R.id.tmppkmn);
-            lp.setMargins(0, 89, 0, 0);
-            rl.addView(iv, lp);
-        }*/
 
         getActionBar();
 

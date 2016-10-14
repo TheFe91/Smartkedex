@@ -1,7 +1,6 @@
 package com.example.thefe.newsmartkedex;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
@@ -9,20 +8,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     TextToSpeech t2;
 
-    //private static final String FILENAME = "descriptions.txt";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //PokemonDatabaseAdapter pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
 
         //final ReadFileFacade readFileFacade = new ReadFileFacade(getApplicationContext(), FILENAME); //creo un oggetto di classe ReadFileFacade
         final Presentation presentation = new Presentation((Button)findViewById(R.id.button1), (Button)findViewById(R.id.button2), getApplicationContext()); //creo un oggetto di classe Presentation
@@ -51,9 +45,4 @@ public class MainActivity extends AppCompatActivity {
         });
 
     };
-
-    public void inserimento (View view) { //perchè devo mettere (View view) se non lo uso???
-        InsertIntoDB insertIntoDB = new InsertIntoDB(getApplicationContext());
-        insertIntoDB.insert();
-    }
 }

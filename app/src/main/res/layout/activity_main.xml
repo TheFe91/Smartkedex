@@ -38,12 +38,4 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
-    <Button
-        android:text="INSERT DATA INTO DB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/insert"
-        android:layout_alignParentBottom="true"
-        android:onClick="inserimento"/>
-
 </RelativeLayout>
