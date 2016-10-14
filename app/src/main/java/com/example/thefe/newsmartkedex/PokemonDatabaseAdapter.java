@@ -89,20 +89,17 @@ public class PokemonDatabaseAdapter {
         return buffer.toString();
     }
 
-    public void getTipo(int id) {
+    public List<String> getTipo(int id) {
         SQLiteDatabase db = helper.getWritableDatabase();
 
         String[] columns = {PokemonHelper.ID, PokemonHelper.TIPO};
         Cursor cursor = db.query(PokemonHelper.TIPI_POKEMON, columns, PokemonHelper.ID+"='"+id+"'", null, null, null, null);
-        //StringBuffer buffer = new StringBuffer();
         List<String> results = new ArrayList<String>();
         while (cursor.moveToNext()) {
            results.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.TIPO))); //cursor.getString() prende la stringa dall'indice indicato; cursor.getColumnIndex() restitusce l'intero corrispondente alla colonna dal nome indicato
         }
-        for (String object:results) {
-            System.out.println(object);
-        }
-        return;
+
+        return results;
     }
 
     //classe Helper che definisce i metodi onCreate (che crea le tabelle) e onUpgrade (che le modifica strutturalmente)

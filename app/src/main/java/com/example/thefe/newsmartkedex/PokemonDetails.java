@@ -6,8 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 
 /**
@@ -34,7 +37,21 @@ import android.widget.Toast;
         ImageView imageView = (ImageView) findViewById(R.id.tmppkmn);
         imageView.setImageResource(imageAdapter.mThumbIds[pokeID]);
 
-        pokemonDatabaseAdapter.getTipo(pokeID+1);
+        List<String> objects = pokemonDatabaseAdapter.getTipo(pokeID+1);
+
+        for (int j=0; j < objects.size(); j++) {
+            ImageView iv = new ImageView(this);
+            iv.setImageResource(getResources().getIdentifier(objects.get(j), "drawable", getPackageName()));
+            RelativeLayout rl = (RelativeLayout) findViewById(R.id.activity_main);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT
+            );
+            /*lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            lp.addRule(RelativeLayout.END_OF, R.id.tmppkmn);
+            lp.setMargins(0, 89, 0, 0);*/
+            rl.addView(iv, lp);
+        }
 
         getActionBar();
 

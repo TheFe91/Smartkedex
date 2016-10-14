@@ -54,52 +54,52 @@ public class InsertIntoDB {
             }
         }
 
-//        long id = pokemonDatabaseAdapter.insertTipiPokemon(1, "Erba");
-//        if (id<0) {
-//            System.err.println("Something went wrong");
-//        }
-//        else {
-//            Toast.makeText(context, "Bulbasaur-Erba inserito", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        id = pokemonDatabaseAdapter.insertTipiPokemon(1, "Veleno");
-//        if (id<0) {
-//            System.err.println("Something went wrong");
-//        }
-//        else {
-//            Toast.makeText(context, "Bulbasaur-Veleno inserito", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        id = pokemonDatabaseAdapter.insertTipiPokemon(2, "Erba");
-//        if (id<0) {
-//            System.err.println("Something went wrong");
-//        }
-//        else {
-//            Toast.makeText(context, "Ivysaur-Erba inserito", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        id = pokemonDatabaseAdapter.insertTipiPokemon(2, "Veleno");
-//        if (id<0) {
-//            System.err.println("Something went wrong");
-//        }
-//        else {
-//            Toast.makeText(context, "Ivysaur-Veleno inserito", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        id = pokemonDatabaseAdapter.insertTipiPokemon(3, "Erba");
-//        if (id<0) {
-//            System.err.println("Something went wrong");
-//        }
-//        else {
-//            Toast.makeText(context, "Venusaur-Erba inserito", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        id = pokemonDatabaseAdapter.insertTipiPokemon(3, "Veleno");
-//        if (id<0) {
-//            System.err.println("Something went wrong");
-//        }
-//        else {
-//            Toast.makeText(context, "Venusaur-Veleno inserito", Toast.LENGTH_SHORT).show();
-//        }
+        id = pokemonDatabaseAdapter.insertTipiPokemon(1, "Erba");
+        if (id<0) {
+            System.err.println("Something went wrong");
+        }
+        else {
+            Toast.makeText(context, "Bulbasaur-Erba inserito", Toast.LENGTH_SHORT).show();
+        }
+
+        id = pokemonDatabaseAdapter.insertTipiPokemon(1, "Veleno");
+        if (id<0) {
+            System.err.println("Something went wrong");
+        }
+        else {
+            Toast.makeText(context, "Bulbasaur-Veleno inserito", Toast.LENGTH_SHORT).show();
+        }
+
+        id = pokemonDatabaseAdapter.insertTipiPokemon(2, "Erba");
+        if (id<0) {
+            System.err.println("Something went wrong");
+        }
+        else {
+            Toast.makeText(context, "Ivysaur-Erba inserito", Toast.LENGTH_SHORT).show();
+        }
+
+        id = pokemonDatabaseAdapter.insertTipiPokemon(2, "Veleno");
+        if (id<0) {
+            System.err.println("Something went wrong");
+        }
+        else {
+            Toast.makeText(context, "Ivysaur-Veleno inserito", Toast.LENGTH_SHORT).show();
+        }
+
+        id = pokemonDatabaseAdapter.insertTipiPokemon(3, "Erba");
+        if (id<0) {
+            System.err.println("Something went wrong");
+        }
+        else {
+            Toast.makeText(context, "Venusaur-Erba inserito", Toast.LENGTH_SHORT).show();
+        }
+
+        id = pokemonDatabaseAdapter.insertTipiPokemon(3, "Veleno");
+        if (id<0) {
+            System.err.println("Something went wrong");
+        }
+        else {
+            Toast.makeText(context, "Venusaur-Veleno inserito", Toast.LENGTH_SHORT).show();
+        }
     }
 }
