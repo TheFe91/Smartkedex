@@ -38,7 +38,16 @@ import java.util.List;
         imageView.setImageResource(R.drawable.erba);
 
         imageView = (ImageView) findViewById(R.id.tipo2);
-        imageView.setImageResource(R.drawable.acciaio);
+        imageView.setImageResource(R.drawable.veleno);
+
+        /*if (secondo_tipo != NULL) {
+            imageView = (ImageView) findViewById(R.id.tipo2);
+            imageView.setImageResource(R.drawable.secondo_tipo);
+        }
+        else {
+            imageView = (ImageView) findViewById(R.id.tipo2);
+            imageView.setImageResource(R.drawable.transparent);
+        }*/
 
         getActionBar();
 

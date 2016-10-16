@@ -55,8 +55,7 @@
             android:text="Debole contro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/forteContro"
-            android:layout_marginTop="108dp"
+            android:layout_below="@+id/tsf1"
             android:textSize="20sp"
             android:id="@+id/deboleContro" />
 
@@ -128,8 +127,8 @@
             android:text="Descrizione"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
+            android:layout_below="@+id/tsd1"
             android:id="@+id/showhidedescr"
             android:onClick="printDescription"/>
 
