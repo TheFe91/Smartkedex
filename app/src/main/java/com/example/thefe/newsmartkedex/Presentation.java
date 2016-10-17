@@ -24,7 +24,7 @@ public class Presentation {
         this.context = nContext;
     }
 
-    public int presentati () {
+    public void presentati () {
 
         t1=new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
@@ -52,6 +52,5 @@ public class Presentation {
                 t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
             }
         });
-        return 0;
     }
 }

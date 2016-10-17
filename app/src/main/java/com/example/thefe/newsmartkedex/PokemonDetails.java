@@ -28,13 +28,6 @@ import java.util.Locale;
     private String toSpeech = "";
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater mf = getMenuInflater();
-        mf.inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pokedetails);
