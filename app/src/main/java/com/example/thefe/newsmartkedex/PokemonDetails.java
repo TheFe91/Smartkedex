@@ -17,12 +17,16 @@ import java.util.List;
  * Created by TheFe on 02/10/2016.
  */
 
-    public class PokemonDetails extends AppCompatActivity {
+    public class PokemonDetails extends AppCompatActivity implements ResponseFromWebService.AsyncResponse {
+
+    TextView tv;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pokedetails);
+
+        tv = (TextView) findViewById(R.id.descriptiontext);
 
         //Prendo i dati Intent
         Intent i = getIntent();
@@ -32,9 +36,9 @@ import java.util.List;
         String pokeName = getName(pokeID+1);
         ResponseFromWebService responseFromWebService = new ResponseFromWebService();
 
-        String[] pokeData = responseFromWebService.getPokeData(pokeName);
+        ResponseFromWebService.AsyncResponse ar = this;
 
-        System.out.println(pokeData[0] + " - " + pokeData[1]);
+        responseFromWebService.getPokeData(pokeName, ar);
 
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
@@ -47,6 +51,17 @@ import java.util.List;
         imageView = (ImageView) findViewById(R.id.tipo2);
         imageView.setImageResource(R.drawable.veleno);
 
+        //                    |
+        //                    |
+        //                    |
+        //                    |
+        //                    |
+        //                 \  |  /
+        //                  \ | /
+        //                   \|/
+        //                    |
+
+
         /*if (secondo_tipo != NULL) {
             imageView = (ImageView) findViewById(R.id.tipo2);
             imageView.setImageResource(R.drawable.secondo_tipo);
@@ -58,7 +73,6 @@ import java.util.List;
 
         getActionBar();
 
-        final TextView tv = (TextView) findViewById(R.id.descriptiontext);
         tv.setVisibility(View.GONE);
         Button showhide = (Button) findViewById(R.id.showhidedescr);
         showhide.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +85,11 @@ import java.util.List;
             }
         });
 
+    }
+
+    @Override
+    public void processFinish(String output){
+        tv.setText(output);
     }
 
     private String getName (int pokeID) {

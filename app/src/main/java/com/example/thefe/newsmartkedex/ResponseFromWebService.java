@@ -19,19 +19,24 @@ import java.net.URL;
 
 public class ResponseFromWebService {
 
-    private String[] results = {};
-
-    public String[] getPokeData (String pokeName) {
-
-        new JSONTask().execute("https://murmuring-scrubland-11477.herokuapp.com/desc?pkmn=" + pokeName);
-
-        return results;
+    public void getPokeData (String pokeName, AsyncResponse ar) {
+        new JSONTask(ar).execute("https://murmuring-scrubland-11477.herokuapp.com/desc?pkmn=" + pokeName);
     }
 
-    private class JSONTask extends AsyncTask<String, String, String[]> {
+    public interface AsyncResponse {
+        void processFinish(String output);
+    }
+
+    public class JSONTask extends AsyncTask<String, String, String> {
+
+        public JSONTask(AsyncResponse delegate) {
+            this.delegate = delegate;
+        }
+
+        AsyncResponse delegate = null;
 
         @Override
-        protected String[] doInBackground(String... params) {
+        protected String doInBackground(String... params) {
             HttpURLConnection connection = null;
             BufferedReader reader = null;
             StringBuffer buffer = new StringBuffer();
@@ -64,10 +69,7 @@ public class ResponseFromWebService {
                 String movieName = finalObject.getString("movie");
                 int movieYear = finalObject.getInt("year");*/
 
-                results[0] = pkmnName;
-                results[1] = pkmnDesc;
-
-                return results;
+                return pkmnDesc;
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -89,8 +91,9 @@ public class ResponseFromWebService {
         }
 
         @Override
-        protected void onPostExecute(String[] s) { //questa String[] s è la return di doInBackground
+        protected void onPostExecute(String s) { //questa String s è la return di doInBackground
             super.onPostExecute(s);
+            delegate.processFinish(s);
         }
     }
 }
