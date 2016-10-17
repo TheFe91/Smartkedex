@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +26,13 @@ import java.util.Locale;
     private TextView tv;
     private TextToSpeech t1;
     private String toSpeech = "";
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mf = getMenuInflater();
+        mf.inflate(R.menu.main_menu, menu);
+        return true;
+    }
 
     @Override
     public void onCreate (Bundle savedInstanceState) {

@@ -2,16 +2,15 @@ package com.example.thefe.newsmartkedex;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 
 public class MainActivity extends AppCompatActivity {
-
-    TextToSpeech t2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,5 +34,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    };
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mf = getMenuInflater();
+        mf.inflate(R.menu.main_menu, menu);
+        return true;
+    }
 }
