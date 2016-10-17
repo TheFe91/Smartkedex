@@ -2,6 +2,7 @@ package com.example.thefe.newsmartkedex;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -19,7 +21,9 @@ import java.util.List;
 
     public class PokemonDetails extends AppCompatActivity implements ResponseFromWebService.AsyncResponse {
 
-    TextView tv;
+    private TextView tv;
+    private TextToSpeech t1;
+    private String toSpeech = "";
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -73,23 +77,43 @@ import java.util.List;
 
         getActionBar();
 
-        tv.setVisibility(View.GONE);
         Button showhide = (Button) findViewById(R.id.showhidedescr);
+        final Button leggi = (Button)findViewById(R.id.leggidescrizione);
+        tv.setVisibility(View.GONE);
+        leggi.setVisibility(View.GONE);
         showhide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (tv.getVisibility() == View.VISIBLE)
+                if (tv.getVisibility() == View.VISIBLE) {
                     tv.setVisibility(View.GONE);
-                else if (tv.getVisibility() == View.GONE)
+                    leggi.setVisibility(View.GONE);
+                }
+                else if (tv.getVisibility() == View.GONE) {
                     tv.setVisibility(View.VISIBLE);
+                    leggi.setVisibility(View.VISIBLE);
+                }
             }
         });
 
+        leggi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                    public void onInit(int status) {
+                        if(status != TextToSpeech.ERROR) {
+                            t1.setLanguage(Locale.ITALIAN);
+                            t1.speak(toSpeech, TextToSpeech.QUEUE_FLUSH, null);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     @Override
     public void processFinish(String output){
         tv.setText(output);
+        toSpeech = output;
     }
 
     private String getName (int pokeID) {

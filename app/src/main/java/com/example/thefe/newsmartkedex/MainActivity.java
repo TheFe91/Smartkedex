@@ -28,19 +28,10 @@ public class MainActivity extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                //position += 1; //così il numero di Pokémon corrisponde al numero di Pokédex; per ora disabilitato perchè sballa tutto
                 //final String[] tmp = readFileFacade.getDescriptionFromId(position+"");
                 Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
                 i.putExtra("id", position);
                 startActivity(i);
-//                t2=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-//                    public void onInit(int status) {
-//                        if(status != TextToSpeech.ERROR) {
-//                            t2.setLanguage(Locale.ITALIAN);
-//                            t2.speak(tmp[1], TextToSpeech.QUEUE_FLUSH, null);
-//                        }
-//                    }
-//                });
             }
         });
 

@@ -131,10 +131,38 @@
             android:layout_below="@+id/tsd1"
             android:id="@+id/showhidedescr"/>
 
-        <TextView
+        <TableLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/descriptiontext"
-            android:layout_below="@+id/showhidedescr"/>
+            android:layout_below="@+id/showhidedescr">
+
+            <TableRow
+                android:id="@+id/tablerow1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/descriptiontext"
+                    android:layout_gravity="center_horizontal">
+                </TextView>
+            </TableRow>
+            <TableRow
+                android:id="@+id/tablerow2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <Button
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="Leggi\ndescrizione"
+                    android:id="@+id/leggidescrizione"
+                    android:layout_gravity="center_horizontal">
+                </Button>
+            </TableRow>
+        </TableLayout>
 
 </RelativeLayout>
