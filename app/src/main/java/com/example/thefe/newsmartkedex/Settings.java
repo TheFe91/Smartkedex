@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 public class Settings extends AppCompatActivity {
 
-    public String lingua = "";
+    public String lingua = "ITA";
     private RadioGroup radioGroup;
     private RadioButton radioButton;
 
@@ -28,8 +28,6 @@ public class Settings extends AppCompatActivity {
 
         TextView language = (TextView)findViewById(R.id.lingua);
         TextView name = (TextView)findViewById(R.id.nomeSmartkedex);
-
-        radioListener();
 
         switch (lingua) {
             case "ENG":
@@ -47,14 +45,10 @@ public class Settings extends AppCompatActivity {
 
     public void radioListener() {
 
-        System.out.println("sun chi");
-
         radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
 
         int selectedId = radioGroup.getCheckedRadioButtonId();
 
         radioButton = (RadioButton)findViewById(selectedId);
-
-        System.out.println(radioButton.toString());
     }
 }

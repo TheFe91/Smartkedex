@@ -19,21 +19,17 @@ import java.net.URL;
 
 public class ResponseFromWebService {
 
-    public void getPokeData (String pokeName, AsyncResponse ar) {
+    public void getPokeData (String pokeName, WebServicesAsyncResponse ar) {
         new JSONTask(ar).execute("https://murmuring-scrubland-11477.herokuapp.com/desc?pkmn=" + pokeName);
-    }
-
-    public interface AsyncResponse {
-        void processFinish(String output);
     }
 
     public class JSONTask extends AsyncTask<String, String, String> {
 
-        public JSONTask(AsyncResponse delegate) {
+        public JSONTask(WebServicesAsyncResponse delegate) {
             this.delegate = delegate;
         }
 
-        AsyncResponse delegate = null;
+        WebServicesAsyncResponse delegate = null;
 
         @Override
         protected String doInBackground(String... params) {

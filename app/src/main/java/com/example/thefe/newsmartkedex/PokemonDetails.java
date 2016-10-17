@@ -21,7 +21,7 @@ import java.util.Locale;
  * Created by TheFe on 02/10/2016.
  */
 
-    public class PokemonDetails extends AppCompatActivity implements ResponseFromWebService.AsyncResponse {
+public class PokemonDetails extends AppCompatActivity implements WebServicesAsyncResponse {
 
     private TextView tv;
     private TextToSpeech t1;
@@ -42,7 +42,7 @@ import java.util.Locale;
         String pokeName = getName(pokeID+1);
         ResponseFromWebService responseFromWebService = new ResponseFromWebService();
 
-        ResponseFromWebService.AsyncResponse ar = this;
+        WebServicesAsyncResponse ar = this;
 
         responseFromWebService.getPokeData(pokeName, ar);
 
