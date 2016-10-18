@@ -1,9 +1,8 @@
 package com.example.thefe.newsmartkedex;
 
+import android.app.Activity;
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
-import android.view.View;
-import android.widget.Button;
 
 import java.util.Locale;
 
@@ -11,16 +10,18 @@ import java.util.Locale;
   * Created by TheFe on 01/10/2016.
   */
 
-public class Presentation {
+public class Presentation extends Activity {
 
-    private Button b1, b2;
+    private String lang;
     private Context context;
     private TextToSpeech t1;
+    private String owner = ((GlobalVariables) this.getApplication()).getOwner();
+    private String smartkedex = ((GlobalVariables) this.getApplication()).getSmartkedex();
+    private String toSpeak = "";
 
     //metodo costruttore dell'oggetto Presentation
-    public Presentation (Button b1, Button b2, Context nContext) {
-        this.b1 = b1;
-        this.b2 = b2;
+    public Presentation (String lang, Context nContext) {
+        this.lang = lang;
         this.context = nContext;
     }
 
@@ -30,27 +31,38 @@ public class Presentation {
             @Override
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
-                    t1.setLanguage(Locale.ITALIAN);
-                }
-            }
-        });
-
-        b1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                t1.setLanguage(Locale.ITALIAN);
-                String toSpeak = "Sono Caterina, e sono una dreg quin che interpreta uno Smàrtchedex in versione beta";
-                t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
-            }
-        });
-
-        b2.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                t1.setLanguage(Locale.ENGLISH);
-                String toSpeak = "I'm Lily and I'm a Smartkedex in Beta version";
-                t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
-            }
-        });
-    }
-}
+                    switch (lang) {
+                        case "ITA":
+                            t1.setLanguage(Locale.ITALIAN);
+                            if (owner != "")
+                                if (smartkedex != "") //l'utente ha settato sia il suo nome che quello dello smartkedex
+                                    toSpeak = "Sono " + smartkedex + ", e sono uno Smàrtchedex in versione beta. Sono proprietà di " + owner;
+                                else //l'utente non ha settato il nome dello Smartkédex, ma il suo sì
+                                    toSpeak = "Sono uno Smàrtchedex in versione beta. Non ho nome. Sono proprietà di " + owner;
+                            else
+                                if (smartkedex != "") //l'utente ha settato il nome dello Smartkédex ma non il suo
+                                    toSpeak = "Sono " + smartkedex + "e sono uno Smàrtchedex in versione beta.";
+                                else //l'utente non ha settato niente
+                                    toSpeak = "Sono uno Smàrtchedex in versione beta";
+                            t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                            break;
+                        case "ENG":
+                            t1.setLanguage(Locale.ENGLISH);
+                            if (owner != "")
+                                if (smartkedex != "") //l'utente ha settato sia il suo nome che quello dello smartkedex
+                                    toSpeak = "I'm " + smartkedex + ", and I'm a Smarktkèdex in beta version. I'm property of " + owner;
+                                else //l'utente non ha settato il nome dello Smartkédex, ma il suo sì
+                                    toSpeak = "I'm a Smarktkèdex in beta version. I'm property of " + owner;
+                            else
+                            if (smartkedex != "") //l'utente ha settato il nome dello Smartkédex ma non il suo
+                                toSpeak = "I'm " + smartkedex + ", and I'm a Smarktkèdex in beta version.";
+                            else //l'utente non ha settato niente
+                                toSpeak = "I'm a Smartkèdex in beta version";
+                            t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                            break;
+                    } //end switch
+                } //end if
+            } //end method onInit()
+        }); //end TextToSpeech.OnInitListener
+    } //end method presentati()
+} //end class Presentation

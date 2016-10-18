@@ -18,9 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Presentation presentation = new Presentation((Button)findViewById(R.id.button1), (Button)findViewById(R.id.button2), getApplicationContext()); //creo un oggetto di classe Presentation
-        presentation.presentati();
-
         GridView gridview = (GridView) findViewById(R.id.gridview);
         ImageAdapter adapter = new ImageAdapter(this);
         gridview.setAdapter(adapter);

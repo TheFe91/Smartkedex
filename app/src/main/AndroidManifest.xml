@@ -9,6 +9,7 @@
         android:allowBackup="true"
         android:icon="@drawable/pkmn1"
         android:label="Smartkedex 1.0 Beta5"
+        android:name=".GlobalVariables"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 

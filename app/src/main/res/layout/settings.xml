@@ -1,53 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TableRow>
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:textAlignment="center"
             android:id="@+id/nomeSmartkedex"/>
     </TableRow>
     <TableRow>
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:width="300dp"
+            android:textAlignment="center"
             android:id="@+id/inputNomeSmartkedex"/>
+    </TableRow>
+    <TableRow>
+        <TextView/>
     </TableRow>
     <TableRow>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
             android:id="@+id/lingua"/>
-    </TableRow>
-    <TableRow>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/flagIta"
-            android:src="@drawable/ita"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/flagEng"
-            android:src="@drawable/eng"/>
     </TableRow>
     <TableRow>
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/radiogroup">
-            <RadioButton android:id="@+id/lang_ita"
-                android:checked="true"
-                android:layout_width="wrap_content"
+            android:id="@+id/radiogroup"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/lang_ita"
+                android:text="ITA"
+                android:button="@drawable/ita"
+                android:textColor="@android:color/transparent"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"/>
-            <RadioButton android:id="@+id/lang_eng"
-                android:layout_width="wrap_content"
+
+            <RadioButton
+                android:id="@+id/lang_eng"
+                android:text="ENG"
+                android:button="@drawable/eng"
+                android:textColor="@android:color/transparent"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"/>
+
         </RadioGroup>
+    </TableRow>
+    <TableRow><TextView/></TableRow>
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textAlignment="center"
+            android:id="@+id/proprietario"/>
+    </TableRow>
+    <TableRow>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:id="@+id/inputProprietario"/>
+    </TableRow>
+    <TableRow>
+        <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/presentazione" />
+    </TableRow>
+    <TableRow><TextView/></TableRow>
+    <TableRow>
+        <Button android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/conferma" />
     </TableRow>
 
 
