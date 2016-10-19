@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by TheFe on 17/10/2016.
@@ -24,11 +25,16 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings);
 
-        lingua = ((GlobalVariables) this.getApplication()).getLanguage();
+        final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(getApplicationContext());
+
+        if (pokemonHelper.getRows() != 0 && pokemonHelper.getLanguage() != null)
+            lingua = pokemonHelper.getLanguage();
+        else
+            lingua = "ITA";
 
         getActionBar();
 
-        TextView language = (TextView)findViewById(R.id.lingua);
+        final TextView language = (TextView)findViewById(R.id.lingua);
         TextView name = (TextView)findViewById(R.id.nomeSmartkedex);
         TextView proprietario = (TextView)findViewById(R.id.proprietario);
         final EditText inputNome = (EditText)findViewById(R.id.inputNomeSmartkedex);
@@ -36,8 +42,8 @@ public class Settings extends AppCompatActivity {
         Button presentazione = (Button)findViewById(R.id.presentazione);
         Button conferma = (Button)findViewById(R.id.conferma);
 
-        inputNome.setText(((GlobalVariables) this.getApplication()).getSmartkedex());
-        inputProprietario.setText(((GlobalVariables) this.getApplication()).getOwner());
+        inputNome.setText(pokemonHelper.getSmartkedex());
+        inputProprietario.setText(pokemonHelper.getOwner());
 
         switch (lingua) {
             case "":
@@ -70,21 +76,61 @@ public class Settings extends AppCompatActivity {
             }
         });
 
-        final GlobalVariables cast = ((GlobalVariables) this.getApplication());
-
         conferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
                 int selectedId = radioGroup.getCheckedRadioButtonId();
                 radioButton = (RadioButton)findViewById(selectedId);
+                lingua = radioButton.getText().toString();
 
                 String smartkedex = inputNome.getText().toString();
                 String owner = inputProprietario.getText().toString();
 
-                cast.setLanguage((String) radioButton.getText());
-                cast.setOwner(owner);
-                cast.setSmartkedex(smartkedex);
+                int rows = pokemonHelper.getRows();
+                String dbSmartkedex = pokemonHelper.getSmartkedex();
+                String dbOwner = pokemonHelper.getOwner();
+                String dbLanguage = pokemonHelper.getLanguage();
+
+                //REFER TO FLOWCHART DIAGRAM ON REPOSITORY TO CLEARLY UNDERSTAND THIS PART
+                if (rows == 0) {
+                    if (!owner.equals("")) {
+                        long id = pokemonHelper.insertOwner(owner);
+                        if (id < 0) {
+                            System.err.println("Something went wrong");
+                        }
+                        else {
+                            System.err.println("Insert Successful");
+                        }
+                    }
+                    if (!smartkedex.equals("")) {
+                        long id = pokemonHelper.insertSmartkedex(smartkedex);
+                        if (id < 0) {
+                            System.err.println("Something went wrong");
+                        }
+                        else {
+                            System.err.println("Insert Successful");
+                        }
+                    }
+                    if (!lingua.equals("")) {
+                        long id = pokemonHelper.insertLanguage(lingua);
+                        if (id < 0) {
+                            System.err.println("Something went wrong");
+                        }
+                        else {
+                            System.err.println("Insert Successful");
+                        }
+                    }
+                }
+                else {
+                    if (!owner.equals("") && !dbOwner.equals(owner))
+                        pokemonHelper.updateOwner(owner, dbOwner);
+                    if (!smartkedex.equals("") && !dbSmartkedex.equals(smartkedex))
+                        pokemonHelper.updateSmartkedex(smartkedex, dbSmartkedex);
+                    if (!lingua.equals("") && !dbLanguage.equals(lingua))
+                        pokemonHelper.updateLanguage(lingua, dbLanguage);
+                }
+
             }
         });
     }

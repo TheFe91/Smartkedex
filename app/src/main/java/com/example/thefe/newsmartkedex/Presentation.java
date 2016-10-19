@@ -15,14 +15,17 @@ public class Presentation extends Activity {
     private String lang;
     private Context context;
     private TextToSpeech t1;
-    private String owner = ((GlobalVariables) this.getApplication()).getOwner();
-    private String smartkedex = ((GlobalVariables) this.getApplication()).getSmartkedex();
+    private String owner = "";
+    private String smartkedex = "";
     private String toSpeak = "";
 
     //metodo costruttore dell'oggetto Presentation
     public Presentation (String lang, Context nContext) {
         this.lang = lang;
         this.context = nContext;
+        PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(nContext);
+        owner = pokemonHelper.getOwner();
+        smartkedex = pokemonHelper.getSmartkedex();
     }
 
     public void presentati () {
@@ -34,13 +37,15 @@ public class Presentation extends Activity {
                     switch (lang) {
                         case "ITA":
                             t1.setLanguage(Locale.ITALIAN);
-                            if (owner != "")
-                                if (smartkedex != "") //l'utente ha settato sia il suo nome che quello dello smartkedex
+                            if (!owner.equals(""))
+                                if (!smartkedex.equals("")) { //l'utente ha settato sia il suo nome che quello dello smartkedex
+                                    System.err.println("sun chi");
                                     toSpeak = "Sono " + smartkedex + ", e sono uno Smàrtchedex in versione beta. Sono proprietà di " + owner;
+                                }
                                 else //l'utente non ha settato il nome dello Smartkédex, ma il suo sì
                                     toSpeak = "Sono uno Smàrtchedex in versione beta. Non ho nome. Sono proprietà di " + owner;
                             else
-                                if (smartkedex != "") //l'utente ha settato il nome dello Smartkédex ma non il suo
+                                if (!smartkedex.equals("")) //l'utente ha settato il nome dello Smartkédex ma non il suo
                                     toSpeak = "Sono " + smartkedex + "e sono uno Smàrtchedex in versione beta.";
                                 else //l'utente non ha settato niente
                                     toSpeak = "Sono uno Smàrtchedex in versione beta";
@@ -48,13 +53,13 @@ public class Presentation extends Activity {
                             break;
                         case "ENG":
                             t1.setLanguage(Locale.ENGLISH);
-                            if (owner != "")
-                                if (smartkedex != "") //l'utente ha settato sia il suo nome che quello dello smartkedex
+                            if (!owner.equals(""))
+                                if (!smartkedex.equals("")) //l'utente ha settato sia il suo nome che quello dello smartkedex
                                     toSpeak = "I'm " + smartkedex + ", and I'm a Smarktkèdex in beta version. I'm property of " + owner;
                                 else //l'utente non ha settato il nome dello Smartkédex, ma il suo sì
                                     toSpeak = "I'm a Smarktkèdex in beta version. I'm property of " + owner;
                             else
-                            if (smartkedex != "") //l'utente ha settato il nome dello Smartkédex ma non il suo
+                            if (!smartkedex.equals("")) //l'utente ha settato il nome dello Smartkédex ma non il suo
                                 toSpeak = "I'm " + smartkedex + ", and I'm a Smarktkèdex in beta version.";
                             else //l'utente non ha settato niente
                                 toSpeak = "I'm a Smartkèdex in beta version";

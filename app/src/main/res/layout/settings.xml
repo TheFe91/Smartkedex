@@ -1,40 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent">
 
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
             android:textAlignment="center"
             android:id="@+id/nomeSmartkedex"/>
-    </TableRow>
-    <TableRow>
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
+            android:width="175dp"
+            android:layout_below="@+id/nomeSmartkedex"
+            android:layout_centerHorizontal="true"
             android:id="@+id/inputNomeSmartkedex"/>
-    </TableRow>
-    <TableRow>
-        <TextView/>
-    </TableRow>
-    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/inputNomeSmartkedex"
+            android:id="@+id/break1"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/break1"
             android:id="@+id/lingua"/>
-    </TableRow>
-    <TableRow>
+
         <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/radiogroup"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/lingua"
             android:orientation="horizontal">
 
             <RadioButton
@@ -54,36 +61,51 @@
                 android:layout_height="wrap_content"/>
 
         </RadioGroup>
-    </TableRow>
-    <TableRow><TextView/></TableRow>
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/radiogroup"
+            android:id="@+id/break2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textAlignment="center"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/break2"
             android:id="@+id/proprietario"/>
-    </TableRow>
-    <TableRow>
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
+            android:width="200dp"
+            android:layout_below="@+id/proprietario"
+            android:layout_centerHorizontal="true"
             android:id="@+id/inputProprietario"/>
-    </TableRow>
-    <TableRow>
-        <Button android:layout_width="wrap_content"
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/inputProprietario"
+            android:id="@+id/break3"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/break3"
             android:id="@+id/presentazione" />
-    </TableRow>
-    <TableRow><TextView/></TableRow>
-    <TableRow>
-        <Button android:layout_width="wrap_content"
+
+        <Button
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
             android:id="@+id/conferma" />
-    </TableRow>
 
-
-</TableLayout>
+</RelativeLayout>
