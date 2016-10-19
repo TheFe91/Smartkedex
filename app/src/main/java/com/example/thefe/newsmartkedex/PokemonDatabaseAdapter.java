@@ -19,34 +19,9 @@ class PokemonDatabaseAdapter {
         helper = new PokemonHelper(context);
     }
 
-    long insertLanguage (String language) {
+    void insertData(String owner, String smartkedex, String language) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(PokemonHelper.LANGUAGE, language);
-
-        long id = db.insert(PokemonHelper.SETTINGS, null, contentValues);
-
-        return id;
-    }
-
-    long insertOwner(String owner) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(PokemonHelper.OWNER, owner);
-
-        long id = db.insert(PokemonHelper.SETTINGS, null, contentValues);
-
-        return id;
-    }
-
-    long insertSmartkedex (String smartkedex) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(PokemonHelper.SMARTKEDEX, smartkedex);
-
-        long id = db.insert(PokemonHelper.SETTINGS, null, contentValues);
-
-        return id;
+        db.execSQL("INSERT INTO Settings (Owner, Smartkedex, Language) VALUES ('"+owner+"', '"+smartkedex+"', '"+language+"')");
     }
 
     int getRows () {
@@ -101,12 +76,12 @@ class PokemonDatabaseAdapter {
 
     void updateLanguage (String newLanguage, String oldLanguage) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE Settings SET Smartkedex = '"+newLanguage+"' WHERE Smartkedex = '"+oldLanguage+"';");
+        db.execSQL("UPDATE Settings SET Language = '"+newLanguage+"' WHERE Language = '"+oldLanguage+"';");
     }
 
     void updateOwner (String newOwner, String oldOwner) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE Settings SET Smartkedex = '"+newOwner+"' WHERE Smartkedex = '"+oldOwner+"';");
+        db.execSQL("UPDATE Settings SET Owner = '"+newOwner+"' WHERE Owner = '"+oldOwner+"';");
     }
 
     void updateSmartkedex (String newSmartkedex, String oldSmartkedex) {
@@ -116,7 +91,7 @@ class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 12;
+        private static final int DATABASE_VERSION = 13;
 
         private static final String VARCHAR = " VARCHAR(";
 
@@ -133,20 +108,20 @@ class PokemonDatabaseAdapter {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             this.context = context;
             System.out.println(CREATE_TABLE);
-            Toast.makeText(context, "Constructor called", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "Constructor called", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(CREATE_TABLE);
-            Toast.makeText(context, "onCreate called", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "onCreate called", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             db.execSQL("DROP TABLE IF EXISTS Settings");
             onCreate(db);
-            Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
         }
     }
 }

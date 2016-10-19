@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by TheFe on 17/10/2016.
@@ -92,35 +91,8 @@ public class Settings extends AppCompatActivity {
                 String dbOwner = pokemonHelper.getOwner();
                 String dbLanguage = pokemonHelper.getLanguage();
 
-                //REFER TO FLOWCHART DIAGRAM ON REPOSITORY TO CLEARLY UNDERSTAND THIS PART
                 if (rows == 0) {
-                    if (!owner.equals("")) {
-                        long id = pokemonHelper.insertOwner(owner);
-                        if (id < 0) {
-                            System.err.println("Something went wrong");
-                        }
-                        else {
-                            System.err.println("Insert Successful");
-                        }
-                    }
-                    if (!smartkedex.equals("")) {
-                        long id = pokemonHelper.insertSmartkedex(smartkedex);
-                        if (id < 0) {
-                            System.err.println("Something went wrong");
-                        }
-                        else {
-                            System.err.println("Insert Successful");
-                        }
-                    }
-                    if (!lingua.equals("")) {
-                        long id = pokemonHelper.insertLanguage(lingua);
-                        if (id < 0) {
-                            System.err.println("Something went wrong");
-                        }
-                        else {
-                            System.err.println("Insert Successful");
-                        }
-                    }
+                    pokemonHelper.insertData(owner, smartkedex, lingua);
                 }
                 else {
                     if (!owner.equals("") && !dbOwner.equals(owner))

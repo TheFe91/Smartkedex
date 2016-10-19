@@ -26,7 +26,7 @@ Aggiunto bottone di Test per switch di Activity (100% working)
 -Inserire tutte le descrizioni
 -Disabilitare Landscape [DONE]
 -Aggiungere feature: quando premo un Pokémon si apre una nuova schermata con i suoi dati, punti deboli e punti forti,
-                     tipo debole e tipo forte e un bottone "Speak" o simile che mi legge la descrizione (vedi schemi)
+                     tipo debole e tipo forte e un bottone "Speak" o simile che mi legge la descrizione (vedi schemi) [WIP]
 
 [Versione 1.1 --> Ingresso nel mercato inglese e internazionale]
 -Aggiungere Menu dei Settaggi:
