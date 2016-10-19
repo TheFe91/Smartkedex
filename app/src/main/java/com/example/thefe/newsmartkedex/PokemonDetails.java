@@ -50,12 +50,16 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
 
         ImageView imageView = (ImageView) findViewById(R.id.tmppkmn);
         imageView.setImageResource(imageAdapter.mThumbIds[pokeID]);
+        imageView.setContentDescription("Image of the current Pokémon, "+pokeName);
 
         imageView = (ImageView) findViewById(R.id.tipo1);
         imageView.setImageResource(R.drawable.erba);
 
         imageView = (ImageView) findViewById(R.id.tipo2);
         imageView.setImageResource(R.drawable.veleno);
+
+        TextView pkmnName = (TextView)findViewById(R.id.pkmnName);
+        pkmnName.setText(pokeName);
 
         //                    |
         //                    |
