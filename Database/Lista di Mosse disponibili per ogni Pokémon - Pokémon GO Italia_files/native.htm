@@ -1,0 +1,186 @@
+function upstoryDOMReadyfunction() {
+
+    var upstory_objects;
+
+    var siteAds = [{"id":"upstory_57bc689360911","iframe":"false","parentControl":"","selector":"document.querySelectorAll('.single-post .td-post-content p')[1];","selectorAdBlock":"","code":"","template":"<div class=\"upstory-bigItem \">\n    <div class=\"upstory-title-image-wrapper\">\n        <div class=\"upstory-title-image-row\">\n            <div class=\"upstory-image-wrapper\">\n                <a href=\"@link\" target=\"_blank\">\n                    <img src=\"@image\" width=\"400\" height=\"300\">\n                <\/a>\n            <\/div>\n            <div class=\"upstory-title-wrapper\"><h2><a href=\"@link\" target=\"_blank\">@title<\/a><\/h2><\/div>\n            <div class=\"upstory-text\"><a href=\"@link\" target=\"_blank\">@text<\/a><\/div>\n            <div class=\"upstory-label\"><a href=\"@sponsorLink\" target=\"_blank\">@sponsored<\/a><\/div>\n            <div class=\"upstory-cta-label\"><a href=\"@ctaLink\" target=\"_blank\">@cta<\/a><\/div>\n        <\/div>\n    <\/div>\n<\/div>","urlControl":"","type":"insert-before","cssClass":"","neodataId":"242"}];
+
+    var i = siteAds.length;
+    while (i--) {
+        var ad = siteAds[i];
+
+        if (! isValid(ad)) {
+            siteAds.splice(i, 1);
+            continue;
+        }
+
+        try {
+            var el = eval(ad.selector);
+
+            if (typeof el == 'undefined' || el == null) {
+                siteAds.splice(i, 1);
+                continue;
+            }
+
+            var adContainer = document.createElement('div');
+            adContainer.setAttribute('id', ad.id);
+            adContainer.style.display = 'none';
+            document.body.appendChild(adContainer);
+            waitForContent(ad);
+
+        } catch(e) {
+            siteAds.splice(i, 1);
+            continue;
+        }
+
+    }
+
+    function isValid(ad) {
+        if (ad.iframe == 'true') {
+            if (ad.parentControl && ad.parentControl.length > 0) {
+                var el = eval(ad.parentControl);
+
+                if (typeof el == 'undefined' || el == null) {
+                    return false;
+                }
+            }
+
+        } else {
+            if (ad.selector == null || ad.selector.length == 0) {
+                return false;
+            }
+            
+            var url = window.location.href;
+            if (ad.urlControl && ad.urlControl.length > 0 && url.indexOf(ad.urlControl) == -1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function waitForContent(ad, attemp) {
+        attemp = attemp ? attemp : 0;
+
+        var content = document.querySelector('#' + ad.id + ' > div');
+        if (typeof(content) != 'undefined' && content != null) {
+
+            if (ad.code) {
+                eval(ad.code);
+            }
+
+            var container = content.parentNode;
+            var el = container;
+
+            if (ad.template.length > 0) {
+                applyTemplate(container, ad.template);
+
+                el = container.firstChild;
+                el.setAttribute('id', ad.id);
+                el.className += ' upstory-native';
+
+                container.parentNode.removeChild(container);
+
+            } else {
+                el.style.display = 'block';
+            }
+
+            var target = eval(ad.selector);
+            
+            // Override for AdBlock
+            var url = window.location.href;
+            if (url.indexOf('ups=y') > -1) {
+                target = ad.selectorAdBlock ? eval(ad.selectorAdBlock) : target.parentNode;
+                ad.type = 'insert-last';
+            }
+
+            if (ad.type == 'replace') {
+                target.parentNode.insertBefore(el, target);
+                target.parentNode.removeChild(target);
+            } else if (ad.type == 'insert-last') {
+                target.appendChild(el);
+            } else {
+                target.parentNode.insertBefore(el, target);
+            }
+
+            return;
+        }
+
+        if (attemp > 50) {
+            return;
+        }
+
+        setTimeout(function() {
+            waitForContent(ad, ++attemp);
+        }, 100);
+    }
+
+    function applyTemplate(el, template) {
+        var link = el.getElementsByClassName('upstory-title-wrapper')[0].getElementsByTagName('a')[0].getAttribute('href');
+        var title = el.getElementsByClassName('upstory-title-wrapper')[0].getElementsByTagName('a')[0].innerHTML;
+        var text = el.getElementsByClassName('upstory-text')[0].getElementsByTagName('a')[0].innerHTML;
+        var image = el.getElementsByClassName('upstory-image-wrapper')[0].getElementsByTagName('img')[0].getAttribute('src');
+        var sponsored = el.getElementsByClassName('upstory-label')[0].getElementsByTagName('a')[0].innerHTML;
+        var sponsorLink = el.getElementsByClassName('upstory-label')[0].getElementsByTagName('a')[0].getAttribute('href');
+
+        var ctaLink = '';
+        var cta = '';
+        var ctaEl = el.getElementsByClassName('upstory-cta-label')[0];
+        if (ctaEl) {
+            ctaLink = ctaEl.getElementsByTagName('a')[0].getAttribute('href');
+            cta = ctaEl.getElementsByTagName('a')[0].innerHTML;
+        }
+
+        template = template.replaceAll('@link', link);
+        template = template.replaceAll('@title', title);
+        template = template.replaceAll('@text', text);
+        template = template.replaceAll('@image', image);
+        template = template.replaceAll('@sponsored', sponsored);
+        template = template.replaceAll('@sponsorLink', sponsorLink);
+        template = template.replaceAll('@ctaLink', ctaLink);
+        template = template.replaceAll('@cta', cta);
+
+        el.innerHTML = template;
+    }
+
+    function upstory_callback() {
+        for (var i = 0; i < siteAds.length; i++) {
+            var ad = siteAds[i];
+            upstory_objects.addBanner(ad.neodataId, ad.id);
+        }
+    }
+
+    String.prototype.replaceAll = function(search, replacement) {
+        var target = this;
+        return target.replace(new RegExp(search, 'g'), replacement);
+    };
+
+    (function($n, e, o, d, a, t, a$) {
+        $n._upStory = $n._upStory || {};
+        $n._upStory.Q = $n._upStory.Q || [];
+        $n._upStory.Q.push(['setup',
+            function() {
+                upstory_objects = $n._upStory.B.setToken('vE74qeH69pvp74WY');
+                upstory_callback();
+            }
+        ]);
+        var x = d.createElement(e),
+            s = d.getElementsByTagName(e)[0];
+        x.src = ('https:' == t.protocol ? 'https://js-ssl' : 'http://js') + o;
+        x.async = a;
+        s.parentNode.insertBefore(x, s);
+    })
+    (window, 'scr' + 'ipt', '.adagio.upstory.it/tupstory.js', document, 1, location, 1);
+}
+
+var upstoryDOMReady = function(a, b, c) {
+    b = document, c = 'addEventListener';
+    b[c] ? b[c]('DOMContentLoaded', a) : window.attachEvent('onload', a)
+};
+
+upstoryDOMReady(function() {
+    upstoryDOMReadyfunction();
+});
+
+if (document.readyState === "complete" || document.readyState == "interactive") {
+    upstoryDOMReadyfunction();
+}

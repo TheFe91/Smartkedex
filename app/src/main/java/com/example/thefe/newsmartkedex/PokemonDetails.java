@@ -4,16 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.List;
 import java.util.Locale;
 
 
@@ -60,6 +58,29 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
 
         TextView pkmnName = (TextView)findViewById(R.id.pkmnName);
         pkmnName.setText(pokeName);
+
+        final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
+        final Button pokeDetails = (Button) findViewById(R.id.catturato);
+        pokeSwitch.setText("Catturato  ");
+        pokeDetails.setText("Aggiungi\nDettagli");
+
+        pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (pokeSwitch.isChecked())
+                    pokeDetails.setEnabled(true);
+                else
+                    pokeDetails.setEnabled(false);
+            }
+        });
+
+        pokeDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MyPokeDetails.class);
+                startActivity(i);
+            }
+        });
 
         //                    |
         //                    |

@@ -31,6 +31,16 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".MyPokeDetails"
+                  android:parentActivityName=".PokemonDetails"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MyPokeDetails"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <activity android:name=".AboutUs"
                   android:parentActivityName=".MainActivity"
                   android:screenOrientation="portrait">
