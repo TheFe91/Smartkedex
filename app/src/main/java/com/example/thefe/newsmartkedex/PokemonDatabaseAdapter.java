@@ -19,9 +19,9 @@ class PokemonDatabaseAdapter {
         helper = new PokemonHelper(context);
     }
 
-    void insertData(String owner, String smartkedex, String language) {
+    void insertData(String owner, String smartkedex, String language, int pokemonGO) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("INSERT INTO Settings (Owner, Smartkedex, Language) VALUES ('"+owner+"', '"+smartkedex+"', '"+language+"')");
+        db.execSQL("INSERT INTO Settings (Owner, Smartkedex, Language, PokemonGO) VALUES ('"+owner+"', '"+smartkedex+"', '"+language+"', '"+pokemonGO+"')");
     }
 
     int getRows () {
@@ -74,6 +74,19 @@ class PokemonDatabaseAdapter {
         return smartkedex;
     }
 
+    int getPokemonGO () {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {PokemonHelper.POKEMONGO};
+        Cursor cursor = db.query(PokemonHelper.SETTINGS, columns, null, null, null, null, null);
+        int pokemonGO = 0;
+
+        while (cursor.moveToNext()) {
+            pokemonGO = cursor.getInt(0);
+        }
+
+        return pokemonGO;
+    }
+
     void updateLanguage (String newLanguage, String oldLanguage) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("UPDATE Settings SET Language = '"+newLanguage+"' WHERE Language = '"+oldLanguage+"';");
@@ -89,9 +102,15 @@ class PokemonDatabaseAdapter {
         db.execSQL("UPDATE Settings SET Smartkedex = '"+newSmartkedex+"' WHERE Smartkedex = '"+oldSmartkedex+"';");
     }
 
+    void updatePokemonGO (int newPokemonGO, int oldPokemonGO) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("UPDATE Settings SET PokemonGO = '"+newPokemonGO+"' WHERE PokemonGO = '"+oldPokemonGO+"'");
+        System.err.println("getPokemonGO (after query):" + getPokemonGO());
+    }
+
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 13;
+        private static final int DATABASE_VERSION = 15;
 
         private static final String VARCHAR = " VARCHAR(";
 
@@ -99,6 +118,7 @@ class PokemonDatabaseAdapter {
         private static final String LANGUAGE = "Language";
         private static final String OWNER = "Owner";
         private static final String SMARTKEDEX = "Smartkedex";
+        private static final String POKEMONGO = "PokemonGO";
 
         private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + SETTINGS + "(" + LANGUAGE + VARCHAR + "3), " + OWNER + VARCHAR + "20), " + SMARTKEDEX + VARCHAR + "20) PRIMARY KEY)";
 
@@ -108,20 +128,21 @@ class PokemonDatabaseAdapter {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             this.context = context;
             System.out.println(CREATE_TABLE);
-//            Toast.makeText(context, "Constructor called", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Constructor called", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(CREATE_TABLE);
-//            Toast.makeText(context, "onCreate called", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "onCreate called", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS Settings");
+            db.execSQL("ALTER TABLE Settings ADD COLUMN PokemonGO INT(1)");
+            db.execSQL("UPDATE Settings SET PokemonGO=0");
             onCreate(db);
-//            Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
         }
     }
 }

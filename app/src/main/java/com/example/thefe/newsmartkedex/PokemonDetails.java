@@ -64,6 +64,9 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
         pokeSwitch.setText("Catturato  ");
         pokeDetails.setText("Aggiungi\nDettagli");
 
+        //prendendo i dati dal database, pokeDetails dev'essere enabled o disabled
+        pokeDetails.setEnabled(false);
+
         pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

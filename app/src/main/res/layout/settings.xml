@@ -100,6 +100,20 @@
             android:layout_below="@+id/break3"
             android:id="@+id/presentazione" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/presentazione"
+            android:id="@+id/break4"/>
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/playPokemonGO"
+            android:layout_below="@+id/break4"
+            android:layout_centerHorizontal="true"/>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

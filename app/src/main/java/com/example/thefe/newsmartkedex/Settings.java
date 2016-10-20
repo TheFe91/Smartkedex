@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
 /**
@@ -18,6 +21,7 @@ public class Settings extends AppCompatActivity {
     public String lingua = "";
     private RadioGroup radioGroup;
     private RadioButton radioButton;
+    private int setpokeGO = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +43,17 @@ public class Settings extends AppCompatActivity {
         final EditText inputNome = (EditText)findViewById(R.id.inputNomeSmartkedex);
         final EditText inputProprietario = (EditText)findViewById(R.id.inputProprietario);
         Button presentazione = (Button)findViewById(R.id.presentazione);
+        final Switch playPokemonGO = (Switch)findViewById(R.id.playPokemonGO);
         Button conferma = (Button)findViewById(R.id.conferma);
 
         inputNome.setText(pokemonHelper.getSmartkedex());
         inputProprietario.setText(pokemonHelper.getOwner());
+        final int dbPokemonGO = pokemonHelper.getPokemonGO();
+
+        if (dbPokemonGO == 0)
+            playPokemonGO.setChecked(false);
+        else
+            playPokemonGO.setChecked(true);
 
         switch (lingua) {
             case "":
@@ -55,6 +66,7 @@ public class Settings extends AppCompatActivity {
                 conferma.setText("Apply changes");
                 RadioButton radioEng = (RadioButton)findViewById(R.id.lang_eng);
                 radioEng.setChecked(true);
+                playPokemonGO.setText("I play Pokemon GO");
                 break;
             case "ITA":
                 language.setText("Lingua dell'App");
@@ -64,6 +76,7 @@ public class Settings extends AppCompatActivity {
                 conferma.setText("Applica");
                 RadioButton radioIta = (RadioButton)findViewById(R.id.lang_ita);
                 radioIta.setChecked(true);
+                playPokemonGO.setText("Gioco a Pokemon GO");
                 break;
         }
 
@@ -72,6 +85,14 @@ public class Settings extends AppCompatActivity {
             public void onClick(View v) {
                 Presentation presentation = new Presentation(lingua, getApplicationContext()); //passo la lingua corrente e il context
                 presentation.presentati();
+            }
+        });
+
+        playPokemonGO.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (playPokemonGO.isChecked())
+                    setpokeGO = 1;
             }
         });
 
@@ -92,7 +113,7 @@ public class Settings extends AppCompatActivity {
                 String dbLanguage = pokemonHelper.getLanguage();
 
                 if (rows == 0) {
-                    pokemonHelper.insertData(owner, smartkedex, lingua);
+                    pokemonHelper.insertData(owner, smartkedex, lingua, setpokeGO);
                 }
                 else {
                     if (!owner.equals("") && !dbOwner.equals(owner))
@@ -101,8 +122,13 @@ public class Settings extends AppCompatActivity {
                         pokemonHelper.updateSmartkedex(smartkedex, dbSmartkedex);
                     if (!lingua.equals("") && !dbLanguage.equals(lingua))
                         pokemonHelper.updateLanguage(lingua, dbLanguage);
+                    if (dbPokemonGO != setpokeGO)
+                        pokemonHelper.updatePokemonGO(setpokeGO, dbPokemonGO);
                 }
 
+                System.err.println(pokemonHelper.getLanguage());
+
+                finish();
             }
         });
     }
