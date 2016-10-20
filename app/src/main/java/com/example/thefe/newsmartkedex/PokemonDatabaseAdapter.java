@@ -120,7 +120,7 @@ class PokemonDatabaseAdapter {
         private static final String SMARTKEDEX = "Smartkedex";
         private static final String POKEMONGO = "PokemonGO";
 
-        private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + SETTINGS + "(" + LANGUAGE + VARCHAR + "3), " + OWNER + VARCHAR + "20), " + SMARTKEDEX + VARCHAR + "20) PRIMARY KEY)";
+        private static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + SETTINGS + "(" + LANGUAGE + VARCHAR + "3), " + OWNER + VARCHAR + "20), " + SMARTKEDEX + VARCHAR + "20) PRIMARY KEY, " + POKEMONGO + " INT(1))";
 
         private Context context;
 

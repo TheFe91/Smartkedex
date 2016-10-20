@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -38,10 +41,11 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
         //Seleziono l'ID del Pokémon che mi servirà per prendere tutti i dati dal database e dai drawable
         int pokeID = i.getExtras().getInt("id");
         String pokeName = getName(pokeID+1);
+
+        PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
+
         ResponseFromWebService responseFromWebService = new ResponseFromWebService();
-
         WebServicesAsyncResponse ar = this;
-
         responseFromWebService.getPokeData(pokeName, ar);
 
         ImageAdapter imageAdapter = new ImageAdapter(this);
@@ -61,29 +65,38 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
 
         final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
-        pokeSwitch.setText("Catturato  ");
-        pokeDetails.setText("Aggiungi\nDettagli");
 
-        //prendendo i dati dal database, pokeDetails dev'essere enabled o disabled
-        pokeDetails.setEnabled(false);
+        if (pokemonHelper.getPokemonGO() == 1) {
+            pokeSwitch.setText("Catturato  ");
+            pokeDetails.setText("Aggiungi\nDettagli");
 
-        pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (pokeSwitch.isChecked())
-                    pokeDetails.setEnabled(true);
-                else
-                    pokeDetails.setEnabled(false);
-            }
-        });
+            //prendendo i dati dal database, pokeDetails dev'essere enabled o disabled
+            pokeDetails.setEnabled(false);
 
-        pokeDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), MyPokeDetails.class);
-                startActivity(i);
-            }
-        });
+            pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (pokeSwitch.isChecked())
+                        pokeDetails.setEnabled(true);
+                    else
+                        pokeDetails.setEnabled(false);
+                }
+            });
+
+            pokeDetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), MyPokeDetails.class);
+                    startActivity(i);
+                }
+            });
+        }
+        else {
+            ViewGroup layout = (ViewGroup) pokeDetails.getParent();
+            layout.removeView(pokeDetails);
+            layout = (ViewGroup) pokeSwitch.getParent();
+            layout.removeView(pokeSwitch);
+        }
 
         //                    |
         //                    |

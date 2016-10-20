@@ -126,8 +126,6 @@ public class Settings extends AppCompatActivity {
                         pokemonHelper.updatePokemonGO(setpokeGO, dbPokemonGO);
                 }
 
-                System.err.println(pokemonHelper.getLanguage());
-
                 finish();
             }
         });
