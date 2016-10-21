@@ -1,5 +1,6 @@
 package com.example.thefe.newsmartkedex;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -39,7 +40,7 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
         Intent i = getIntent();
 
         //Seleziono l'ID del Pokémon che mi servirà per prendere tutti i dati dal database e dai drawable
-        int pokeID = i.getExtras().getInt("id");
+        final int pokeID = i.getExtras().getInt("id");
         String pokeName = getName(pokeID+1);
 
         PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
@@ -87,6 +88,7 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(getApplicationContext(), MyPokeDetails.class);
+                    i.putExtra("id", pokeID);
                     startActivity(i);
                 }
             });
