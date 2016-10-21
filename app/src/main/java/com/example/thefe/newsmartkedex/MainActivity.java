@@ -18,6 +18,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
+        if (pokemonHelper.getRows() == 0) {
+            pokemonHelper.insertData("", "", "ITA", 0);
+        }
+
         GridView gridview = (GridView) findViewById(R.id.gridview);
         ImageAdapter adapter = new ImageAdapter(this);
         gridview.setAdapter(adapter);
