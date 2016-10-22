@@ -19,7 +19,7 @@ class PokemonDatabaseAdapter {
         helper = new PokemonHelper(context);
     }
 
-    void insertData(String owner, String smartkedex, String language, int pokemonGO) {
+    void insertSettingsData(String owner, String smartkedex, String language, int pokemonGO) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("INSERT INTO Settings (Owner, SmartkedexName, Language, PokemonGO) VALUES ('"+owner+"', '"+smartkedex+"', '"+language+"', '"+pokemonGO+"')");
     }
@@ -110,7 +110,7 @@ class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 19;
+        private static final int DATABASE_VERSION = 22;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -224,6 +224,71 @@ class PokemonDatabaseAdapter {
             db.execSQL(CREATE_ULTI);
             db.execSQL(CREATE_POKEMON);
             db.execSQL(CREATE_CATCHES);
+
+            //Populating the DB
+
+            //Populating Type
+            /*db.execSQL("INSERT INTO Type VALUES ('Acciaio')");
+            db.execSQL("INSERT INTO Type VALUES ('Acqua')");
+            db.execSQL("INSERT INTO Type VALUES ('Coleottero')");
+            db.execSQL("INSERT INTO Type VALUES ('Drago')");
+            db.execSQL("INSERT INTO Type VALUES ('Elettro')");
+            db.execSQL("INSERT INTO Type VALUES ('Erba')");
+            db.execSQL("INSERT INTO Type VALUES ('Fuoco')");
+            db.execSQL("INSERT INTO Type VALUES ('Ghiaccio')");
+            db.execSQL("INSERT INTO Type VALUES ('Lotta')");
+            db.execSQL("INSERT INTO Type VALUES ('Normale')");
+            db.execSQL("INSERT INTO Type VALUES ('Psico')");
+            db.execSQL("INSERT INTO Type VALUES ('Roccia')");
+            db.execSQL("INSERT INTO Type VALUES ('Spettro')");
+            db.execSQL("INSERT INTO Type VALUES ('Terra')");
+            db.execSQL("INSERT INTO Type VALUES ('Veleno')");
+            db.execSQL("INSERT INTO Type VALUES ('Volante')");*/
+
+            //Populating Attack
+            /*db.execSQL("INSERT INTO Attack VALUES ('Azione', 12, 1.1, 'Normale')");
+            db.execSQL("INSERT INTO Attack VALUES ('Frustata', 7, 0.65, 'Erba')");
+            db.execSQL("INSERT INTO Attack VALUES ('Foglielama', 15, 1.45, 'Erba')");
+            db.execSQL("INSERT INTO Attack VALUES ('Braciere', 10, 1.05, 'Fuoco')");
+            db.execSQL("INSERT INTO Attack VALUES ('Graffio', 6, 0.5, 'Normale')");
+            db.execSQL("INSERT INTO Attack VALUES ('Attacco d Ala', 9, 0.75, 'Volante')");
+            db.execSQL("INSERT INTO Attack VALUES ('Bolla', 25, 2.3, 'Acqua')");
+            db.execSQL("INSERT INTO Attack VALUES ('Pistolacqua', 6, 0.5, 'Acqua')");
+            db.execSQL("INSERT INTO Attack VALUES ('Morso', 6, 0.5, 'Buio')");
+            db.execSQL("INSERT INTO Attack VALUES ('Coleomorso', 5, 0.45, 'Coleottero')");
+            db.execSQL("INSERT INTO Attack VALUES ('Confusione', 15, 1.51, 'Psico')");
+            db.execSQL("INSERT INTO Attack VALUES ('Velenospina', 6, 0.57, 'Veleno')");
+            db.execSQL("INSERT INTO Attack VALUES ('Velenpuntura', 12, 1.05, 'Veleno')");
+            db.execSQL("INSERT INTO Attack VALUES ('Attacco Rapido', 10, 1.33, 'Normale')");
+            db.execSQL("INSERT INTO Attack VALUES ('Alacciaio', 15, 1.33, 'Acciaio')");
+            db.execSQL("INSERT INTO Attack VALUES ('Beccata', 10, 1.15, 'Volante')");
+            db.execSQL("INSERT INTO Attack VALUES ('Acido', 10, 1.05, 'Veleno')");
+            db.execSQL("INSERT INTO Attack VALUES ('Tuonoshock', 5, 0.6, 'Elettro')");
+            db.execSQL("INSERT INTO Attack VALUES ('Scintilla', 7, 0.7, 'Elettro')");
+            db.execSQL("INSERT INTO Attack VALUES ('Colpodifango', 6, 0.55, 'Terra')");
+            db.execSQL("INSERT INTO Attack VALUES ('Ferrartigli', 8, 0.63, 'Acciaio')");
+            db.execSQL("INSERT INTO Attack VALUES ('Tagliofuria', 3, 0.4, 'Coleottero')");
+            db.execSQL("INSERT INTO Attack VALUES ('Cozzata Zen', 12, 1.05, 'Psico')");
+            db.execSQL("INSERT INTO Attack VALUES ('Botta', 7, 0.54, 'Normale')");
+            db.execSQL("INSERT INTO Attack VALUES ('Finta', 12, 1.04, 'Buio')");
+            db.execSQL("INSERT INTO Attack VALUES ('Sbigoattacco', 7, 0.7, 'Buio')");
+            db.execSQL("INSERT INTO Attack VALUES ('Colpokarate', 6, 0.8, 'Lotta')");
+            db.execSQL("INSERT INTO Attack VALUES ('Colpo Basso', 5, 0.6, 'Lotta')");
+            db.execSQL("INSERT INTO Attack VALUES ('Rogodenti', 10, 0.84, 'Fuoco')");
+            db.execSQL("INSERT INTO Attack VALUES ('Psicotaglio', 7, 0.57, 'Psico')");
+            db.execSQL("INSERT INTO Attack VALUES ('Pugnoscarica', 10, 1.2, 'Acciaio')");
+            db.execSQL("INSERT INTO Attack VALUES ('Sassata', 12, 1.36, 'Roccia')");
+            db.execSQL("INSERT INTO Attack VALUES ('Taglio', 12, 1.13, 'Normale')");
+            db.execSQL("INSERT INTO Attack VALUES ('Geloscheggia', 15, 1.4, 'Ghiaccio')");
+            db.execSQL("INSERT INTO Attack VALUES ('Alitogelido', 9, 0.81, 'Ghiaccio')");
+            db.execSQL("INSERT INTO Attack VALUES ('Fangosberla', 15, 1.35, 'Terra')");
+            db.execSQL("INSERT INTO Attack VALUES ('Leccata', 5, 0.5, 'Spettro')");
+            db.execSQL("INSERT INTO Attack VALUES ('Ombrartigli', 11, 0.95, 'Spettro')");
+            db.execSQL("INSERT INTO Attack VALUES ('Spaccaroccia', 15, 1.41, 'Lotta')");
+            db.execSQL("INSERT INTO Attack VALUES ('Dragospiro', 6, 0.5, 'Drago')");
+            db.execSQL("INSERT INTO Attack VALUES ('Splash', 0, 1.23, 'Acqua')");
+            db.execSQL("INSERT INTO Attack VALUES ('Trasformazione', 0, 0.54, 'Normale')");*/
+
             Toast.makeText(context, "onCreate called", Toast.LENGTH_SHORT).show();
         }
 

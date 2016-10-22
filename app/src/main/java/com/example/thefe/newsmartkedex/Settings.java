@@ -113,7 +113,7 @@ public class Settings extends AppCompatActivity {
                 String dbLanguage = pokemonHelper.getLanguage();
 
                 if (rows == 0) {
-                    pokemonHelper.insertData(owner, smartkedex, lingua, setpokeGO);
+                    pokemonHelper.insertSettingsData(owner, smartkedex, lingua, setpokeGO);
                 }
                 else {
                     if (!owner.equals("") && !dbOwner.equals(owner))
