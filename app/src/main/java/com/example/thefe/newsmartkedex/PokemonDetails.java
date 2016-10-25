@@ -1,6 +1,5 @@
 package com.example.thefe.newsmartkedex;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -11,9 +10,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.Locale;
@@ -161,7 +158,7 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
         toSpeech = output;
     }
 
-    private String getName (int pokeID) {
+    public String getName (int pokeID) {
         String pokeName = "";
 
         switch (pokeID) {
@@ -247,7 +244,7 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
             case 80: pokeName = "Slowbro"; break;
             case 81: pokeName = "Magnemite"; break;
             case 82: pokeName = "Magneton"; break;
-            case 83: pokeName = "Farfetch'd"; break;
+            case 83: pokeName = "Farfetchd"; break;
             case 84: pokeName = "Doduo"; break;
             case 85: pokeName = "Dodrio"; break;
             case 86: pokeName = "Seel"; break;

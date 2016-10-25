@@ -1,6 +1,5 @@
 package com.example.thefe.newsmartkedex;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,7 +10,7 @@ import android.widget.Toast;
  * Created by TheFe on 19/10/2016.
  */
 
-class PokemonDatabaseAdapter {
+public class PokemonDatabaseAdapter {
 
     private PokemonHelper helper;
 
@@ -110,7 +109,7 @@ class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 27;
+        private static final int DATABASE_VERSION = 33;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -125,6 +124,8 @@ class PokemonDatabaseAdapter {
         private static final String TYPE = "Type";
         private static final String CATCHES = "Catches";
         private static final String USER = "User";
+        private static final String HASATTACK = "HasAttack";
+        private static final String HASULTI = "HasUlti";
 
         //Columns Declaration
         private static final String LANGUAGE = "Language";
@@ -162,11 +163,7 @@ class PokemonDatabaseAdapter {
 
         private static final String CREATE_POKEMON = "CREATE TABLE IF NOT EXISTS " + POKEMON + "(" +
                                                       POKEMONNAME + VARCHAR + "20), " +
-                                                      ID + INT + "3) PRIMARY KEY, " +
-                                                      ATTACK_NAME + VARCHAR + "15), " +
-                                                      ULTI_NAME + VARCHAR + "15), " +
-                                                      "FOREIGN KEY (" + ULTI_NAME + ") REFERENCES " + ULTI + " ("+ ULTI_NAME +"), " +
-                                                      "FOREIGN KEY (" + ATTACK_NAME + ") REFERENCES " + ATTACK + "(" + ATTACK_NAME + "))";
+                                                      ID + INT + "3) PRIMARY KEY)";
 
         private static final String CREATE_TYPE = "CREATE TABLE IF NOT EXISTS " + TYPE + "(" +
                                                    TYPE_NAME + VARCHAR + "10) PRIMARY KEY)";
@@ -205,7 +202,19 @@ class PokemonDatabaseAdapter {
                                                       "FOREIGN KEY (" + EMAIL + ") REFERENCES " + USER + " (" + EMAIL + "), " +
                                                       "FOREIGN KEY (" + ID + ") REFERENCES " + POKEMON + " (" + ID + "))";
 
+        private static final String CREATE_HASATTACK = "CREATE TABLE IF NOT EXISTS " + HASATTACK + "(" +
+                                                        ID + INT + "3), " +
+                                                        ATTACK_NAME + VARCHAR + "15), " +
+                                                        "PRIMARY KEY (" + ID + ", " + ATTACK_NAME + "), " +
+                                                        "FOREIGN KEY (" + ID + ") REFERENCES " + POKEMON + " (" + ID + "), " +
+                                                        "FOREIGN KEY (" + ATTACK_NAME + ") REFERENCES " + ATTACK + " (" + ATTACK_NAME + "))";
 
+        private static final String CREATE_HASULTI = "CREATE TABLE IF NOT EXISTS " + HASULTI + "(" +
+                                                        ID + INT + "3), " +
+                                                        ULTI_NAME + VARCHAR + "15), " +
+                                                        "PRIMARY KEY (" + ID + ", " + ULTI_NAME + "), " +
+                                                        "FOREIGN KEY (" + ID + ") REFERENCES " + POKEMON + " (" + ID + "), " +
+                                                        "FOREIGN KEY (" + ULTI_NAME + ") REFERENCES " + ULTI + " (" + ULTI_NAME + "))";
 
         private Context context;
 
@@ -224,6 +233,8 @@ class PokemonDatabaseAdapter {
             db.execSQL(CREATE_ULTI);
             db.execSQL(CREATE_POKEMON);
             db.execSQL(CREATE_CATCHES);
+            db.execSQL(CREATE_HASATTACK);
+            db.execSQL(CREATE_HASULTI);
 
             //Populating the DB
 
@@ -369,70 +380,25 @@ class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO Ulti VALUES ('Fango', 30, 2.6, 5, 'Veleno')");
             db.execSQL("INSERT INTO Ulti VALUES ('Metaltestata', 30, 2.0, 5, 'Acciaio')");
             db.execSQL("INSERT INTO Ulti VALUES ('Presa', 25, 2.1, 5, 'Normale')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Ossoclava', 25, 1.6, 5, 'Terra')");*/
+            db.execSQL("INSERT INTO Ulti VALUES ('Ossoclava', 25, 1.6, 5, 'Terra')");
+            db.execSQL("INSERT INTO Ulti VALUES ('Pestone', 30, 2.25, 5, 'Normale')");
+            db.execSQL("INSERT INTO Ulti VALUES ('Assorbibacio', 25, 2.8, 5, 'Folletto')");
+            db.execSQL("INSERT INTO Ulti VALUES ('Acquadisale', 25, 2.4, 5, 'Acqua')");
+            db.execSQL("INSERT INTO Ulti VALUES ('Psicobotta', 100, 2.8, 5, 'Psico')");*/
 
-            //Cubone Incluso
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
-            db.execSQL("INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba')");
+            //Populating Pokémon
+            for (int i = 1; i < 152; i++) {
+                PokemonDetails pokemonDetails = new PokemonDetails();
+                db.execSQL("INSERT INTO Pokemon VALUES ('" + pokemonDetails.getName(i) + "', " + i + ")");
+            }
+
 
             Toast.makeText(context, "onCreate called", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            db.execSQL("DROP TABLE Pokemon");
             onCreate(db);
             Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
         }
