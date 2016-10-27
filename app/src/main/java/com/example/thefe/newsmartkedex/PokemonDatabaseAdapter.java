@@ -109,7 +109,7 @@ public class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 19;
+        private static final int DATABASE_VERSION = 30;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -239,7 +239,7 @@ public class PokemonDatabaseAdapter {
             //Populating the DB
 
             //Populating Type
-            /*db.execSQL("INSERT INTO Type VALUES ('Acciaio')");
+            db.execSQL("INSERT INTO Type VALUES ('Acciaio')");
             db.execSQL("INSERT INTO Type VALUES ('Acqua')");
             db.execSQL("INSERT INTO Type VALUES ('Coleottero')");
             db.execSQL("INSERT INTO Type VALUES ('Drago')");
@@ -390,7 +390,7 @@ public class PokemonDatabaseAdapter {
             for (int i = 1; i < 152; i++) {
                 PokemonDetails pokemonDetails = new PokemonDetails();
                 db.execSQL("INSERT INTO Pokemon VALUES ('" + pokemonDetails.getName(i) + "', " + i + ")");
-            }*/
+            }
 
             //Populating HasAttack
             db.execSQL("INSERT INTO HasAttack VALUES (1, 'Azione')");
@@ -688,6 +688,14 @@ public class PokemonDatabaseAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            db.execSQL("DROP TABLE " + SETTINGS);
+            db.execSQL("DROP TABLE " + HASATTACK);
+            db.execSQL("DROP TABLE " + HASULTI);
+            db.execSQL("DROP TABLE " + ATTACK);
+            db.execSQL("DROP TABLE " + ULTI);
+            db.execSQL("DROP TABLE " + TYPE);
+            db.execSQL("DROP TABLE " + POKEMON);
+            db.execSQL("DROP TABLE " + USER);
             onCreate(db);
             Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
         }

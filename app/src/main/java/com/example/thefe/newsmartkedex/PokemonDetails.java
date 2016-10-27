@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Locale;
 
@@ -29,7 +31,23 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pokedetails);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int dpi = displayMetrics.densityDpi;
+
+        if (dpi == 420) { //Nexus 5X et simila
+            setContentView(R.layout.pokedetailsbig);
+        }
+        else if (dpi == 480) { //Nexus 5 et simila
+            setContentView(R.layout.pokedetails);
+        }
+
+        //TODO
+        /*******************************************************************************************************
+        * MUST CALCULATE DISPLAY DENSITY AND THEN APPLY AN ALGORYTHM TO CALCULATE THE PROPER LAYOUT FILE       *
+        * DPI = (sqrt(w^2 + h^2))di, where w = phone width, h = phone height and di = phone diagonal in inches *
+        * ******************************************************************************************************/
 
         tv = (TextView) findViewById(R.id.descriptiontext);
 
