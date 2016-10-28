@@ -23,14 +23,39 @@ public class PokemonDatabaseAdapter {
         db.execSQL("INSERT INTO Settings (Owner, SmartkedexName, Language, PokemonGO) VALUES ('"+owner+"', '"+smartkedex+"', '"+language+"', '"+pokemonGO+"')");
     }
 
-    int getRows () {
+    void insertInitialUser(String username, String email) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("INSERT INTO User (Username, Email) VALUES ('"+username+"', '"+email+"')");
+        System.err.println("insertInitialUser called");
+    }
+
+    void insertCatches (int pokeID, String email) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("INSERT INTO Catches (ID, Email) VALUES ("+pokeID+", '"+email+"')");
+        System.err.println("insertCatches called");
+    }
+
+    int getRows (String tableName) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(PokemonHelper.SETTINGS, null, null, null, null, null, null);
+        Cursor cursor = db.query(tableName, null, null, null, null, null, null);
         int rows = 0;
         while (cursor.moveToNext()) {
             rows++;
         }
 
+        db.close();
+        return rows;
+    }
+
+    int getCatched (int pokeID) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.query(PokemonHelper.CATCHES, null, PokemonHelper.ID+"="+pokeID, null, null, null, null);
+        int rows = 0;
+        while (cursor.moveToNext()) {
+            rows++;
+        }
+
+        db.close();
         return rows;
     }
 
@@ -44,6 +69,7 @@ public class PokemonDatabaseAdapter {
             language = cursor.getString(0); //va bene 0 perchè io seleziono SEMPRE una colonna alla volta, quindi ha per forza indice 0
         }
 
+        db.close();
         return language;
     }
 
@@ -57,7 +83,22 @@ public class PokemonDatabaseAdapter {
             owner = cursor.getString(0); //va bene 0 perchè io seleziono SEMPRE una colonna alla volta, quindi ha per forza indice 0
         }
 
+        db.close();
         return owner;
+    }
+
+    String getUsername () {
+        String username = "";
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {PokemonHelper.USERNAME};
+        Cursor cursor = db.query(PokemonHelper.USER, columns, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            username = cursor.getString(0); //va bene 0 perchè io seleziono SEMPRE una colonna alla volta, quindi ha per forza indice 0
+        }
+
+        db.close();
+        return username;
     }
 
     String getSmartkedex () {
@@ -70,6 +111,7 @@ public class PokemonDatabaseAdapter {
             smartkedex = cursor.getString(0); //va bene 0 perchè io seleziono SEMPRE una colonna alla volta, quindi ha per forza indice 0
         }
 
+        db.close();
         return smartkedex;
     }
 
@@ -83,7 +125,25 @@ public class PokemonDatabaseAdapter {
             pokemonGO = cursor.getInt(0);
         }
 
+        db.close();
         return pokemonGO;
+    }
+
+    String[] getAttacks (int pokeID) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {PokemonHelper.ATTACK_NAME};
+        Cursor cursor = db.query(PokemonHelper.HASATTACK, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
+
+        String[] attacks = {"", ""};
+        int i = 0;
+
+        while (cursor.moveToNext()) {
+            attacks[i] = cursor.getString(cursor.getColumnIndex(PokemonHelper.ATTACK_NAME)); //putting the content at the i position of the attacks array, taking the column index of ATTACK_NAME
+            i++;
+        }
+
+        db.close();
+        return attacks;
     }
 
     void updateLanguage (String newLanguage, String oldLanguage) {
@@ -104,12 +164,11 @@ public class PokemonDatabaseAdapter {
     void updatePokemonGO (int newPokemonGO, int oldPokemonGO) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("UPDATE Settings SET PokemonGO = '"+newPokemonGO+"' WHERE PokemonGO = '"+oldPokemonGO+"'");
-        System.err.println("getPokemonGO (after query):" + getPokemonGO());
     }
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 30;
+        private static final int DATABASE_VERSION = 1;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";

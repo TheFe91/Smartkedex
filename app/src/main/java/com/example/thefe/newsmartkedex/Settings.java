@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 public class Settings extends AppCompatActivity {
 
-    public String lingua = "";
+    public String lingua = "ITA";
     private RadioGroup radioGroup;
     private RadioButton radioButton;
     private int setpokeGO = 0;
@@ -30,14 +30,17 @@ public class Settings extends AppCompatActivity {
 
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(getApplicationContext());
 
-        if (pokemonHelper.getRows() != 0 && pokemonHelper.getLanguage() != null)
-            lingua = pokemonHelper.getLanguage();
-        else
-            lingua = "ITA";
-
+        /*******************************************************************************
+         * VERSION 1.1                                                                 *
+         *                                                                             *
+         *  if (pokemonHelper.getRows() != 0 && pokemonHelper.getLanguage() != null)   *
+         *      lingua = pokemonHelper.getLanguage();                                  *
+         *  else                                                                       *
+         *      lingua = "ITA";                                                        *
+         *******************************************************************************/
         getActionBar();
 
-        final TextView language = (TextView)findViewById(R.id.lingua);
+        //final TextView language = (TextView)findViewById(R.id.lingua);
         TextView name = (TextView)findViewById(R.id.nomeSmartkedex);
         TextView proprietario = (TextView)findViewById(R.id.proprietario);
         final EditText inputNome = (EditText)findViewById(R.id.inputNomeSmartkedex);
@@ -52,13 +55,15 @@ public class Settings extends AppCompatActivity {
 
         if (dbPokemonGO == 0)
             playPokemonGO.setChecked(false);
-        else
+        else {
             playPokemonGO.setChecked(true);
+            setpokeGO = 1;
+        }
 
         switch (lingua) {
             case "":
                 break;
-            case "ENG":
+            /*case "ENG":
                 language.setText("Language");
                 name.setText("Smartkédex Name");
                 proprietario.setText("This Smartkédex is property of:");
@@ -67,15 +72,15 @@ public class Settings extends AppCompatActivity {
                 RadioButton radioEng = (RadioButton)findViewById(R.id.lang_eng);
                 radioEng.setChecked(true);
                 playPokemonGO.setText("I play Pokemon GO");
-                break;
+                break;*/
             case "ITA":
-                language.setText("Lingua dell'App");
+                //language.setText("Lingua dell'App");
                 name.setText("Nome dello Smartkédex");
                 proprietario.setText("Questo Smartkédex è di proprietà di:");
                 presentazione.setText("Presentazione");
                 conferma.setText("Applica");
-                RadioButton radioIta = (RadioButton)findViewById(R.id.lang_ita);
-                radioIta.setChecked(true);
+                //RadioButton radioIta = (RadioButton)findViewById(R.id.lang_ita);
+                //radioIta.setChecked(true);
                 playPokemonGO.setText("Gioco a Pokemon GO");
                 break;
         }
@@ -99,18 +104,22 @@ public class Settings extends AppCompatActivity {
         conferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-                radioButton = (RadioButton)findViewById(selectedId);
-                lingua = radioButton.getText().toString();
+                /*************************************************************
+                 * VERSION 1.1                                               *
+                 *                                                           *
+                 * radioGroup = (RadioGroup) findViewById(R.id.radiogroup);  *
+                 * int selectedId = radioGroup.getCheckedRadioButtonId();    *
+                 * radioButton = (RadioButton)findViewById(selectedId);      *
+                 * lingua = radioButton.getText().toString();                *
+                 *************************************************************/
 
                 String smartkedex = inputNome.getText().toString();
                 String owner = inputProprietario.getText().toString();
 
-                int rows = pokemonHelper.getRows();
+                int rows = pokemonHelper.getRows("Settings");
                 String dbSmartkedex = pokemonHelper.getSmartkedex();
                 String dbOwner = pokemonHelper.getOwner();
-                String dbLanguage = pokemonHelper.getLanguage();
+                //String dbLanguage = pokemonHelper.getLanguage();
 
                 if (rows == 0) {
                     pokemonHelper.insertSettingsData(owner, smartkedex, lingua, setpokeGO);
@@ -120,8 +129,8 @@ public class Settings extends AppCompatActivity {
                         pokemonHelper.updateOwner(owner, dbOwner);
                     if (!smartkedex.equals("") && !dbSmartkedex.equals(smartkedex))
                         pokemonHelper.updateSmartkedex(smartkedex, dbSmartkedex);
-                    if (!lingua.equals("") && !dbLanguage.equals(lingua))
-                        pokemonHelper.updateLanguage(lingua, dbLanguage);
+                    //if (!lingua.equals("") && !dbLanguage.equals(lingua))
+                    //    pokemonHelper.updateLanguage(lingua, dbLanguage);
                     if (dbPokemonGO != setpokeGO)
                         pokemonHelper.updatePokemonGO(setpokeGO, dbPokemonGO);
                 }

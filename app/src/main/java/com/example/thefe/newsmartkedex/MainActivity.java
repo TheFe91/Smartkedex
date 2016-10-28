@@ -20,8 +20,11 @@ public class MainActivity extends AppCompatActivity {
 
         //this is going to be deleted when the Welcome Activity will be created
         PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
-        if (pokemonHelper.getRows() == 0) {
+        if (pokemonHelper.getRows("Settings") == 0) {
             pokemonHelper.insertSettingsData("", "", "ITA", 0);
+        }
+        if (pokemonHelper.getRows("User") == 0) {
+            pokemonHelper.insertInitialUser("TheFe91", "alessandrodefendenti@gmail.com");
         }
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
@@ -58,10 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.about_us:
                 i = new Intent(this, AboutUs.class);
-                this.startActivity(i);
-                break;
-            case R.id.share:
-                i = new Intent(this, Share.class);
                 this.startActivity(i);
                 break;
             default:

@@ -13,9 +13,4 @@
         android:showAsAction="never"
         android2:title="Credits"/>
 
-    <item
-        android2:id="@+id/share"
-        android:showAsAction="never"
-        android2:title="Condividi"/>
-
 </menu>

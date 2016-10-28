@@ -28,53 +28,53 @@
             android:layout_below="@+id/inputNomeSmartkedex"
             android:id="@+id/break1"/>
 
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAlignment="center"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_below="@+id/break1"-->
+            <!--android:id="@+id/lingua"/>-->
+
+        <!--<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/radiogroup"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_below="@+id/lingua"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<RadioButton-->
+                <!--android:id="@+id/lang_ita"-->
+                <!--android:text="ITA"-->
+                <!--android:button="@drawable/ita"-->
+                <!--android:textColor="@android:color/transparent"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="wrap_content"/>-->
+
+            <!--<RadioButton-->
+                <!--android:id="@+id/lang_eng"-->
+                <!--android:text="ENG"-->
+                <!--android:button="@drawable/eng"-->
+                <!--android:textColor="@android:color/transparent"-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="wrap_content"/>-->
+
+        <!--</RadioGroup>-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_below="@+id/radiogroup"-->
+            <!--android:id="@+id/break2"/>-->
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/break1"
-            android:id="@+id/lingua"/>
-
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/radiogroup"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/lingua"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/lang_ita"
-                android:text="ITA"
-                android:button="@drawable/ita"
-                android:textColor="@android:color/transparent"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"/>
-
-            <RadioButton
-                android:id="@+id/lang_eng"
-                android:text="ENG"
-                android:button="@drawable/eng"
-                android:textColor="@android:color/transparent"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"/>
-
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/radiogroup"
-            android:id="@+id/break2"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/break2"
             android:id="@+id/proprietario"/>
 
         <EditText

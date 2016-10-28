@@ -27,6 +27,7 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
     private TextView tv;
     private TextToSpeech t1;
     private String toSpeech = "";
+    private int pokeID;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -55,10 +56,10 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
         Intent i = getIntent();
 
         //Seleziono l'ID del Pokémon che mi servirà per prendere tutti i dati dal database e dai drawable
-        final int pokeID = i.getExtras().getInt("id");
+        pokeID = i.getExtras().getInt("id");
         String pokeName = getName(pokeID+1);
 
-        PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
+        final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
 
         ResponseFromWebService responseFromWebService = new ResponseFromWebService();
         WebServicesAsyncResponse ar = this;
@@ -76,24 +77,33 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
         imageView = (ImageView) findViewById(R.id.tipo2);
         imageView.setImageResource(R.drawable.veleno);
 
+        pokeID +=1;
+
         TextView pkmnName = (TextView)findViewById(R.id.pkmnName);
-        pkmnName.setText(pokeName);
+        pkmnName.setText("#"+pokeID+" - "+pokeName);
 
         final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
 
         if (pokemonHelper.getPokemonGO() == 1) {
             pokeSwitch.setText("Catturato  ");
-            pokeDetails.setText("Aggiungi\nDettagli");
+            pokeDetails.setText("Dettagli");
 
-            //prendendo i dati dal database, pokeDetails dev'essere enabled o disabled
-            pokeDetails.setEnabled(false);
+            int catched = pokemonHelper.getCatched(pokeID);
+            if (catched == 0)
+                pokeDetails.setEnabled(false);
+            else {
+                pokeDetails.setEnabled(true);
+                pokeSwitch.setChecked(true);
+            }
 
             pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (pokeSwitch.isChecked())
-                        pokeDetails.setEnabled(true);
+                    if (pokeSwitch.isChecked()) {
+                        pokeDetails.setEnabled(true); //pokeDetails is the button
+                        pokemonHelper.insertCatches(pokeID, pokemonHelper.getUsername()); //inserisco nella tabella Catches che l'utente ha catturato effettivamente quel Pokémon
+                    }
                     else
                         pokeDetails.setEnabled(false);
                 }
