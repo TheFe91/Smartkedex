@@ -80,8 +80,6 @@ public class MyPokeDetails extends AppCompatActivity {
         attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         internalSpinner.setAdapter(attacksAdapter);
 
-        //TODO: GOTTA ADD RELATION USER --> HAS --> COPY INTO DB; COPY HAS AN ID (INT (10) AUTO_INCREMENT P.K.) AND MAPS EVERY USER COPY OF EVERY PKMN
-
     }
 
     @Override

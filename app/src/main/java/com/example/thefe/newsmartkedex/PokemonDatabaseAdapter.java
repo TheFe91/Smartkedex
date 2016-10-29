@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by TheFe on 19/10/2016.
  */
@@ -23,16 +26,9 @@ public class PokemonDatabaseAdapter {
         db.execSQL("INSERT INTO Settings (Owner, SmartkedexName, Language, PokemonGO) VALUES ('"+owner+"', '"+smartkedex+"', '"+language+"', '"+pokemonGO+"')");
     }
 
-    void insertInitialUser(String username, String email) {
+    void insertCatches (int pokeID, String owner) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("INSERT INTO User (Username, Email) VALUES ('"+username+"', '"+email+"')");
-        System.err.println("insertInitialUser called");
-    }
-
-    void insertCatches (int pokeID, String email) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("INSERT INTO Catches (ID, Email) VALUES ("+pokeID+", '"+email+"')");
-        System.err.println("insertCatches called");
+        db.execSQL("INSERT INTO Catches (ID, Owner) VALUES ("+pokeID+", '"+owner+"')");
     }
 
     int getRows (String tableName) {
@@ -45,6 +41,17 @@ public class PokemonDatabaseAdapter {
 
         db.close();
         return rows;
+    }
+
+    List<String> getTypes(int pokeID) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {PokemonHelper.TYPE_NAME};
+        Cursor cursor = db.query(PokemonHelper.HASTYPE, columns, PokemonHelper.ID+"="+pokeID, null, null, null, null);
+        List<String> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            list.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME)));
+        }
+        return list;
     }
 
     int getCatched (int pokeID) {
@@ -85,20 +92,6 @@ public class PokemonDatabaseAdapter {
 
         db.close();
         return owner;
-    }
-
-    String getUsername () {
-        String username = "";
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String[] columns = {PokemonHelper.USERNAME};
-        Cursor cursor = db.query(PokemonHelper.USER, columns, null, null, null, null, null);
-
-        while (cursor.moveToNext()) {
-            username = cursor.getString(0); //va bene 0 perchè io seleziono SEMPRE una colonna alla volta, quindi ha per forza indice 0
-        }
-
-        db.close();
-        return username;
     }
 
     String getSmartkedex () {
@@ -168,7 +161,7 @@ public class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 5;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -182,9 +175,11 @@ public class PokemonDatabaseAdapter {
         private static final String ULTI = "Ulti";
         private static final String TYPE = "Type";
         private static final String CATCHES = "Catches";
-        private static final String USER = "User";
+        private static final String COPY = "Copy";
         private static final String HASATTACK = "HasAttack";
         private static final String HASULTI = "HasUlti";
+        private static final String HASCOPY = "HasCopy";
+        private static final String HASTYPE = "HasType";
 
         //Columns Declaration
         private static final String LANGUAGE = "Language";
@@ -200,32 +195,23 @@ public class PokemonDatabaseAdapter {
         private static final String CRITICAL_CHANCE = "CriticalChance";
         private static final String TYPE_NAME = "TypeName";
         private static final String QUANTITY = "Quantity";
-        private static final String EMAIL = "Email";
-        private static final String NAME = "Name";
-        private static final String SURNAME = "Surname";
-        private static final String USERNAME = "Username";
-        private static final String PASSWORD = "Password";
-        private static final String CITY = "City";
-        private static final String POSTALCODE = "PostalCode";
-        private static final String ADDRESS = "Address";
-        private static final String PROVINCE = "Province";
+        private static final String IDCOPY = "IDCopy";
+        private static final String IDPOKEMON = "IDPokemon";
+
 
 
         //CREATE TABLE Statements
         private static final String CREATE_SETTINGS = "CREATE TABLE IF NOT EXISTS " + SETTINGS + "(" +
                                                        LANGUAGE + VARCHAR + "3), " +
-                                                       OWNER + VARCHAR + "20), " +
+                                                       OWNER + VARCHAR + "20) PRIMARY KEY, " +
                                                        SMARTKEDEXNAME + VARCHAR + "20), " +
-                                                       POKEMONGO + INT + "1), " +
-                                                       EMAIL + VARCHAR + "40) PRIMARY KEY, " +
-                                                       "FOREIGN KEY ("+ EMAIL +") REFERENCES " + USER + " (" + EMAIL + "))";
+                                                       POKEMONGO + INT + "1))";
 
         private static final String CREATE_POKEMON = "CREATE TABLE IF NOT EXISTS " + POKEMON + "(" +
                                                       POKEMONNAME + VARCHAR + "20), " +
                                                       ID + INT + "3) PRIMARY KEY)";
 
-        private static final String CREATE_TYPE = "CREATE TABLE IF NOT EXISTS " + TYPE + "(" +
-                                                   TYPE_NAME + VARCHAR + "10) PRIMARY KEY)";
+        private static final String CREATE_TYPE = "CREATE TABLE IF NOT EXISTS " + TYPE + "(" + TYPE_NAME + VARCHAR + "10) PRIMARY KEY)";
 
         private static final String CREATE_ULTI = "CREATE TABLE IF NOT EXISTS " + ULTI + "(" +
                                                    ULTI_NAME + VARCHAR + "15) PRIMARY KEY, " +
@@ -242,23 +228,12 @@ public class PokemonDatabaseAdapter {
                                                      TYPE_NAME + VARCHAR + "10), " +
                                                      "FOREIGN KEY (" + TYPE_NAME + ") REFERENCES " + TYPE + " (" + TYPE_NAME + "))";
 
-        private static final String CREATE_USER = "CREATE TABLE IF NOT EXISTS " + USER + "(" +
-                                                   EMAIL + VARCHAR + "40) PRIMARY KEY, " +
-                                                   NAME + VARCHAR + "15), " +
-                                                   SURNAME + VARCHAR + "15), " +
-                                                   USERNAME + VARCHAR + "15), " +
-                                                   PASSWORD + VARCHAR + "16), " +
-                                                   ADDRESS + VARCHAR + "50), " +
-                                                   POSTALCODE + VARCHAR + "10), " +
-                                                   PROVINCE + VARCHAR + "7), " +
-                                                   CITY + VARCHAR + "15))";
-
         private static final String CREATE_CATCHES = "CREATE TABLE IF NOT EXISTS " + CATCHES + "(" +
                                                       QUANTITY + INT + "2), " +
                                                       ID + INT + "3), " +
-                                                      EMAIL + VARCHAR + "40), " +
-                                                      "PRIMARY KEY (" + EMAIL + ", " + ID + "), " +
-                                                      "FOREIGN KEY (" + EMAIL + ") REFERENCES " + USER + " (" + EMAIL + "), " +
+                                                      OWNER + VARCHAR + "40), " +
+                                                      "PRIMARY KEY (" + OWNER + ", " + ID + "), " +
+                                                      "FOREIGN KEY (" + OWNER + ") REFERENCES " + SETTINGS + " (" + OWNER + "), " +
                                                       "FOREIGN KEY (" + ID + ") REFERENCES " + POKEMON + " (" + ID + "))";
 
         private static final String CREATE_HASATTACK = "CREATE TABLE IF NOT EXISTS " + HASATTACK + "(" +
@@ -269,11 +244,32 @@ public class PokemonDatabaseAdapter {
                                                         "FOREIGN KEY (" + ATTACK_NAME + ") REFERENCES " + ATTACK + " (" + ATTACK_NAME + "))";
 
         private static final String CREATE_HASULTI = "CREATE TABLE IF NOT EXISTS " + HASULTI + "(" +
-                                                        ID + INT + "3), " +
-                                                        ULTI_NAME + VARCHAR + "15), " +
-                                                        "PRIMARY KEY (" + ID + ", " + ULTI_NAME + "), " +
-                                                        "FOREIGN KEY (" + ID + ") REFERENCES " + POKEMON + " (" + ID + "), " +
-                                                        "FOREIGN KEY (" + ULTI_NAME + ") REFERENCES " + ULTI + " (" + ULTI_NAME + "))";
+                                                     ID + INT + "3), " +
+                                                     ULTI_NAME + VARCHAR + "15), " +
+                                                     "PRIMARY KEY (" + ID + ", " + ULTI_NAME + "), " +
+                                                     "FOREIGN KEY (" + ID + ") REFERENCES " + POKEMON + " (" + ID + "), " +
+                                                     "FOREIGN KEY (" + ULTI_NAME + ") REFERENCES " + ULTI + " (" + ULTI_NAME + "))";
+
+        private static final String CREATE_HASTYPE = "CREATE TABLE IF NOT EXISTS " + HASTYPE + "(" +
+                                                     ID + INT + "3), " +
+                                                     TYPE_NAME + VARCHAR + "10), " +
+                                                     "PRIMARY KEY (" + ID + ", " + TYPE_NAME + "), " +
+                                                     "FOREIGN KEY (" + ID + ") REFERENCES " + POKEMON + " (" + ID + "), " +
+                                                     "FOREIGN KEY (" + TYPE_NAME + ") REFERENCES " + TYPE + " (" + TYPE_NAME + "))";
+
+        private static final String CREATE_COPY = "CREATE TABLE IF NOT EXISTS " + COPY + "(" +
+                                                  ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                  ATTACK_NAME + VARCHAR + "15), " +
+                                                  ULTI_NAME + VARCHAR + "15), " +
+                                                  POKEMONNAME + VARCHAR + "20), " +
+                                                  "FOREIGN KEY (" + POKEMONNAME + ") REFERENCES " + POKEMON + " (" + POKEMONNAME + "))";
+
+        private static final String CREATE_HASCOPY = "CREATE TABLE IF NOT EXISTS " + HASCOPY + "(" +
+                                                     IDCOPY + INT + "3), " +
+                                                     IDPOKEMON + INT + "3), " +
+                                                     "PRIMARY KEY (" + IDCOPY + ", " + IDPOKEMON + "), " +
+                                                     "FOREIGN KEY (" + IDPOKEMON + ") REFERENCES " + POKEMON + " (" + ID + "), " +
+                                                     "FOREIGN KEY (" + IDCOPY + ") REFERENCES " + COPY + " (" + ID + "))";
 
         private Context context;
 
@@ -285,7 +281,6 @@ public class PokemonDatabaseAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL(CREATE_USER);
             db.execSQL(CREATE_SETTINGS);
             db.execSQL(CREATE_TYPE);
             db.execSQL(CREATE_ATTACK);
@@ -294,6 +289,9 @@ public class PokemonDatabaseAdapter {
             db.execSQL(CREATE_CATCHES);
             db.execSQL(CREATE_HASATTACK);
             db.execSQL(CREATE_HASULTI);
+            db.execSQL(CREATE_COPY);
+            db.execSQL(CREATE_HASCOPY);
+            db.execSQL(CREATE_HASTYPE);
 
             //Populating the DB
 
@@ -450,6 +448,224 @@ public class PokemonDatabaseAdapter {
                 PokemonDetails pokemonDetails = new PokemonDetails();
                 db.execSQL("INSERT INTO Pokemon VALUES ('" + pokemonDetails.getName(i) + "', " + i + ")");
             }
+
+            //Populatinh HasType
+            db.execSQL("INSERT INTO HasType VALUES (1, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (1, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (2, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (2, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (3, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (3, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (4, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (5, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (6, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (6, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (7, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (8, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (9, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (10, 'Coleotter')");
+            db.execSQL("INSERT INTO HasType VALUES (11, 'Coleotter')");
+            db.execSQL("INSERT INTO HasType VALUES (12, 'Coleotter')");
+            db.execSQL("INSERT INTO HasType VALUES (12, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (13, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (14, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (15, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (13, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (14, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (15, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (16, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (17, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (18, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (16, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (17, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (18, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (19, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (20, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (21, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (22, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (21, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (22, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (23, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (24, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (25, 'Elettro')");
+            db.execSQL("INSERT INTO HasType VALUES (26, 'Elettro')");
+            db.execSQL("INSERT INTO HasType VALUES (27, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (28, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (29, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (30, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (31, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (31, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (32, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (33, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (34, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (34, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (35, 'Folletto')");
+            db.execSQL("INSERT INTO HasType VALUES (36, 'Folletto')");
+            db.execSQL("INSERT INTO HasType VALUES (37, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (38, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (39, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (40, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (39, 'Folletto')");
+            db.execSQL("INSERT INTO HasType VALUES (40, 'Folletto')");
+            db.execSQL("INSERT INTO HasType VALUES (41, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (42, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (41, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (42, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (43, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (44, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (45, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (43, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (44, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (45, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (46, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (47, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (46, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (47, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (48, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (49, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (48, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (49, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (50, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (51, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (52, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (53, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (54, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (55, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (56, 'Lotta')");
+            db.execSQL("INSERT INTO HasType VALUES (57, 'Lotta')");
+            db.execSQL("INSERT INTO HasType VALUES (58, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (59, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (60, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (61, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (62, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (63, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (64, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (65, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (66, 'Lotta')");
+            db.execSQL("INSERT INTO HasType VALUES (67, 'Lotta')");
+            db.execSQL("INSERT INTO HasType VALUES (68, 'Lotta')");
+            db.execSQL("INSERT INTO HasType VALUES (69, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (70, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (71, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (69, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (70, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (71, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (72, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (73, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (72, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (73, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (74, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (75, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (76, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (74, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (75, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (76, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (77, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (78, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (79, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (80, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (79, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (80, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (81, 'Elettro')");
+            db.execSQL("INSERT INTO HasType VALUES (82, 'Elettro')");
+            db.execSQL("INSERT INTO HasType VALUES (81, 'Acciaio')");
+            db.execSQL("INSERT INTO HasType VALUES (82, 'Acciaio')");
+            db.execSQL("INSERT INTO HasType VALUES (83, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (84, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (85, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (83, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (84, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (85, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (86, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (87, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (87, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasType VALUES (88, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (89, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (90, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (91, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (91, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasType VALUES (92, 'Spettro')");
+            db.execSQL("INSERT INTO HasType VALUES (93, 'Spettro')");
+            db.execSQL("INSERT INTO HasType VALUES (94, 'Spettro')");
+            db.execSQL("INSERT INTO HasType VALUES (92, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (93, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (94, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (95, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (95, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (96, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (97, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (98, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (99, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (100, 'Elettro')");
+            db.execSQL("INSERT INTO HasType VALUES (101, 'Elettro')");
+            db.execSQL("INSERT INTO HasType VALUES (102, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (103, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (102, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (103, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (104, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (105, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (106, 'Lotta')");
+            db.execSQL("INSERT INTO HasType VALUES (107, 'Lotta')");
+            db.execSQL("INSERT INTO HasType VALUES (108, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (109, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (110, 'Veleno')");
+            db.execSQL("INSERT INTO HasType VALUES (111, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (112, 'Terra')");
+            db.execSQL("INSERT INTO HasType VALUES (111, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (112, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (113, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (114, 'Erba')");
+            db.execSQL("INSERT INTO HasType VALUES (115, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (116, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (117, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (118, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (119, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (120, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (121, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (121, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (122, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (123, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (123, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (124, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasType VALUES (124, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (125, 'Elettro')");
+            db.execSQL("INSERT INTO HasType VALUES (126, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (127, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (128, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (129, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (130, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (130, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (131, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (131, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasType VALUES (132, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (133, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (134, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (135, 'Elettro')");
+            db.execSQL("INSERT INTO HasType VALUES (136, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (137, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (138, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (139, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (138, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (139, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (140, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (141, 'Acqua')");
+            db.execSQL("INSERT INTO HasType VALUES (140, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (141, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (142, 'Roccia')");
+            db.execSQL("INSERT INTO HasType VALUES (142, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (143, 'Normale')");
+            db.execSQL("INSERT INTO HasType VALUES (144, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasType VALUES (145, 'Elettro')");
+            db.execSQL("INSERT INTO HasType VALUES (146, 'Fuoco')");
+            db.execSQL("INSERT INTO HasType VALUES (144, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (145, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (146, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (147, 'Drago')");
+            db.execSQL("INSERT INTO HasType VALUES (148, 'Drago')");
+            db.execSQL("INSERT INTO HasType VALUES (149, 'Drago')");
+            db.execSQL("INSERT INTO HasType VALUES (149, 'Volante')");
+            db.execSQL("INSERT INTO HasType VALUES (150, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (151, 'Psico')");
 
             //Populating HasAttack
             db.execSQL("INSERT INTO HasAttack VALUES (1, 'Azione')");
@@ -754,7 +970,7 @@ public class PokemonDatabaseAdapter {
             db.execSQL("DROP TABLE " + ULTI);
             db.execSQL("DROP TABLE " + TYPE);
             db.execSQL("DROP TABLE " + POKEMON);
-            db.execSQL("DROP TABLE " + USER);
+            db.execSQL("DROP TABLE " + CATCHES);
             onCreate(db);
             Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
         }

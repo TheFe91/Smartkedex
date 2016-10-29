@@ -102,7 +102,7 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (pokeSwitch.isChecked()) {
                         pokeDetails.setEnabled(true); //pokeDetails is the button
-                        pokemonHelper.insertCatches(pokeID, pokemonHelper.getUsername()); //inserisco nella tabella Catches che l'utente ha catturato effettivamente quel Pokémon
+                        pokemonHelper.insertCatches(pokeID, pokemonHelper.getOwner()); //inserisco nella tabella Catches che l'utente ha catturato effettivamente quel Pokémon
                     }
                     else
                         pokeDetails.setEnabled(false);

@@ -21,10 +21,7 @@ public class MainActivity extends AppCompatActivity {
         //this is going to be deleted when the Welcome Activity will be created
         PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
         if (pokemonHelper.getRows("Settings") == 0) {
-            pokemonHelper.insertSettingsData("", "", "ITA", 0);
-        }
-        if (pokemonHelper.getRows("User") == 0) {
-            pokemonHelper.insertInitialUser("TheFe91", "alessandrodefendenti@gmail.com");
+            pokemonHelper.insertSettingsData("Ale", "", "ITA", 0);
         }
 
         GridView gridview = (GridView) findViewById(R.id.gridview);
