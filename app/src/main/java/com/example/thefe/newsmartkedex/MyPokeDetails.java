@@ -42,13 +42,15 @@ public class MyPokeDetails extends AppCompatActivity {
         textView = (TextView)findViewById(R.id.number);
         textView.setText("Numero di "+pokeName);
 
+
+        //defining and setting up the SpinnerNumber
         final Spinner spinner = (Spinner)findViewById(R.id.spinnerNumber);
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("2");
-        list.add("3");
-        list.add("4");
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
+        List<Integer> list = new ArrayList<>();
+        for (int j = 1; j < 51; j++) {
+            list.add(j);
+        }
+
+        ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
 
@@ -66,15 +68,19 @@ public class MyPokeDetails extends AppCompatActivity {
         ImageView imageView = (ImageView) findViewById(R.id.esemplare1);
         imageView.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
         String[] attacks = pokemonHelper.getAttacks(pokeID);
+
+        //defining and setting up the InternalSpinner
         Spinner internalSpinner = (Spinner)findViewById(R.id.esemplare1attacks);
-        list = new ArrayList<>();
+        List<String> attacchi = new ArrayList<>();
         for (String element:attacks) {
             if (!element.equals(""))
-                list.add(element);
+                attacchi.add(element);
         }
-        dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        internalSpinner.setAdapter(dataAdapter);
+        ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, attacchi);
+        attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        internalSpinner.setAdapter(attacksAdapter);
+
+        //TODO: GOTTA ADD RELATION USER --> HAS --> COPY INTO DB; COPY HAS AN ID (INT (10) AUTO_INCREMENT P.K.) AND MAPS EVERY USER COPY OF EVERY PKMN
 
     }
 
