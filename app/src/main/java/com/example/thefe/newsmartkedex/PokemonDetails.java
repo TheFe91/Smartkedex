@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
 import java.util.Locale;
 
 
@@ -33,6 +34,8 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //setters for the correct display configuration
+        //saving the device's dpi on an int and assigning the proper layout based on this int
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int dpi = displayMetrics.densityDpi;
@@ -44,48 +47,76 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
             setContentView(R.layout.pokedetails);
         }
 
-        //TODO
-        /*******************************************************************************************************
-        * MUST CALCULATE DISPLAY DENSITY AND THEN APPLY AN ALGORYTHM TO CALCULATE THE PROPER LAYOUT FILE       *
-        * DPI = (sqrt(w^2 + h^2))di, where w = phone width, h = phone height and di = phone diagonal in inches *
-        * ******************************************************************************************************/
-
         tv = (TextView) findViewById(R.id.descriptiontext);
 
-        //Prendo i dati Intent
+        //get Intent Data
         Intent i = getIntent();
 
-        //Seleziono l'ID del Pokémon che mi servirà per prendere tutti i dati dal database e dai drawable
+        //selecting Pokémon's ID
         pokeID = i.getExtras().getInt("id");
         String pokeName = getName(pokeID+1);
 
+        //Setting up server and database calls
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
 
+        //calling webservice method to retrieve Pokémon's description
         ResponseFromWebService responseFromWebService = new ResponseFromWebService();
         WebServicesAsyncResponse ar = this;
         responseFromWebService.getPokeData(pokeName, ar);
 
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
+        //Setting the Pokémon's Image
         ImageView imageView = (ImageView) findViewById(R.id.tmppkmn);
         imageView.setImageResource(imageAdapter.mThumbIds[pokeID]);
         imageView.setContentDescription("Image of the current Pokémon, "+pokeName);
 
-        imageView = (ImageView) findViewById(R.id.tipo1);
-        imageView.setImageResource(R.drawable.erba);
+        pokeID +=1; //this is because the gridview wants the ID to be counted from 0, while every other method wants it to be counted by 1
+                    //so after having called the big Image from the GridView, everything else needs the ID incremented by 1
 
-        imageView = (ImageView) findViewById(R.id.tipo2);
-        imageView.setImageResource(R.drawable.veleno);
+        //getting Pokémon's type(s)
+        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+        TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
-        pokeID +=1;
+        if (numberOfTypes == 1) { //it can be 1 or 2
+            tipiScritta.setText("Tipo:");
+            for (String element:types) {
+                element = element.toLowerCase();
+                imageView = (ImageView) findViewById(R.id.tipo1);
+                imageView.setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
 
+                //removing the second type
+                imageView = (ImageView) findViewById(R.id.tipo2);
+                ViewGroup type2 = (ViewGroup) imageView.getParent();
+                type2.removeView(imageView);
+            }
+        }
+        else {
+            tipiScritta.setText("Tipi:");
+            int j = 1;
+            for (String element:types) {
+                element = element.toLowerCase();
+                String id = "tipo"+j; //creating a variable to set my imageview resource: it will be "tipo1" at the first iteration and "tipo2" at the second iteration
+                imageView = (ImageView) findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                imageView.setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+                j++;
+            }
+        }
+
+        //setting the Pokémon's name under its image
         TextView pkmnName = (TextView)findViewById(R.id.pkmnName);
-        pkmnName.setText("#"+pokeID+" - "+pokeName);
+        if (pokeID < 10)
+            pkmnName.setText("#00"+pokeID+" - "+pokeName);
+        else if (pokeID > 9 && pokeID < 100)
+            pkmnName.setText("#0"+pokeID+" - "+pokeName);
+        else
+            pkmnName.setText("#"+pokeID+" - "+pokeName);
 
         final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
 
-        if (pokemonHelper.getPokemonGO() == 1) {
+        if (pokemonHelper.getPokemonGO() == 1) { //if my user plays PokémonGO
             pokeSwitch.setText("Catturato  ");
             pokeDetails.setText("Dettagli");
 
@@ -101,14 +132,15 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (pokeSwitch.isChecked()) {
-                        pokeDetails.setEnabled(true); //pokeDetails is the button
-                        pokemonHelper.insertCatches(pokeID, pokemonHelper.getOwner()); //inserisco nella tabella Catches che l'utente ha catturato effettivamente quel Pokémon
+                        pokeDetails.setEnabled(true);
+                        pokemonHelper.insertCatches(pokeID, pokemonHelper.getOwner()); //storing into Catches that my user caught that Pokémon
                     }
                     else
                         pokeDetails.setEnabled(false);
                 }
             });
 
+            //listening if the Details button is pressed
             pokeDetails.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -118,35 +150,16 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
                 }
             });
         }
-        else {
+        else { //removing switch and button, since my user doesn't play PokémonGO
             ViewGroup layout = (ViewGroup) pokeDetails.getParent();
             layout.removeView(pokeDetails);
             layout = (ViewGroup) pokeSwitch.getParent();
             layout.removeView(pokeSwitch);
         }
 
-        //                    |
-        //                    |
-        //                    |
-        //                    |
-        //                    |
-        //                 \  |  /
-        //                  \ | /
-        //                   \|/
-        //                    |
-
-
-        /*if (secondo_tipo != NULL) {
-            imageView = (ImageView) findViewById(R.id.tipo2);
-            imageView.setImageResource(R.drawable.secondo_tipo);
-        }
-        else {
-            imageView = (ImageView) findViewById(R.id.tipo2);
-            imageView.setImageResource(R.drawable.transparent);
-        }*/
-
         getActionBar();
 
+        //this button controls the text and the "read" button under it, making it appear and disappear
         Button showhide = (Button) findViewById(R.id.showhidedescr);
         final Button leggi = (Button)findViewById(R.id.leggidescrizione);
         tv.setVisibility(View.GONE);

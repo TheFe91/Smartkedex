@@ -40,7 +40,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tipi"
+                android:id="@+id/tipiScritta"
                 android:textAlignment="center"
                 android:textSize="20sp"/>
         </TableRow>

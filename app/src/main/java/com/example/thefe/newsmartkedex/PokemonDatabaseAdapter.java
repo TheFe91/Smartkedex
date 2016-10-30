@@ -43,7 +43,7 @@ public class PokemonDatabaseAdapter {
         return rows;
     }
 
-    List<String> getTypes(int pokeID) {
+    List<String> getPokeTypes(int pokeID) {
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns = {PokemonHelper.TYPE_NAME};
         Cursor cursor = db.query(PokemonHelper.HASTYPE, columns, PokemonHelper.ID+"="+pokeID, null, null, null, null);
@@ -52,6 +52,24 @@ public class PokemonDatabaseAdapter {
             list.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME)));
         }
         return list;
+    }
+
+    String getAttackTypes(String name, String table) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {PokemonHelper.TYPE_NAME};
+        String columnName = "";
+
+        if (table.equals("Ulti"))
+            columnName = "UltiName";
+        else
+            columnName = "AttackName";
+
+        Cursor cursor = db.query(table, columns, columnName+"="+name, null, null, null, null);
+        String type = "";
+        while (cursor.moveToNext()) {
+            type = cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME));
+        }
+        return type;
     }
 
     int getCatched (int pokeID) {
