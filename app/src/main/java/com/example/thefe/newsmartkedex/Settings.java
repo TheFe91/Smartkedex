@@ -98,6 +98,8 @@ public class Settings extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (playPokemonGO.isChecked())
                     setpokeGO = 1;
+                else
+                    setpokeGO = 0;
             }
         });
 

@@ -115,11 +115,11 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
 
         final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
+        pokeSwitch.setText("Catturato  ");
+
 
         if (pokemonHelper.getPokemonGO() == 1) { //if my user plays PokémonGO
-            pokeSwitch.setText("Catturato  ");
             pokeDetails.setText("Dettagli");
-
             int catched = pokemonHelper.getCatched(pokeID);
             if (catched == 0)
                 pokeDetails.setEnabled(false);
@@ -151,10 +151,12 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
             });
         }
         else { //removing switch and button, since my user doesn't play PokémonGO
-            ViewGroup layout = (ViewGroup) pokeDetails.getParent();
+            /*ViewGroup layout = (ViewGroup) pokeDetails.getParent();
             layout.removeView(pokeDetails);
             layout = (ViewGroup) pokeSwitch.getParent();
-            layout.removeView(pokeSwitch);
+            layout.removeView(pokeSwitch);*/
+            pokeDetails.setAlpha(0);
+            pokeSwitch.setAlpha(0);
         }
 
         getActionBar();
