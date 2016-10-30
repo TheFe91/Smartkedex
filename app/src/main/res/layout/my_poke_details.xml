@@ -12,12 +12,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/pkmnName"
+        android:layout_centerHorizontal="true"
         android:textSize="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/break1"
+        android:textSize="20sp"
+        android:layout_below="@+id/pkmnName"/>
 
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/pkmnName"
+        android:layout_below="@+id/break1"
         android:id="@+id/tableNumber">
         <TableRow>
             <TextView
@@ -25,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/number"/>
             <Spinner
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/spinnerNumber"/>
         </TableRow>
@@ -35,16 +43,18 @@
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tableNumber">
+        android:layout_below="@+id/tableNumber"
+        android:id="@+id/copies">
         <TableRow>
-            <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:id="@+id/esemplare1"/>
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/esemplare1attacks"/>
+            <!--<ImageView-->
+                <!--android:layout_width="70dp"-->
+                <!--android:layout_height="70dp"-->
+                <!--android:id="@+id/esemplare1"/>-->
+            <!--<Spinner-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:id="@+id/esemplare1attacks"/>-->
         </TableRow>
     </TableLayout>
 

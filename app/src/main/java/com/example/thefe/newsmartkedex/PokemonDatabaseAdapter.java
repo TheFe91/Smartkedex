@@ -140,6 +140,20 @@ public class PokemonDatabaseAdapter {
         return pokemonGO;
     }
 
+    int getNumberOfCopies (int pokeID) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {PokemonHelper.QUANTITY};
+        Cursor cursor = db.query(PokemonHelper.CATCHES, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
+
+        int numberOfCopies = 0;
+        while (cursor.moveToNext()) {
+            numberOfCopies = cursor.getInt(cursor.getColumnIndex(PokemonHelper.QUANTITY));
+        }
+
+        db.close();
+        return numberOfCopies;
+    }
+
     String[] getAttacks (int pokeID) {
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns = {PokemonHelper.ATTACK_NAME};
@@ -175,6 +189,11 @@ public class PokemonDatabaseAdapter {
     void updatePokemonGO (int newPokemonGO, int oldPokemonGO) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("UPDATE Settings SET PokemonGO = '"+newPokemonGO+"' WHERE PokemonGO = '"+oldPokemonGO+"'");
+    }
+
+    void updateCatches (int pokeID, int numberOfCopies) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("UPDATE Catches SET Quantity = "+numberOfCopies+" WHERE ID = "+pokeID);
     }
 
     private static class PokemonHelper extends SQLiteOpenHelper {

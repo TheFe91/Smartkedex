@@ -3,12 +3,16 @@ package com.example.thefe.newsmartkedex;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +35,8 @@ public class MyPokeDetails extends AppCompatActivity {
         Intent i = getIntent();
         pokeID = i.getExtras().getInt("id");
         PokemonDetails pokemonDetails = new PokemonDetails();
-        PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
-        String pokeName = pokemonDetails.getName(pokeID);
+        final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
+        final String pokeName = pokemonDetails.getName(pokeID);
         String owner = pokemonHelper.getOwner();
 
         getActionBar();
@@ -57,28 +61,57 @@ public class MyPokeDetails extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), String.valueOf(spinner.getSelectedItem()), Toast.LENGTH_SHORT).show();
+                pokemonHelper.updateCatches(pokeID, (int)spinner.getSelectedItem());
+                System.err.println("Inserimento avvenuto");
+
+                int numberOfCopies = pokemonHelper.getNumberOfCopies(pokeID);
+                TableLayout tl = (TableLayout)findViewById(R.id.copies);
+
+                ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext());
+
+                for (int j = 0; j < numberOfCopies; j++) {
+                    // get a reference for the TableLayout
+                    TableLayout table = (TableLayout)findViewById(R.id.copies);
+
+                    // create a new TableRow
+                    TableRow row = new TableRow(getApplicationContext());
+
+                    ImageView iv = new ImageView(getApplicationContext());
+                    iv.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(300,300);
+                    iv.setLayoutParams(params);
+                    iv.setId(j);
+
+                    Spinner internalSpinner = new Spinner(getApplicationContext());
+                    params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.gravity = Gravity.CENTER_VERTICAL;
+                    internalSpinner.setLayoutParams(params);
+                    internalSpinner.setId(j);
+
+                    String[] attacks = pokemonHelper.getAttacks(pokeID);
+
+                    //setting up the InternalSpinner
+                    List<String> attacchi = new ArrayList<>();
+                    for (String element:attacks) {
+                        if (!element.equals(""))
+                            attacchi.add(element);
+                    }
+                    ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacchi);
+                    attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    internalSpinner.setAdapter(attacksAdapter);
+
+                    // add the TextView  to the new TableRow
+                    row.addView(iv);
+                    row.addView(internalSpinner);
+
+                    // add the TableRow to the TableLayout
+                    table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent){}
         });
-
-        ImageAdapter imageAdapter = new ImageAdapter(this);
-        ImageView imageView = (ImageView) findViewById(R.id.esemplare1);
-        imageView.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
-        String[] attacks = pokemonHelper.getAttacks(pokeID);
-
-        //defining and setting up the InternalSpinner
-        Spinner internalSpinner = (Spinner)findViewById(R.id.esemplare1attacks);
-        List<String> attacchi = new ArrayList<>();
-        for (String element:attacks) {
-            if (!element.equals(""))
-                attacchi.add(element);
-        }
-        ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, attacchi);
-        attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        internalSpinner.setAdapter(attacksAdapter);
 
     }
 
