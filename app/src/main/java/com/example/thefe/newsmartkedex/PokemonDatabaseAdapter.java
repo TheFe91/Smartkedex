@@ -21,15 +21,30 @@ public class PokemonDatabaseAdapter {
         helper = new PokemonHelper(context);
     }
 
+    void clearCopy (String pokeName, Context context) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("DELETE FROM Copy WHERE PokemonName = '"+pokeName+"'");
+        String[] columns = {PokemonHelper.POKEMONNAME};
+        Cursor cursor = db.query(PokemonHelper.COPY, columns, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            Toast.makeText(context, cursor.getString(0)+"\n", Toast.LENGTH_SHORT).show();
+        }
+        db.close();
+    }
+
     void insertSettingsData(String owner, String smartkedex, String language, int pokemonGO) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("INSERT INTO Settings (Owner, SmartkedexName, Language, PokemonGO) VALUES ('"+owner+"', '"+smartkedex+"', '"+language+"', '"+pokemonGO+"')");
+        db.close();
     }
 
     void insertCatches (int pokeID, String owner) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("INSERT INTO Catches (ID, Owner) VALUES ("+pokeID+", '"+owner+"')");
+        db.close();
     }
+
+    ////////////////////////////////////////////////////////////////////GETTERS////////////////////////////////////////////////////////////////////////////////////
 
     int getRows (String tableName) {
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -82,6 +97,19 @@ public class PokemonDatabaseAdapter {
 
         db.close();
         return rows;
+    }
+
+    String getPokeAttack (int pokeCopy) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String attack = "";
+        String[] columns = {PokemonHelper.ATTACK_NAME};
+        Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.ID+"="+pokeCopy, null, null, null, null);
+        while (cursor.moveToNext()) {
+            attack = cursor.getString(cursor.getColumnIndex(PokemonHelper.ATTACK_NAME));
+        }
+
+        db.close();
+        return attack;
     }
 
     public String getLanguage () {
@@ -170,6 +198,8 @@ public class PokemonDatabaseAdapter {
         db.close();
         return attacks;
     }
+
+    ////////////////////////////////////////////////////////////////////UPDATERS////////////////////////////////////////////////////////////////////////////////////
 
     void updateLanguage (String newLanguage, String oldLanguage) {
         SQLiteDatabase db = helper.getWritableDatabase();

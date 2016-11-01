@@ -13,7 +13,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
@@ -151,10 +150,6 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
             });
         }
         else { //removing switch and button, since my user doesn't play PokémonGO
-            /*ViewGroup layout = (ViewGroup) pokeDetails.getParent();
-            layout.removeView(pokeDetails);
-            layout = (ViewGroup) pokeSwitch.getParent();
-            layout.removeView(pokeSwitch);*/
             pokeDetails.setAlpha(0);
             pokeSwitch.setAlpha(0);
         }
