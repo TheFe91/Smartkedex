@@ -14,6 +14,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * Created by TheFe on 01/11/2016.
  */
@@ -53,9 +55,10 @@ public class MyPokeDetails extends AppCompatActivity {
 
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
-        int catched = pokemonHelper.getCopy(pokeID);
+        List<Integer> ids = pokemonHelper.getIdsFromPokeName(pokemonDetails.getName(pokeID));
+        System.err.println("Size: "+ids.size());
 
-        for (int j = 0; j < catched; j++) {
+        for (int element:ids) {
             TableLayout tableLayout = (TableLayout)findViewById(R.id.tableNumber);
             TableRow tableRow = new TableRow(getApplicationContext());
             TableLayout attacchi = new TableLayout(getApplicationContext());
@@ -69,8 +72,9 @@ public class MyPokeDetails extends AppCompatActivity {
             TableRow.LayoutParams trparams = new TableRow.LayoutParams(200,200);
 
             imageView.setLayoutParams(trparams);
-            imageView.setId(j);
-            attack.setText("attack 35");
+            imageView.setId(element);
+            String[] attacks = pokemonHelper.getPokeAttacks(element);
+            attack.setText(attacks[0]);
             ulti.setText("ulti 120");
             attack.setTextColor(getResources().getColor(R.color.colorAccent));
             ulti.setTextColor(getResources().getColor(R.color.colorAccent));

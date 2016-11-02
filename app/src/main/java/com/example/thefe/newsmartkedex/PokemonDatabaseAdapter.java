@@ -107,13 +107,28 @@ public class PokemonDatabaseAdapter {
         return quantity;
     }
 
-    String getPokeAttack (int pokeCopy) {
+    List<Integer> getIdsFromPokeName (String pokeName) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        String attack = "";
-        String[] columns = {PokemonHelper.ATTACK_NAME};
+        String[] columns = {PokemonHelper.ID};
+        List<Integer> list = new ArrayList<>();
+        Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.POKEMONNAME+"='"+pokeName+"'", null, null, null, null);
+        System.err.println("Sono dentro");
+        while (cursor.moveToNext()) {
+            list.add(cursor.getInt(cursor.getColumnIndex(PokemonHelper.ID)));
+        }
+
+        db.close();
+        return list;
+    }
+
+    String[] getPokeAttacks (int pokeCopy) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] attack = {"", ""};
+        String[] columns = {PokemonHelper.ATTACK_NAME, PokemonHelper.ULTI_NAME};
         Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.ID+"="+pokeCopy, null, null, null, null);
         while (cursor.moveToNext()) {
-            attack = cursor.getString(cursor.getColumnIndex(PokemonHelper.ATTACK_NAME));
+            attack[0] = cursor.getString(cursor.getColumnIndex(PokemonHelper.ATTACK_NAME));
+            attack[1] = cursor.getString(cursor.getColumnIndex(PokemonHelper.ULTI_NAME));
         }
 
         db.close();

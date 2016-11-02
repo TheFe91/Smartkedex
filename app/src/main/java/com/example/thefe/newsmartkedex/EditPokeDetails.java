@@ -26,6 +26,7 @@ import java.util.List;
 public class EditPokeDetails extends AppCompatActivity {
 
     int pokeID;
+    Spinner internalSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,45 @@ public class EditPokeDetails extends AppCompatActivity {
                     TableRow.LayoutParams params = new TableRow.LayoutParams(300,300);
                     iv.setLayoutParams(params);
 
-                    Spinner internalSpinner = new Spinner(getApplicationContext());
+                    internalSpinner = new Spinner(getApplicationContext());
+                    params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    params.gravity = Gravity.CENTER_VERTICAL;
+                    internalSpinner.setLayoutParams(params);
+                    internalSpinner.setId(j);
+
+                    String[] attacks = pokemonHelper.getAttacks(pokeID);
+
+                    //setting up the InternalSpinner
+                    List<String> attacchi = new ArrayList<>();
+                    for (String element:attacks) {
+                        if (!element.equals(""))
+                            attacchi.add(element);
+                    }
+                    ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacchi);
+                    attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    internalSpinner.setAdapter(attacksAdapter);
+
+                    // add the TextView  to the new TableRow
+                    row.addView(iv);
+                    row.addView(internalSpinner);
+
+                    // add the TableRow to the TableLayout
+                    table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                }
+
+                for (int j = 0; j < (int)spinner.getSelectedItem(); j++) {
+                    // get a reference for the TableLayout
+                    TableLayout table = (TableLayout)findViewById(R.id.copies);
+
+                    // create a new TableRow
+                    TableRow row = new TableRow(getApplicationContext());
+
+                    ImageView iv = new ImageView(getApplicationContext());
+                    iv.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(300,300);
+                    iv.setLayoutParams(params);
+
+                    internalSpinner = new Spinner(getApplicationContext());
                     params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.gravity = Gravity.CENTER_VERTICAL;
                     internalSpinner.setLayoutParams(params);
@@ -111,20 +150,24 @@ public class EditPokeDetails extends AppCompatActivity {
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //pokemonHelper.updateCatches(pokeID, (int)spinner.getSelectedItem());
+                pokemonHelper.updateCatches(pokeID, (int)spinner.getSelectedItem());
+                System.err.println("Ho inserito "+spinner.getSelectedItem()+" "+pokeName);
+                for (int j = 0; j < (int)spinner.getSelectedItem(); j++) {
+                    pokemonHelper.insertCopy((String)internalSpinner.getSelectedItem(), "", pokemonDetails.getName(pokeID));
+                }
 
-                int catched = pokemonHelper.getCatched(pokeID);
-                int check = (int)spinner.getSelectedItem();
-
-                if (check == catched) {
-                    //TODO: IMPLEMENT THIS CASE
-                }
-                else if (check < catched) {
-                    //TODO: IMPLEMENT THIS CASE
-                }
-                else if (check > catched) {
-                    //TODO: IMPLEMENT THIS CASE
-                }
+//                int catched = pokemonHelper.getCatched(pokeID);
+//                int check = (int)spinner.getSelectedItem();
+//
+//                if (check == catched) {
+//                    //TODO: IMPLEMENT THIS CASE
+//                }
+//                else if (check < catched) {
+//                    //TODO: IMPLEMENT THIS CASE
+//                }
+//                else if (check > catched) {
+//                    //TODO: IMPLEMENT THIS CASE
+//                }
             }
         });
 
