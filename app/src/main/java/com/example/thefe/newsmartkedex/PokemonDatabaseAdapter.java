@@ -99,6 +99,19 @@ public class PokemonDatabaseAdapter {
         return rows;
     }
 
+    int getCopy (int pokeID) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {PokemonHelper.QUANTITY};
+        Cursor cursor = db.query(PokemonHelper.CATCHES, columns, PokemonHelper.ID+"="+pokeID, null, null, null, null);
+        int quantity = 0;
+        while (cursor.moveToNext()) {
+            quantity = cursor.getInt(cursor.getColumnIndex(PokemonHelper.QUANTITY));
+        }
+
+        db.close();
+        return quantity;
+    }
+
     String getPokeAttack (int pokeCopy) {
         SQLiteDatabase db = helper.getReadableDatabase();
         String attack = "";

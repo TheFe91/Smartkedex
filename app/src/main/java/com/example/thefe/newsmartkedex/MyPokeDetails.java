@@ -51,32 +51,37 @@ public class MyPokeDetails extends AppCompatActivity {
             }
         });
 
-        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.mpdlayout);
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
-        int catched = pokemonHelper.getCatched(pokeID);
+        int catched = pokemonHelper.getCopy(pokeID);
+        System.err.println(catched);
 
         for (int j = 0; j < catched; j++) {
-            TableLayout tableLayout = new TableLayout(getApplicationContext());
+            TableLayout tableLayout = (TableLayout)findViewById(R.id.tableNumber);
             TableRow tableRow = new TableRow(getApplicationContext());
             ImageView imageView = new ImageView(getApplicationContext());
             imageView.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
             TextView attack = new TextView(getApplicationContext());
             TextView ulti = new TextView(getApplicationContext());
 
-            TableLayout.LayoutParams tlparams = new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             TableRow.LayoutParams trparams = new TableRow.LayoutParams(300,300);
 
             imageView.setLayoutParams(trparams);
             imageView.setId(j);
 
             trparams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            trparams.gravity = Gravity.CENTER_VERTICAL;
-            int pokeCopy =
-            attack.setText(pokemonHelper.getPokeAttack(pokeCopy));
             attack.setLayoutParams(trparams);
+            ulti.setLayoutParams(trparams);
+            attack.setText("attack 35");
+            ulti.setText("ulti 120");
+            attack.setTextColor(getResources().getColor(R.color.colorAccent));
+            ulti.setTextColor(getResources().getColor(R.color.colorAccent));
 
+            tableRow.addView(imageView);
+            tableRow.addView(attack);
+            tableRow.addView(ulti);
 
+            tableLayout.addView(tableRow, new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         }
     }
