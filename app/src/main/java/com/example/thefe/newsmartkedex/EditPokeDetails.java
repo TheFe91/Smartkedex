@@ -49,7 +49,7 @@ public class EditPokeDetails extends AppCompatActivity {
         //defining and setting up the SpinnerNumber
         final Spinner spinner = (Spinner)findViewById(R.id.spinnerNumber);
         List<Integer> list = new ArrayList<>();
-        for (int j = 1; j < 51; j++) {
+        for (int j = 0; j < 51; j++) {
             list.add(j);
         }
 
@@ -60,9 +60,6 @@ public class EditPokeDetails extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                pokemonHelper.updateCatches(pokeID, (int)spinner.getSelectedItem());
-                System.err.println("Inserimento avvenuto");
-
                 int numberOfCopies = pokemonHelper.getNumberOfCopies(pokeID);
 
                 ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext());
@@ -110,12 +107,24 @@ public class EditPokeDetails extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent){}
         });
 
-        //temporary button to empty Copy Table
-        Button cc = (Button)findViewById(R.id.clearcopy);
-        cc.setOnClickListener(new View.OnClickListener() {
+        Button apply = (Button)findViewById(R.id.apply);
+        apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pokemonHelper.clearCopy(pokeName, getApplicationContext());
+                //pokemonHelper.updateCatches(pokeID, (int)spinner.getSelectedItem());
+
+                int catched = pokemonHelper.getCatched(pokeID);
+                int check = (int)spinner.getSelectedItem();
+
+                if (check == catched) {
+                    //TODO: IMPLEMENT THIS CASE
+                }
+                else if (check < catched) {
+                    //TODO: IMPLEMENT THIS CASE
+                }
+                else if (check > catched) {
+                    //TODO: IMPLEMENT THIS CASE
+                }
             }
         });
 

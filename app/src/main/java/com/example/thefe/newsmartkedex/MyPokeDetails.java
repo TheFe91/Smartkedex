@@ -54,32 +54,40 @@ public class MyPokeDetails extends AppCompatActivity {
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
         int catched = pokemonHelper.getCopy(pokeID);
-        System.err.println(catched);
 
         for (int j = 0; j < catched; j++) {
             TableLayout tableLayout = (TableLayout)findViewById(R.id.tableNumber);
             TableRow tableRow = new TableRow(getApplicationContext());
+            TableLayout attacchi = new TableLayout(getApplicationContext());
+            TableRow attackRow = new TableRow(getApplicationContext());
+            TableRow ultiRow = new TableRow(getApplicationContext());
             ImageView imageView = new ImageView(getApplicationContext());
             imageView.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
             TextView attack = new TextView(getApplicationContext());
             TextView ulti = new TextView(getApplicationContext());
 
-            TableRow.LayoutParams trparams = new TableRow.LayoutParams(300,300);
+            TableRow.LayoutParams trparams = new TableRow.LayoutParams(200,200);
 
             imageView.setLayoutParams(trparams);
             imageView.setId(j);
-
-            trparams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            attack.setLayoutParams(trparams);
-            ulti.setLayoutParams(trparams);
             attack.setText("attack 35");
             ulti.setText("ulti 120");
             attack.setTextColor(getResources().getColor(R.color.colorAccent));
             ulti.setTextColor(getResources().getColor(R.color.colorAccent));
 
+            trparams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            attack.setLayoutParams(trparams);
+            ulti.setLayoutParams(trparams);
+
+            trparams.gravity = Gravity.CENTER_VERTICAL;
+            attacchi.setLayoutParams(trparams);
+
             tableRow.addView(imageView);
-            tableRow.addView(attack);
-            tableRow.addView(ulti);
+            attackRow.addView(attack);
+            ultiRow.addView(ulti);
+            attacchi.addView(attackRow);
+            attacchi.addView(ultiRow);
+            tableRow.addView(attacchi);
 
             tableLayout.addView(tableRow, new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 

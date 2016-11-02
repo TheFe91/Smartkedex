@@ -21,17 +21,6 @@ public class PokemonDatabaseAdapter {
         helper = new PokemonHelper(context);
     }
 
-    void clearCopy (String pokeName, Context context) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("DELETE FROM Copy WHERE PokemonName = '"+pokeName+"'");
-        String[] columns = {PokemonHelper.POKEMONNAME};
-        Cursor cursor = db.query(PokemonHelper.COPY, columns, null, null, null, null, null);
-        while (cursor.moveToNext()) {
-            Toast.makeText(context, cursor.getString(0)+"\n", Toast.LENGTH_SHORT).show();
-        }
-        db.close();
-    }
-
     void insertSettingsData(String owner, String smartkedex, String language, int pokemonGO) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("INSERT INTO Settings (Owner, SmartkedexName, Language, PokemonGO) VALUES ('"+owner+"', '"+smartkedex+"', '"+language+"', '"+pokemonGO+"')");
@@ -41,6 +30,12 @@ public class PokemonDatabaseAdapter {
     void insertCatches (int pokeID, String owner) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("INSERT INTO Catches (ID, Owner) VALUES ("+pokeID+", '"+owner+"')");
+        db.close();
+    }
+
+    void insertCopy (String attackName, String ultiName, String pokeName) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("INSERT INTO Copy (AttackName, UltiName, PokemonName) VALUES ('"+attackName+"', '"+ultiName+"', '"+pokeName+"')");
         db.close();
     }
 
