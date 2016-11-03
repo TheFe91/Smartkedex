@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by TheFe on 19/10/2016.
@@ -64,22 +66,28 @@ public class PokemonDatabaseAdapter {
         return list;
     }
 
-    String getAttackTypes(String name, String table) {
+    Map<String, String> getAttacksStuff(String name, String table) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        String[] columns = {PokemonHelper.TYPE_NAME};
-        String columnName = "";
+        String columnName;
+
+        Map<String, String> map = new HashMap<>();
 
         if (table.equals("Ulti"))
             columnName = "UltiName";
         else
             columnName = "AttackName";
 
-        Cursor cursor = db.query(table, columns, columnName+"="+name, null, null, null, null);
-        String type = "";
+        Cursor cursor = db.query(table, null, columnName+"='"+name+"'", null, null, null, null);
         while (cursor.moveToNext()) {
-            type = cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME));
+            map.put("type", cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME)));
+            map.put("duration", cursor.getString(cursor.getColumnIndex(PokemonHelper.DURATION)));
+            map.put("damage", cursor.getString(cursor.getColumnIndex(PokemonHelper.DAMAGE_DEALT)));
+            if (table.equals("Ulti"))
+                map.put("critical", cursor.getString(cursor.getColumnIndex(PokemonHelper.CRITICAL_CHANCE)));
         }
-        return type;
+
+        db.close();
+        return map;
     }
 
     int getCatched (int pokeID) {
@@ -94,13 +102,12 @@ public class PokemonDatabaseAdapter {
         return rows;
     }
 
-    int getCopy (int pokeID) {
+    int getNumberOfCopies (String pokeName) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        String[] columns = {PokemonHelper.QUANTITY};
-        Cursor cursor = db.query(PokemonHelper.CATCHES, columns, PokemonHelper.ID+"="+pokeID, null, null, null, null);
+        Cursor cursor = db.query(PokemonHelper.COPY, null, PokemonHelper.POKEMONNAME+"='"+pokeName+"'", null, null, null, null);
         int quantity = 0;
         while (cursor.moveToNext()) {
-            quantity = cursor.getInt(cursor.getColumnIndex(PokemonHelper.QUANTITY));
+            quantity++;
         }
 
         db.close();
@@ -112,7 +119,6 @@ public class PokemonDatabaseAdapter {
         String[] columns = {PokemonHelper.ID};
         List<Integer> list = new ArrayList<>();
         Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.POKEMONNAME+"='"+pokeName+"'", null, null, null, null);
-        System.err.println("Sono dentro");
         while (cursor.moveToNext()) {
             list.add(cursor.getInt(cursor.getColumnIndex(PokemonHelper.ID)));
         }
@@ -191,20 +197,6 @@ public class PokemonDatabaseAdapter {
         return pokemonGO;
     }
 
-    int getNumberOfCopies (int pokeID) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String[] columns = {PokemonHelper.QUANTITY};
-        Cursor cursor = db.query(PokemonHelper.CATCHES, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
-
-        int numberOfCopies = 0;
-        while (cursor.moveToNext()) {
-            numberOfCopies = cursor.getInt(cursor.getColumnIndex(PokemonHelper.QUANTITY));
-        }
-
-        db.close();
-        return numberOfCopies;
-    }
-
     String[] getAttacks (int pokeID) {
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns = {PokemonHelper.ATTACK_NAME};
@@ -244,14 +236,9 @@ public class PokemonDatabaseAdapter {
         db.execSQL("UPDATE Settings SET PokemonGO = '"+newPokemonGO+"' WHERE PokemonGO = '"+oldPokemonGO+"'");
     }
 
-    void updateCatches (int pokeID, int numberOfCopies) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE Catches SET Quantity = "+numberOfCopies+" WHERE ID = "+pokeID);
-    }
-
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 5;
+        private static final int DATABASE_VERSION = 400;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -284,7 +271,6 @@ public class PokemonDatabaseAdapter {
         private static final String DURATION = "Duration";
         private static final String CRITICAL_CHANCE = "CriticalChance";
         private static final String TYPE_NAME = "TypeName";
-        private static final String QUANTITY = "Quantity";
         private static final String IDCOPY = "IDCopy";
         private static final String IDPOKEMON = "IDPokemon";
 
@@ -319,7 +305,6 @@ public class PokemonDatabaseAdapter {
                                                      "FOREIGN KEY (" + TYPE_NAME + ") REFERENCES " + TYPE + " (" + TYPE_NAME + "))";
 
         private static final String CREATE_CATCHES = "CREATE TABLE IF NOT EXISTS " + CATCHES + "(" +
-                                                      QUANTITY + INT + "2), " +
                                                       ID + INT + "3), " +
                                                       OWNER + VARCHAR + "40), " +
                                                       "PRIMARY KEY (" + OWNER + ", " + ID + "), " +
@@ -553,9 +538,9 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasType VALUES (7, 'Acqua')");
             db.execSQL("INSERT INTO HasType VALUES (8, 'Acqua')");
             db.execSQL("INSERT INTO HasType VALUES (9, 'Acqua')");
-            db.execSQL("INSERT INTO HasType VALUES (10, 'Coleotter')");
-            db.execSQL("INSERT INTO HasType VALUES (11, 'Coleotter')");
-            db.execSQL("INSERT INTO HasType VALUES (12, 'Coleotter')");
+            db.execSQL("INSERT INTO HasType VALUES (10, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (11, 'Coleottero')");
+            db.execSQL("INSERT INTO HasType VALUES (12, 'Coleottero')");
             db.execSQL("INSERT INTO HasType VALUES (12, 'Volante')");
             db.execSQL("INSERT INTO HasType VALUES (13, 'Coleottero')");
             db.execSQL("INSERT INTO HasType VALUES (14, 'Coleottero')");
@@ -1036,8 +1021,8 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasAttack VALUES (142, 'Morso')");
             db.execSQL("INSERT INTO HasAttack VALUES (143, 'Cozzata Zen')");
             db.execSQL("INSERT INTO HasAttack VALUES (143, 'Leccata')");
-            db.execSQL("INSERT INTO HasAttack VALUES (144, 'Alitogelido')");;
-            db.execSQL("INSERT INTO HasAttack VALUES (145, 'Tuonoshock')");;
+            db.execSQL("INSERT INTO HasAttack VALUES (144, 'Alitogelido')");
+            db.execSQL("INSERT INTO HasAttack VALUES (145, 'Tuonoshock')");
             db.execSQL("INSERT INTO HasAttack VALUES (146, 'Braciere')");
             db.execSQL("INSERT INTO HasAttack VALUES (147, 'Dragospiro')");
             db.execSQL("INSERT INTO HasAttack VALUES (148, 'Dragospiro')");
@@ -1061,6 +1046,8 @@ public class PokemonDatabaseAdapter {
             db.execSQL("DROP TABLE " + TYPE);
             db.execSQL("DROP TABLE " + POKEMON);
             db.execSQL("DROP TABLE " + CATCHES);
+            db.execSQL("DROP TABLE " + HASTYPE);
+            db.execSQL("DROP TABLE " + HASCOPY);
             onCreate(db);
             Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
         }

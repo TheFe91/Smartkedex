@@ -1,6 +1,7 @@
 package com.example.thefe.newsmartkedex;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -14,7 +15,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by TheFe on 01/11/2016.
@@ -74,9 +77,26 @@ public class MyPokeDetails extends AppCompatActivity {
             imageView.setLayoutParams(trparams);
             imageView.setId(element);
             String[] attacks = pokemonHelper.getPokeAttacks(element);
-            attack.setText(attacks[0]);
+
+            Map<String, String> attackStuff = pokemonHelper.getAttacksStuff(attacks[0], "Attack"); //keys are "duration", "type" and "damage"
+            attack.setTypeface(null, Typeface.BOLD);
+            attack.setText(attacks[0] + " - " + attackStuff.get("damage") + " - " + attackStuff.get("duration") + "s");
+            attack.setTextColor(getResources().getColor(getResources().getIdentifier(attackStuff.get("type").toLowerCase(), "color", getPackageName())));
+            List<String> pokeTypes = pokemonHelper.getPokeTypes(pokeID);
+            int j = 0;
+            for (String type:pokeTypes) {
+                if (type.equals(attackStuff.get("type")))
+                    break;
+                else
+                    j++;
+            }
+            if (j < 2) {
+                int stab = Integer.parseInt(attackStuff.get("damage"));
+                stab = stab + (stab / 4);
+                attack.append(" --> STAB: " + stab);
+            }
+
             ulti.setText("ulti 120");
-            attack.setTextColor(getResources().getColor(R.color.colorAccent));
             ulti.setTextColor(getResources().getColor(R.color.colorAccent));
 
             trparams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);

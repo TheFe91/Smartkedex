@@ -3,4 +3,21 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#40a3ff</color>
+
+    <color name="acciaio">#aaaabb</color>
+    <color name="acqua">#3399ff</color>
+    <color name="coleottero">#aabb22</color>
+    <color name="drago">#7766ee</color>
+    <color name="elettro">#ffcc33</color>
+    <color name="erba">#77cc55</color>
+    <color name="fuoco">#ff4422</color>
+    <color name="lotta">#bb5544</color>
+    <color name="normale">#bbbbaa</color>
+    <color name="ghiaccio">#77ddff</color>
+    <color name="psico">#ff5599</color>
+    <color name="roccia">#bbaa66</color>
+    <color name="spettro">#6666bb</color>
+    <color name="terra">#ddbb55</color>
+    <color name="veleno">#aa5599</color>
+    <color name="volante">#6699ff</color>
 </resources>

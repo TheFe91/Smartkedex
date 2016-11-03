@@ -3,6 +3,7 @@ package com.example.thefe.newsmartkedex;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -61,7 +63,7 @@ public class EditPokeDetails extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int numberOfCopies = pokemonHelper.getNumberOfCopies(pokeID);
+                int numberOfCopies = pokemonHelper.getNumberOfCopies(pokemonDetails.getName(pokeID));
 
                 ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext());
 
@@ -74,10 +76,11 @@ public class EditPokeDetails extends AppCompatActivity {
 
                     ImageView iv = new ImageView(getApplicationContext());
                     iv.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
-                    TableRow.LayoutParams params = new TableRow.LayoutParams(300,300);
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(200,200);
                     iv.setLayoutParams(params);
 
                     internalSpinner = new Spinner(getApplicationContext());
+                    internalSpinner.setBackgroundColor(getResources().getColor(R.color.erba));
                     params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.gravity = Gravity.CENTER_VERTICAL;
                     internalSpinner.setLayoutParams(params);
@@ -103,16 +106,29 @@ public class EditPokeDetails extends AppCompatActivity {
                     table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
                 }
 
+                int control = 0;
+                TableLayout table;
+
                 for (int j = 0; j < (int)spinner.getSelectedItem(); j++) {
+//                    if (control != 0) {
+//                        for (int k = 0; k < control; k++) {
+//                            View rowView = findViewById(k);
+//                            ViewGroup viewGroup = (ViewGroup)rowView.getParent();
+//                            viewGroup.removeView(rowView);
+//                        }
+//                        control = 0;
+//                    }
+
                     // get a reference for the TableLayout
-                    TableLayout table = (TableLayout)findViewById(R.id.copies);
+                    table = (TableLayout)findViewById(R.id.internalcopies);
 
                     // create a new TableRow
                     TableRow row = new TableRow(getApplicationContext());
+                    row.setId(j);
 
                     ImageView iv = new ImageView(getApplicationContext());
                     iv.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
-                    TableRow.LayoutParams params = new TableRow.LayoutParams(300,300);
+                    TableRow.LayoutParams params = new TableRow.LayoutParams(200,200);
                     iv.setLayoutParams(params);
 
                     internalSpinner = new Spinner(getApplicationContext());
@@ -132,6 +148,7 @@ public class EditPokeDetails extends AppCompatActivity {
                     ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacchi);
                     attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     internalSpinner.setAdapter(attacksAdapter);
+                    internalSpinner.setBackgroundColor(getResources().getColor(R.color.erba));
 
                     // add the TextView  to the new TableRow
                     row.addView(iv);
@@ -139,6 +156,7 @@ public class EditPokeDetails extends AppCompatActivity {
 
                     // add the TableRow to the TableLayout
                     table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+                    control++;
                 }
             }
 
@@ -150,7 +168,6 @@ public class EditPokeDetails extends AppCompatActivity {
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pokemonHelper.updateCatches(pokeID, (int)spinner.getSelectedItem());
                 System.err.println("Ho inserito "+spinner.getSelectedItem()+" "+pokeName);
                 for (int j = 0; j < (int)spinner.getSelectedItem(); j++) {
                     pokemonHelper.insertCopy((String)internalSpinner.getSelectedItem(), "", pokemonDetails.getName(pokeID));
