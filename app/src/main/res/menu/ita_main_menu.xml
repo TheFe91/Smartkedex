@@ -13,4 +13,10 @@
         android:showAsAction="never"
         android2:title="Credits"/>
 
+    <item
+        android2:id="@+id/share"
+        android:showAsAction="ifRoom"
+        android2:title="share"
+        android2:icon="@mipmap/ic_share_white_16dp"/>
+
 </menu>

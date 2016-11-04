@@ -107,8 +107,19 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
         TextView pkmnName = (TextView)findViewById(R.id.pkmnName);
         if (pokeID < 10)
             pkmnName.setText("#00"+pokeID+" - "+pokeName);
-        else if (pokeID > 9 && pokeID < 100)
-            pkmnName.setText("#0"+pokeID+" - "+pokeName);
+        else if (pokeID > 9 && pokeID < 100) {
+            switch (pokeName) {
+                case "Nidoran_femmina":
+                    pkmnName.setText("#029 - Nidoran Femmina");
+                    break;
+                case "Nidoran_maschio":
+                    pkmnName.setText("#032 - Nidoran Maschio");
+                    break;
+                default:
+                    pkmnName.setText("#0" + pokeID + " - " + pokeName);
+                    break;
+            }
+        }
         else
             pkmnName.setText("#"+pokeID+" - "+pokeName);
 

@@ -13,10 +13,10 @@ import java.util.ArrayList;
  * Created by TheFe on 27/09/2016.
  */
 
-public class ImageAdapter extends BaseAdapter {
+class ImageAdapter extends BaseAdapter {
     private Context mContext;
 
-    public ImageAdapter(Context c) {
+    ImageAdapter(Context c) {
         mContext = c;
     }
 
@@ -50,7 +50,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     // references to our images
-    public Integer[] mThumbIds = {
+    Integer[] mThumbIds = {
             R.drawable.pkmn1, R.drawable.pkmn2,
             R.drawable.pkmn3, R.drawable.pkmn4,
             R.drawable.pkmn5, R.drawable.pkmn6,

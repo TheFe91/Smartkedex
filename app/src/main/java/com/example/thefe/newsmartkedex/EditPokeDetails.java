@@ -2,8 +2,8 @@ package com.example.thefe.newsmartkedex;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -28,7 +27,8 @@ import java.util.List;
 public class EditPokeDetails extends AppCompatActivity {
 
     int pokeID;
-    Spinner internalSpinner;
+    Spinner attackSpinner;
+    Spinner ultiSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,103 +60,122 @@ public class EditPokeDetails extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
 
+        final List<Integer> pokeIds = pokemonHelper.getIdsFromPokeName(pokemonDetails.getName(pokeID));
+
+        final ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext());
+
+        for (int pokeId:pokeIds) {
+            // get a reference for the TableLayout
+            TableLayout table = (TableLayout)findViewById(R.id.copies);
+
+            //create a new TableLayout
+            TableLayout internaltable = new TableLayout(getApplicationContext());
+
+            // create a new TableRow
+            TableRow row = new TableRow(getApplicationContext());
+            TableRow attackRow = new TableRow(getApplicationContext());
+            TableRow ultiRow = new TableRow(getApplicationContext());
+
+            ImageView iv = new ImageView(getApplicationContext());
+            iv.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
+            TableRow.LayoutParams params = new TableRow.LayoutParams(250,250);
+            iv.setLayoutParams(params);
+
+            attackSpinner = new Spinner(getApplicationContext());
+            ultiSpinner = new Spinner(getApplicationContext());
+            params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            attackSpinner.setLayoutParams(params);
+            ultiSpinner.setLayoutParams(params);
+            attackSpinner.setId(pokeId);
+            ultiSpinner.setId(pokeId*10);
+
+            String[] moves = pokemonHelper.getPokeAttacks(pokeId); //0 is attack, 1 is ulti
+
+            List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");
+
+            ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacks);
+            attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            attackSpinner.setAdapter(attacksAdapter);
+            attackSpinner.setSelection(attacksAdapter.getPosition(moves[0]));
+            attackSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[0], "Attack").toLowerCase(), "color", getPackageName())));
+
+            List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
+
+            ArrayAdapter<String>ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
+            attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ultiSpinner.setAdapter(ultiAdapter);
+            ultiSpinner.setSelection(ultiAdapter.getPosition(moves[1]));
+            ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti").toLowerCase(), "color", getPackageName())));
+
+            // add the TextView  to the new TableRow
+            params.gravity = Gravity.CENTER_VERTICAL;
+            params.setMargins(0,10,0,0);
+            row.addView(iv);
+            attackRow.addView(attackSpinner);
+            ultiRow.addView(ultiSpinner);
+            internaltable.addView(attackRow);
+            internaltable.addView(ultiRow);
+            internaltable.setLayoutParams(params);
+            row.addView(internaltable);
+
+            // add the TableRow to the TableLayout
+            table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        }
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                int numberOfCopies = pokemonHelper.getNumberOfCopies(pokemonDetails.getName(pokeID));
-
-                ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext());
-
-                for (int j = 0; j < numberOfCopies; j++) {
+                for (int j = 0; j < (int)spinner.getSelectedItem(); j++) {
                     // get a reference for the TableLayout
                     TableLayout table = (TableLayout)findViewById(R.id.copies);
 
+                    //create a new TableLayout
+                    TableLayout internaltable = new TableLayout(getApplicationContext());
+
                     // create a new TableRow
                     TableRow row = new TableRow(getApplicationContext());
+                    TableRow attackRow = new TableRow(getApplicationContext());
+                    TableRow ultiRow = new TableRow(getApplicationContext());
 
                     ImageView iv = new ImageView(getApplicationContext());
                     iv.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
                     TableRow.LayoutParams params = new TableRow.LayoutParams(200,200);
                     iv.setLayoutParams(params);
 
-                    internalSpinner = new Spinner(getApplicationContext());
-                    internalSpinner.setBackgroundColor(getResources().getColor(R.color.erba));
+                    attackSpinner = new Spinner(getApplicationContext());
+                    ultiSpinner = new Spinner(getApplicationContext());
+                    attackSpinner.setBackgroundColor(getResources().getColor(R.color.erba));
+                    ultiSpinner.setBackgroundColor(getResources().getColor(R.color.erba));
                     params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.gravity = Gravity.CENTER_VERTICAL;
-                    internalSpinner.setLayoutParams(params);
-                    internalSpinner.setId(j);
+                    attackSpinner.setLayoutParams(params);
+                    ultiSpinner.setLayoutParams(params);
+                    attackSpinner.setId(j);
+                    ultiSpinner.setId(j*10);
 
-                    String[] attacks = pokemonHelper.getAttacks(pokeID);
+                    List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");
 
-                    //setting up the InternalSpinner
-                    List<String> attacchi = new ArrayList<>();
-                    for (String element:attacks) {
-                        if (!element.equals(""))
-                            attacchi.add(element);
-                    }
-                    ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacchi);
+                    ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacks);
                     attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    internalSpinner.setAdapter(attacksAdapter);
+                    attackSpinner.setAdapter(attacksAdapter);
+
+                    List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
+
+                    ArrayAdapter<String>ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
+                    attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    ultiSpinner.setAdapter(ultiAdapter);
 
                     // add the TextView  to the new TableRow
+                    params.gravity = Gravity.CENTER_VERTICAL;
                     row.addView(iv);
-                    row.addView(internalSpinner);
+                    attackRow.addView(attackSpinner);
+                    ultiRow.addView(ultiSpinner);
+                    internaltable.addView(attackRow);
+                    internaltable.addView(ultiRow);
+                    internaltable.setLayoutParams(params);
+                    row.addView(internaltable);
 
                     // add the TableRow to the TableLayout
                     table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-                }
-
-                int control = 0;
-                TableLayout table;
-
-                for (int j = 0; j < (int)spinner.getSelectedItem(); j++) {
-//                    if (control != 0) {
-//                        for (int k = 0; k < control; k++) {
-//                            View rowView = findViewById(k);
-//                            ViewGroup viewGroup = (ViewGroup)rowView.getParent();
-//                            viewGroup.removeView(rowView);
-//                        }
-//                        control = 0;
-//                    }
-
-                    // get a reference for the TableLayout
-                    table = (TableLayout)findViewById(R.id.internalcopies);
-
-                    // create a new TableRow
-                    TableRow row = new TableRow(getApplicationContext());
-                    row.setId(j);
-
-                    ImageView iv = new ImageView(getApplicationContext());
-                    iv.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
-                    TableRow.LayoutParams params = new TableRow.LayoutParams(200,200);
-                    iv.setLayoutParams(params);
-
-                    internalSpinner = new Spinner(getApplicationContext());
-                    params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.gravity = Gravity.CENTER_VERTICAL;
-                    internalSpinner.setLayoutParams(params);
-                    internalSpinner.setId(j);
-
-                    String[] attacks = pokemonHelper.getAttacks(pokeID);
-
-                    //setting up the InternalSpinner
-                    List<String> attacchi = new ArrayList<>();
-                    for (String element:attacks) {
-                        if (!element.equals(""))
-                            attacchi.add(element);
-                    }
-                    ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacchi);
-                    attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    internalSpinner.setAdapter(attacksAdapter);
-                    internalSpinner.setBackgroundColor(getResources().getColor(R.color.erba));
-
-                    // add the TextView  to the new TableRow
-                    row.addView(iv);
-                    row.addView(internalSpinner);
-
-                    // add the TableRow to the TableLayout
-                    table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-                    control++;
                 }
             }
 
@@ -168,23 +187,23 @@ public class EditPokeDetails extends AppCompatActivity {
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.err.println("Ho inserito "+spinner.getSelectedItem()+" "+pokeName);
-                for (int j = 0; j < (int)spinner.getSelectedItem(); j++) {
-                    pokemonHelper.insertCopy((String)internalSpinner.getSelectedItem(), "", pokemonDetails.getName(pokeID));
+                for (int pokeId:pokeIds) {
+                    attackSpinner = (Spinner)findViewById(pokeId);
+                    String attack = (String) attackSpinner.getSelectedItem();
+                    ultiSpinner = (Spinner)findViewById(pokeId*10);
+                    String ulti = (String) ultiSpinner.getSelectedItem();
+                    pokemonHelper.updatePokeAttacks(attack, ulti, pokeId);
                 }
 
-//                int catched = pokemonHelper.getCatched(pokeID);
-//                int check = (int)spinner.getSelectedItem();
-//
-//                if (check == catched) {
-//                    //TODO: IMPLEMENT THIS CASE
-//                }
-//                else if (check < catched) {
-//                    //TODO: IMPLEMENT THIS CASE
-//                }
-//                else if (check > catched) {
-//                    //TODO: IMPLEMENT THIS CASE
-//                }
+                System.err.println("Ho inserito "+spinner.getSelectedItem()+" "+pokeName);
+                for (int j = 0; j < (int)spinner.getSelectedItem(); j++) {
+                    pokemonHelper.insertCopy((String)attackSpinner.getSelectedItem(), (String)ultiSpinner.getSelectedItem(), pokemonDetails.getName(pokeID));
+                }
+
+                Intent i = new Intent (getApplicationContext(), MyPokeDetails.class);
+                i.putExtra("id", pokeID);
+                startActivity(i);
+                finish();
             }
         });
 

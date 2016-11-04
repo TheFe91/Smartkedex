@@ -55,6 +55,25 @@ public class PokemonDatabaseAdapter {
         return rows;
     }
 
+    String getMovesType (String name, String type) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {PokemonHelper.TYPE_NAME};
+        Cursor cursor;
+        String moveType = "";
+        if (type.equals("Ulti"))
+            cursor = db.query(type, columns, PokemonHelper.ULTI_NAME+"='"+name+"'", null, null, null, null);
+
+        else
+            cursor = db.query(type, columns, PokemonHelper.ATTACK_NAME+"='"+name+"'", null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            moveType = cursor.getString(0);
+        }
+
+        db.close();
+        return moveType;
+    }
+
     List<String> getPokeTypes(int pokeID) {
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns = {PokemonHelper.TYPE_NAME};
@@ -63,6 +82,8 @@ public class PokemonDatabaseAdapter {
         while (cursor.moveToNext()) {
             list.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME)));
         }
+
+        db.close();
         return list;
     }
 
@@ -100,18 +121,6 @@ public class PokemonDatabaseAdapter {
 
         db.close();
         return rows;
-    }
-
-    int getNumberOfCopies (String pokeName) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(PokemonHelper.COPY, null, PokemonHelper.POKEMONNAME+"='"+pokeName+"'", null, null, null, null);
-        int quantity = 0;
-        while (cursor.moveToNext()) {
-            quantity++;
-        }
-
-        db.close();
-        return quantity;
     }
 
     List<Integer> getIdsFromPokeName (String pokeName) {
@@ -197,17 +206,23 @@ public class PokemonDatabaseAdapter {
         return pokemonGO;
     }
 
-    String[] getAttacks (int pokeID) {
+    List<String> getMoves (int pokeID, String table) {
         SQLiteDatabase db = helper.getReadableDatabase();
-        String[] columns = {PokemonHelper.ATTACK_NAME};
-        Cursor cursor = db.query(PokemonHelper.HASATTACK, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
+        String[] columns = {""};
+        if (table.equals("HasAttack"))
+            columns[0] = PokemonHelper.ATTACK_NAME;
+        else
+            columns[0] = PokemonHelper.ULTI_NAME;
 
-        String[] attacks = {"", ""};
-        int i = 0;
+        Cursor cursor = db.query(table, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
+
+        List<String> attacks = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            attacks[i] = cursor.getString(cursor.getColumnIndex(PokemonHelper.ATTACK_NAME)); //putting the content at the i position of the attacks array, taking the column index of ATTACK_NAME
-            i++;
+            if (table.equals("HasAttack"))
+                attacks.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.ATTACK_NAME))); //putting the content at the i position of the attacks array, taking the column index of ATTACK_NAME
+            else
+                attacks.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.ULTI_NAME)));
         }
 
         db.close();
@@ -219,26 +234,36 @@ public class PokemonDatabaseAdapter {
     void updateLanguage (String newLanguage, String oldLanguage) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("UPDATE Settings SET Language = '"+newLanguage+"' WHERE Language = '"+oldLanguage+"';");
+        db.close();
     }
 
     void updateOwner (String newOwner, String oldOwner) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("UPDATE Settings SET Owner = '"+newOwner+"' WHERE Owner = '"+oldOwner+"';");
+        db.close();
     }
 
     void updateSmartkedex (String newSmartkedex, String oldSmartkedex) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("UPDATE Settings SET SmartkedexName = '"+newSmartkedex+"' WHERE SmartkedexName = '"+oldSmartkedex+"';");
+        db.close();
     }
 
     void updatePokemonGO (int newPokemonGO, int oldPokemonGO) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("UPDATE Settings SET PokemonGO = '"+newPokemonGO+"' WHERE PokemonGO = '"+oldPokemonGO+"'");
+        db.close();
+    }
+
+    void updatePokeAttacks (String attack, String ulti, int pokeID) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("UPDATE Copy SET AttackName = '"+attack+"', UltiName = '" + ulti + "' WHERE ID = "+pokeID);
+        db.close();
     }
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 400;
+        private static final int DATABASE_VERSION = 2;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -1033,6 +1058,451 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasAttack VALUES (151, 'Psicotaglio')");
             db.execSQL("INSERT INTO HasAttack VALUES (151, 'Botta')");
 
+            //Populating HasUlti
+            db.execSQL("INSERT INTO HasUlti VALUES (1, 'Vigorcolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (1, 'Semebomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (1, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (2, 'Solarraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (2, 'Vigorcolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (2, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (3, 'Solarraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (3, 'Petalodanza')");
+            db.execSQL("INSERT INTO HasUlti VALUES (3, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (4, 'Lanciafiamme')");
+            db.execSQL("INSERT INTO HasUlti VALUES (5, 'Lanciafiamme')");
+            db.execSQL("INSERT INTO HasUlti VALUES (4, 'Pirolancio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (5, 'Pirolancio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (4, 'Nitrocarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (5, 'Fuocopugno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (6, 'Fuocobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (6, 'Lanciafiamme')");
+            db.execSQL("INSERT INTO HasUlti VALUES (6, 'Dragartigli')");
+            db.execSQL("INSERT INTO HasUlti VALUES (7, 'Idrondata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (7, 'Idropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (7, 'Acquagetto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (8, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (8, 'Acquagetto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (8, 'Geloraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (9, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (9, 'Geloraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (9, 'Cannonflash')");
+            db.execSQL("INSERT INTO HasUlti VALUES (10, 'Scontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (11, 'Scontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (12, 'Ronzio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (12, 'Segnoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (12, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (13, 'Scontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (14, 'Scontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (15, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (15, 'Forbice X')");
+            db.execSQL("INSERT INTO HasUlti VALUES (15, 'Aeroassalto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (16, 'Aerasoio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (16, 'Aeroassalto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (16, 'Tornado')");
+            db.execSQL("INSERT INTO HasUlti VALUES (17, 'Aerasoio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (17, 'Aeroassalto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (17, 'Tornado')");
+            db.execSQL("INSERT INTO HasUlti VALUES (18, 'Tifone')");
+            db.execSQL("INSERT INTO HasUlti VALUES (18, 'Aerasoio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (18, 'Aeroassalto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (19, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (19, 'Corposcontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (19, 'Iperzanna')");
+            db.execSQL("INSERT INTO HasUlti VALUES (20, 'Iperraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (20, 'Iperzanna')");
+            db.execSQL("INSERT INTO HasUlti VALUES (20, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (21, 'Perforbecco')");
+            db.execSQL("INSERT INTO HasUlti VALUES (21, 'Aeroassalto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (21, 'Tornado')");
+            db.execSQL("INSERT INTO HasUlti VALUES (22, 'Giravvita')");
+            db.execSQL("INSERT INTO HasUlti VALUES (22, 'Aeroassalto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (22, 'Tornado')");
+            db.execSQL("INSERT INTO HasUlti VALUES (23, 'Sporcolancio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (23, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (23, 'Avvolgibotta')");
+            db.execSQL("INSERT INTO HasUlti VALUES (24, 'Fangonda')");
+            db.execSQL("INSERT INTO HasUlti VALUES (24, 'Sporcolancio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (24, 'Neropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (25, 'Tuono')");
+            db.execSQL("INSERT INTO HasUlti VALUES (25, 'Fulmine')");
+            db.execSQL("INSERT INTO HasUlti VALUES (25, 'Scarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (26, 'Tuono')");
+            db.execSQL("INSERT INTO HasUlti VALUES (26, 'Tuonopugno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (26, 'Breccia')");
+            db.execSQL("INSERT INTO HasUlti VALUES (27, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (27, 'Frana')");
+            db.execSQL("INSERT INTO HasUlti VALUES (27, 'Rocciotomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (28, 'Terremoto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (28, 'Battiterra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (28, 'Rocciotomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (29, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (29, 'Velenodenti')");
+            db.execSQL("INSERT INTO HasUlti VALUES (29, 'Corposcontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (30, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (30, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (30, 'Velenodenti')");
+            db.execSQL("INSERT INTO HasUlti VALUES (31, 'Terremoto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (31, 'Pietrataglio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (31, 'Fangonda')");
+            db.execSQL("INSERT INTO HasUlti VALUES (32, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (32, 'Corposcontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (32, 'Incornata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (33, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (33, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (33, 'Incornata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (34, 'Terremoto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (34, 'Megacorno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (34, 'Fangonda')");
+            db.execSQL("INSERT INTO HasUlti VALUES (35, 'Forza Lunare')");
+            db.execSQL("INSERT INTO HasUlti VALUES (35, 'Incantavoce')");
+            db.execSQL("INSERT INTO HasUlti VALUES (35, 'Corposcontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (36, 'Forza Lunare')");
+            db.execSQL("INSERT INTO HasUlti VALUES (36, 'Magibrillio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (36, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (37, 'Lanciafiamme')");
+            db.execSQL("INSERT INTO HasUlti VALUES (37, 'Nitrocarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (37, 'Corposcontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (38, 'Fuocobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (38, 'Ondacalda')");
+            db.execSQL("INSERT INTO HasUlti VALUES (38, 'Lanciafiamme')");
+            db.execSQL("INSERT INTO HasUlti VALUES (39, 'Carineria')");
+            db.execSQL("INSERT INTO HasUlti VALUES (39, 'Incantavoce')");
+            db.execSQL("INSERT INTO HasUlti VALUES (39, 'Corposcontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (40, 'Iperraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (40, 'Magibrillio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (40, 'Carineria')");
+            db.execSQL("INSERT INTO HasUlti VALUES (41, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (41, 'Velenodenti')");
+            db.execSQL("INSERT INTO HasUlti VALUES (41, 'Aerasoio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (42, 'Funestovento')");
+            db.execSQL("INSERT INTO HasUlti VALUES (42, 'Aerasoio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (42, 'Velenodenti')");
+            db.execSQL("INSERT INTO HasUlti VALUES (43, 'Forza Lunare')");
+            db.execSQL("INSERT INTO HasUlti VALUES (43, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (43, 'Semebomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (44, 'Forza Lunare')");
+            db.execSQL("INSERT INTO HasUlti VALUES (44, 'Petalodanza')");
+            db.execSQL("INSERT INTO HasUlti VALUES (44, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (45, 'Petalodanza')");
+            db.execSQL("INSERT INTO HasUlti VALUES (45, 'Solarraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (45, 'Forza Lunare')");
+            db.execSQL("INSERT INTO HasUlti VALUES (46, 'Semebomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (46, 'Forbice X')");
+            db.execSQL("INSERT INTO HasUlti VALUES (46, 'Velenocroce')");
+            db.execSQL("INSERT INTO HasUlti VALUES (47, 'Solarraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (47, 'Forbice X')");
+            db.execSQL("INSERT INTO HasUlti VALUES (47, 'Velenocroce')");
+            db.execSQL("INSERT INTO HasUlti VALUES (48, 'Segnoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (48, 'Psicoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (48, 'Velenodenti')");
+            db.execSQL("INSERT INTO HasUlti VALUES (49, 'Ronzio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (49, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (49, 'Velenodenti')");
+            db.execSQL("INSERT INTO HasUlti VALUES (50, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (50, 'Pantanobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (50, 'Rocciotomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (51, 'Terremoto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (51, 'Pantanobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (51, 'Pietrataglio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (52, 'Neropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (52, 'Nottesferza')");
+            db.execSQL("INSERT INTO HasUlti VALUES (52, 'Corposcontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (53, 'Carineria')");
+            db.execSQL("INSERT INTO HasUlti VALUES (53, 'Gemmoforza')");
+            db.execSQL("INSERT INTO HasUlti VALUES (53, 'Nottesferza')");
+            db.execSQL("INSERT INTO HasUlti VALUES (54, 'Incrocolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (54, 'Idrondata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (54, 'Psicoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (55, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (55, 'Geloraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (55, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (56, 'Incrocolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (56, 'Breccia')");
+            db.execSQL("INSERT INTO HasUlti VALUES (56, 'Calciobasso')");
+            db.execSQL("INSERT INTO HasUlti VALUES (57, 'Incrocolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (57, 'Calciobasso')");
+            db.execSQL("INSERT INTO HasUlti VALUES (57, 'Nottesferza')");
+            db.execSQL("INSERT INTO HasUlti VALUES (58, 'Lanciafiamme')");
+            db.execSQL("INSERT INTO HasUlti VALUES (58, 'Ruotafuoco')");
+            db.execSQL("INSERT INTO HasUlti VALUES (58, 'Battiterra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (59, 'Fuocobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (59, 'Lanciafiamme')");
+            db.execSQL("INSERT INTO HasUlti VALUES (59, 'Battiterra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (60, 'Corposcontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (60, 'Pantanobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (60, 'Bollaraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (61, 'Idrovampata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (61, 'Bollaraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (61, 'Pantanobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (62, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (62, 'Gelopugno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (62, 'Sottomissione')");
+            db.execSQL("INSERT INTO HasUlti VALUES (63, 'Palla Ombra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (63, 'Segnoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (63, 'Psicoshock')");
+            db.execSQL("INSERT INTO HasUlti VALUES (64, 'Magibrillio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (64, 'Palla Ombra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (64, 'Psicoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (65, 'Magibrillio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (65, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (65, 'Palla Ombra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (66, 'Incrocolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (66, 'Breccia')");
+            db.execSQL("INSERT INTO HasUlti VALUES (66, 'Calciobasso')");
+            db.execSQL("INSERT INTO HasUlti VALUES (67, 'Incrocolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (67, 'Breccia')");
+            db.execSQL("INSERT INTO HasUlti VALUES (67, 'Sottomissione')");
+            db.execSQL("INSERT INTO HasUlti VALUES (68, 'Pietrataglio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (68, 'Incrocolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (68, 'Sottomissione')");
+            db.execSQL("INSERT INTO HasUlti VALUES (69, 'Vigorcolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (69, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (69, 'Avvolgibotta')");
+            db.execSQL("INSERT INTO HasUlti VALUES (70, 'Vigorcolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (70, 'Semebomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (70, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (71, 'Solarraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (71, 'Fendifoglia')");
+            db.execSQL("INSERT INTO HasUlti VALUES (71, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (72, 'Idropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (72, 'Bollaraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (72, 'Avvolgibotta')");
+            db.execSQL("INSERT INTO HasUlti VALUES (73, 'Bora')");
+            db.execSQL("INSERT INTO HasUlti VALUES (73, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (73, 'Fangonda')");
+            db.execSQL("INSERT INTO HasUlti VALUES (74, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (74, 'Frana')");
+            db.execSQL("INSERT INTO HasUlti VALUES (74, 'Rocciotomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (75, 'Pietrataglio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (75, 'Frana')");
+            db.execSQL("INSERT INTO HasUlti VALUES (75, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (76, 'Terremoto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (76, 'Pietrataglio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (76, 'Forzantica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (77, 'Fuocobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (77, 'Ruotafuoco')");
+            db.execSQL("INSERT INTO HasUlti VALUES (77, 'Nitrocarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (78, 'Fuocobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (78, 'Ondacalda')");
+            db.execSQL("INSERT INTO HasUlti VALUES (78, 'Giravvita')");
+            db.execSQL("INSERT INTO HasUlti VALUES (79, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (79, 'Psicoshock')");
+            db.execSQL("INSERT INTO HasUlti VALUES (79, 'Idropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (80, 'Geloraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (80, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (80, 'Idropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (81, 'Fulmine')");
+            db.execSQL("INSERT INTO HasUlti VALUES (81, 'Scarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (81, 'Bombagnete')");
+            db.execSQL("INSERT INTO HasUlti VALUES (82, 'Cannonflash')");
+            db.execSQL("INSERT INTO HasUlti VALUES (82, 'Bombagnete')");
+            db.execSQL("INSERT INTO HasUlti VALUES (82, 'Scarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (83, 'Fendifoglia')");
+            db.execSQL("INSERT INTO HasUlti VALUES (83, 'Aerasoio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (83, 'Aeroassalto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (84, 'Perforbecco')");
+            db.execSQL("INSERT INTO HasUlti VALUES (84, 'Aeroassalto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (84, 'Comete')");
+            db.execSQL("INSERT INTO HasUlti VALUES (85, 'Perforbecco')");
+            db.execSQL("INSERT INTO HasUlti VALUES (85, 'Aeroassalto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (85, 'Aerasoio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (86, 'Idrondata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (86, 'Acquagetto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (86, 'Ventogelato')");
+            db.execSQL("INSERT INTO HasUlti VALUES (87, 'Bora')");
+            db.execSQL("INSERT INTO HasUlti VALUES (87, 'Ventogelto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (87, 'Acquagetto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (88, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (88, 'Fango')");
+            db.execSQL("INSERT INTO HasUlti VALUES (88, 'Pantanobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (89, 'Fangonda')");
+            db.execSQL("INSERT INTO HasUlti VALUES (89, 'Sporcolancio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (89, 'Neropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (90, 'Idropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (90, 'Bollaraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (90, 'Ventogelato')");
+            db.execSQL("INSERT INTO HasUlti VALUES (91, 'Bora')");
+            db.execSQL("INSERT INTO HasUlti VALUES (91, 'Ventogelato')");
+            db.execSQL("INSERT INTO HasUlti VALUES (91, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (92, 'Funestovento')");
+            db.execSQL("INSERT INTO HasUlti VALUES (92, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (92, 'Neropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (93, 'Neropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (93, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (93, 'Palla Ombra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (94, 'Fangonda')");
+            db.execSQL("INSERT INTO HasUlti VALUES (94, 'Neropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (94, 'Palla Ombra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (95, 'Pietrataglio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (95, 'Frana')");
+            db.execSQL("INSERT INTO HasUlti VALUES (95, 'Metaltestata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (96, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (96, 'Psicoshock')");
+            db.execSQL("INSERT INTO HasUlti VALUES (96, 'Psicoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (97, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (97, 'Psicoshock')");
+            db.execSQL("INSERT INTO HasUlti VALUES (97, 'Palla Ombra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (98, 'Idropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (98, 'Bollaraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (98, 'Presa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (99, 'Idropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (99, 'Forbice X')");
+            db.execSQL("INSERT INTO HasUlti VALUES (99, 'Presa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (100, 'Fulmine')");
+            db.execSQL("INSERT INTO HasUlti VALUES (100, 'Scarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (100, 'Segnoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (101, 'Iperraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (101, 'Fulmine')");
+            db.execSQL("INSERT INTO HasUlti VALUES (101, 'Scarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (102, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (102, 'Semebomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (102, 'Forzantica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (103, 'Solarraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (103, 'Semebomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (103, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (104, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (104, 'Battiterra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (104, 'Ossoclava')");
+            db.execSQL("INSERT INTO HasUlti VALUES (105, 'Terremoto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (105, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (105, 'Ossoclava')");
+            db.execSQL("INSERT INTO HasUlti VALUES (106, 'Pietrataglio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (106, 'Calciobasso')");
+            db.execSQL("INSERT INTO HasUlti VALUES (106, 'Pestone')");
+            db.execSQL("INSERT INTO HasUlti VALUES (107, 'Gelopugno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (107, 'Tuonopugno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (107, 'Fuocopugno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (107, 'Breccia')");
+            db.execSQL("INSERT INTO HasUlti VALUES (108, 'Iperraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (108, 'Pestone')");
+            db.execSQL("INSERT INTO HasUlti VALUES (108, 'Presa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (109, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (109, 'Fango')");
+            db.execSQL("INSERT INTO HasUlti VALUES (109, 'Neropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (110, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (110, 'Neropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (110, 'Palla Ombra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (111, 'Battiterra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (111, 'Pestone')");
+            db.execSQL("INSERT INTO HasUlti VALUES (111, 'Incornata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (112, 'Terremoto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (112, 'Pietrataglio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (112, 'Megacorno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (113, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (113, 'Psicoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (113, 'Magibrillio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (114, 'Solarraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (114, 'Vigorcolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (114, 'Fangobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (115, 'Terremoto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (115, 'Breccia')");
+            db.execSQL("INSERT INTO HasUlti VALUES (115, 'Pestone')");
+            db.execSQL("INSERT INTO HasUlti VALUES (116, 'Dragopulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (116, 'Cannonflash')");
+            db.execSQL("INSERT INTO HasUlti VALUES (116, 'Bollaraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (117, 'Bora')");
+            db.execSQL("INSERT INTO HasUlti VALUES (117, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (117, 'Dragoopulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (118, 'Idrondata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (118, 'Idropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (118, 'Incornata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (119, 'Megacorno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (119, 'Giravvita')");
+            db.execSQL("INSERT INTO HasUlti VALUES (119, 'Ventogelato')");
+            db.execSQL("INSERT INTO HasUlti VALUES (120, 'Gemmoforza')");
+            db.execSQL("INSERT INTO HasUlti VALUES (120, 'Bollaraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (120, 'Comete')");
+            db.execSQL("INSERT INTO HasUlti VALUES (121, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (121, 'Gemmoforza')");
+            db.execSQL("INSERT INTO HasUlti VALUES (121, 'Psicoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (122, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (122, 'Psicoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (122, 'Palla Ombra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (123, 'Ronzio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (123, 'Forbice X')");
+            db.execSQL("INSERT INTO HasUlti VALUES (123, 'Nottesferza')");
+            db.execSQL("INSERT INTO HasUlti VALUES (124, 'Gelopugno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (124, 'Psicoshock')");
+            db.execSQL("INSERT INTO HasUlti VALUES (124, 'Assorbibacio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (125, 'Tuono')");
+            db.execSQL("INSERT INTO HasUlti VALUES (125, 'Fulmine')");
+            db.execSQL("INSERT INTO HasUlti VALUES (125, 'Tuonopugno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (126, 'Fuocobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (126, 'Lanciafiamme')");
+            db.execSQL("INSERT INTO HasUlti VALUES (126, 'Fuocopugno')");
+            db.execSQL("INSERT INTO HasUlti VALUES (127, 'Virgocolpo')");
+            db.execSQL("INSERT INTO HasUlti VALUES (127, 'Forbice X')");
+            db.execSQL("INSERT INTO HasUlti VALUES (127, 'Sottomissione')");
+            db.execSQL("INSERT INTO HasUlti VALUES (128, 'Terremoto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (128, 'Metaltestata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (128, 'Incornata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (129, 'Scontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (130, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (130, 'Dragopulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (130, 'Tornado')");
+            db.execSQL("INSERT INTO HasUlti VALUES (131, 'Bora')");
+            db.execSQL("INSERT INTO HasUlti VALUES (131, 'Geloraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (131, 'Dragopulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (133, 'Fossa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (133, 'Corposcontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (133, 'Comete')");
+            db.execSQL("INSERT INTO HasUlti VALUES (134, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (134, 'Idrondata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (134, 'Idropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (135, 'Tuono')");
+            db.execSQL("INSERT INTO HasUlti VALUES (135, 'Fulmine')");
+            db.execSQL("INSERT INTO HasUlti VALUES (135, 'Scarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (136, 'Fuocobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (136, 'Ondacalda')");
+            db.execSQL("INSERT INTO HasUlti VALUES (136, 'Lanciafiamme')");
+            db.execSQL("INSERT INTO HasUlti VALUES (137, 'Segnoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (137, 'Psicoraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (137, 'Scarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (138, 'Forzantica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (138, 'Rocciotomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (138, 'Acquadisale')");
+            db.execSQL("INSERT INTO HasUlti VALUES (139, 'Idropompa')");
+            db.execSQL("INSERT INTO HasUlti VALUES (139, 'Frana')");
+            db.execSQL("INSERT INTO HasUlti VALUES (139, 'Forzantica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (140, 'Forzantica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (140, 'Rocciotomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (140, 'Acquagetto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (141, 'Pietrataglio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (141, 'Forzantica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (141, 'Idropulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (142, 'Iperraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (142, 'Forzantica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (142, 'Metaltestata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (143, 'Iperraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (143, 'Corposcontro')");
+            db.execSQL("INSERT INTO HasUlti VALUES (143, 'Terremoto')");
+            db.execSQL("INSERT INTO HasUlti VALUES (144, 'Bora')");
+            db.execSQL("INSERT INTO HasUlti VALUES (144, 'Geloraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (144, 'Ventogelato')");
+            db.execSQL("INSERT INTO HasUlti VALUES (145, 'Tuono')");
+            db.execSQL("INSERT INTO HasUlti VALUES (145, 'Fulmine')");
+            db.execSQL("INSERT INTO HasUlti VALUES (145, 'Scarica')");
+            db.execSQL("INSERT INTO HasUlti VALUES (146, 'Fuocobomba')");
+            db.execSQL("INSERT INTO HasUlti VALUES (146, 'Ondacalda')");
+            db.execSQL("INSERT INTO HasUlti VALUES (146, 'Lanciafiamme')");
+            db.execSQL("INSERT INTO HasUlti VALUES (147, 'Idrondata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (147, 'Avvolgibotta')");
+            db.execSQL("INSERT INTO HasUlti VALUES (147, 'Tornado')");
+            db.execSQL("INSERT INTO HasUlti VALUES (148, 'Dragopulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (149, 'Idrondata')");
+            db.execSQL("INSERT INTO HasUlti VALUES (148, 'Avvolgibotta')");
+            db.execSQL("INSERT INTO HasUlti VALUES (149, 'Iperraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (149, 'Dragopulsar')");
+            db.execSQL("INSERT INTO HasUlti VALUES (149, 'Dragartigli')");
+            db.execSQL("INSERT INTO HasUlti VALUES (150, 'Iperraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (150, 'Psicobotta')");
+            db.execSQL("INSERT INTO HasUlti VALUES (150, 'Psichico')");
+            db.execSQL("INSERT INTO HasUlti VALUES (150, 'Palla Ombra')");
+            db.execSQL("INSERT INTO HasUlti VALUES (151, 'Iperraggio')");
+            db.execSQL("INSERT INTO HasUlti VALUES (151, 'Forza Lunare')");
+            db.execSQL("INSERT INTO HasUlti VALUES (151, 'Psichico')");
+
+
             Toast.makeText(context, "onCreate called", Toast.LENGTH_SHORT).show();
         }
 
@@ -1048,8 +1518,8 @@ public class PokemonDatabaseAdapter {
             db.execSQL("DROP TABLE " + CATCHES);
             db.execSQL("DROP TABLE " + HASTYPE);
             db.execSQL("DROP TABLE " + HASCOPY);
-            onCreate(db);
             Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
+            onCreate(db);
         }
     }
 }

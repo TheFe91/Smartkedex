@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/edit"
             android:layout_below="@+id/tableNumber"
-            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>

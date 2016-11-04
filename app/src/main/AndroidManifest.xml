@@ -7,17 +7,37 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/pkmn1"
-        android:label="Smartkedex 1.0 Beta 9"
+        android:icon="@mipmap/smartkedex_ic"
+        android:label="Smartkedex 1.0 Beta9r7"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".MainActivity"
+        
+        <activity android:name=".SplashActivity"
+                  android:theme="@style/SplashTheme"
                   android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Welcome"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.Welcome" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MainActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MainActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 

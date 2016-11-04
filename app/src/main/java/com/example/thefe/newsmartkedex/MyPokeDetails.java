@@ -10,12 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +57,6 @@ public class MyPokeDetails extends AppCompatActivity {
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
         List<Integer> ids = pokemonHelper.getIdsFromPokeName(pokemonDetails.getName(pokeID));
-        System.err.println("Size: "+ids.size());
 
         for (int element:ids) {
             TableLayout tableLayout = (TableLayout)findViewById(R.id.tableNumber);
@@ -76,28 +73,32 @@ public class MyPokeDetails extends AppCompatActivity {
 
             imageView.setLayoutParams(trparams);
             imageView.setId(element);
-            String[] attacks = pokemonHelper.getPokeAttacks(element);
+            String[] attacks = pokemonHelper.getPokeAttacks(element); //0 is attack, 1 is ulti
 
             Map<String, String> attackStuff = pokemonHelper.getAttacksStuff(attacks[0], "Attack"); //keys are "duration", "type" and "damage"
             attack.setTypeface(null, Typeface.BOLD);
-            attack.setText(attacks[0] + " - " + attackStuff.get("damage") + " - " + attackStuff.get("duration") + "s");
-            attack.setTextColor(getResources().getColor(getResources().getIdentifier(attackStuff.get("type").toLowerCase(), "color", getPackageName())));
+            attack.setText(attacks[0] + " - " + attackStuff.get("damage") + " ");
             List<String> pokeTypes = pokemonHelper.getPokeTypes(pokeID);
-            int j = 0;
-            for (String type:pokeTypes) {
-                if (type.equals(attackStuff.get("type")))
-                    break;
-                else
-                    j++;
-            }
-            if (j < 2) {
-                int stab = Integer.parseInt(attackStuff.get("damage"));
-                stab = stab + (stab / 4);
-                attack.append(" --> STAB: " + stab);
-            }
+            for (String type:pokeTypes)
+                if (type.equals(attackStuff.get("type"))) {
+                    int stab = Integer.parseInt(attackStuff.get("damage"));
+                    stab = stab + (stab / 4);
+                    attack.append("(STAB: " + stab + ")");
+                }
+            attack.append(" - " + attackStuff.get("duration") + "s");
+            attack.setTextColor(getResources().getColor(getResources().getIdentifier(attackStuff.get("type").toLowerCase(), "color", getPackageName())));
 
-            ulti.setText("ulti 120");
-            ulti.setTextColor(getResources().getColor(R.color.colorAccent));
+            Map<String, String> ultiStuff = pokemonHelper.getAttacksStuff(attacks[1], "Ulti"); //keys are "duration", "critical", type" and "damage"
+            ulti.setTypeface(null, Typeface.BOLD);
+            ulti.setText(attacks[1] + " - " + ultiStuff.get("damage") + " ");
+            for (String type:pokeTypes)
+                if (type.equals(ultiStuff.get("type"))) {
+                    int stab = Integer.parseInt(ultiStuff.get("damage"));
+                    stab = stab + (stab / 4);
+                    ulti.append("(STAB: " + stab + ")");
+                }
+            ulti.append(" - " + ultiStuff.get("duration") + "s - " + ultiStuff.get("critical") + "%");
+            ulti.setTextColor(getResources().getColor(getResources().getIdentifier(ultiStuff.get("type").toLowerCase(), "color", getPackageName())));
 
             trparams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             attack.setLayoutParams(trparams);
@@ -114,7 +115,6 @@ public class MyPokeDetails extends AppCompatActivity {
             tableRow.addView(attacchi);
 
             tableLayout.addView(tableRow, new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
         }
     }
 

@@ -63,8 +63,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/apply"
             android:text="Applica"
+            android:layout_below="@+id/internalcopies"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
             android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>

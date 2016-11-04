@@ -18,12 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //this is going to be deleted when the Welcome Activity will be created
-        PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
-        if (pokemonHelper.getRows("Settings") == 0) {
-            pokemonHelper.insertSettingsData("Ale", "", "ITA", 0);
-        }
-
         GridView gridview = (GridView) findViewById(R.id.gridview);
         ImageAdapter adapter = new ImageAdapter(this);
         gridview.setAdapter(adapter);
