@@ -263,7 +263,7 @@ public class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 2;
+        private static final int DATABASE_VERSION = 32;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -1508,7 +1508,9 @@ public class PokemonDatabaseAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE " + SETTINGS);
+            db = this.getWritableDatabase();
+            context.deleteDatabase(DATABASE_NAME);
+            /*db.execSQL("DROP TABLE IF EXISTS " + SETTINGS);
             db.execSQL("DROP TABLE " + HASATTACK);
             db.execSQL("DROP TABLE " + HASULTI);
             db.execSQL("DROP TABLE " + ATTACK);
@@ -1517,7 +1519,7 @@ public class PokemonDatabaseAdapter {
             db.execSQL("DROP TABLE " + POKEMON);
             db.execSQL("DROP TABLE " + CATCHES);
             db.execSQL("DROP TABLE " + HASTYPE);
-            db.execSQL("DROP TABLE " + HASCOPY);
+            db.execSQL("DROP TABLE " + HASCOPY);*/
             Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
             onCreate(db);
         }
