@@ -47,4 +47,4 @@ Aggiunto bottone di Test per switch di Activity (100% working)
 -Creazione di un motore TTS proprietario (e ci sarà da ridere!)
 
 [Versione 3.0]
--Creazione di un database, popolabile dagli utenti, con la locazione dei nidi
+-Creazione di un database, popolabile dagli utenti, con la locazione dei nidi.
