@@ -39,6 +39,7 @@ Aggiunto bottone di Test per switch di Activity (100% working)
 [Versione 1.2]
 -Aggiungere ricerca Pokémon
 -Filtro per tipo
+-Aggiungere conteggio caramelle: "Catturato" in PokeDetails diventa "Posseduto". In MyPokeDetails ci sarà anche il conteggio automatico di quante caramelle mancano per le evoluzioni (la prima volta le caramelle vanno inserite a mano da EditPokeDetails)
 
 [Versione 2.0 CI RIUSCIREMO???]
 -Integrazione con PokemonGO (via Niantic's API):
