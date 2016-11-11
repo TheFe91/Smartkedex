@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -29,6 +30,7 @@ public class EditPokeDetails extends AppCompatActivity {
     int pokeID;
     Spinner attackSpinner;
     Spinner ultiSpinner;
+    EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class EditPokeDetails extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
 
-        final List<Integer> pokeIds = pokemonHelper.getIdsFromPokeName(pokemonDetails.getName(pokeID));
+        final List<Integer> pokeIds = pokemonHelper.getIdsFromPokeID(pokeID);
 
         final ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext());
 
@@ -107,10 +109,17 @@ public class EditPokeDetails extends AppCompatActivity {
             ultiSpinner.setSelection(ultiAdapter.getPosition(moves[1]));
             ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti").toLowerCase(), "color", getPackageName())));
 
+            editText = new EditText(getApplicationContext());
+            editText.setWidth(300);
+            editText.setHint("Nome");
+            editText.setId(pokeId*11);
+
             // add the TextView  to the new TableRow
             params.gravity = Gravity.CENTER_VERTICAL;
             params.setMargins(0,10,0,0);
             row.addView(iv);
+            editText.setLayoutParams(params);
+            row.addView(editText);
             attackRow.addView(attackSpinner);
             ultiRow.addView(ultiSpinner);
             internaltable.addView(attackRow);
@@ -125,7 +134,7 @@ public class EditPokeDetails extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                for (int j = 0; j < (int)spinner.getSelectedItem(); j++) {
+                for (int j = 1+pokeIds.size(); j <= (int)spinner.getSelectedItem()+pokeIds.size(); j++) {
                     // get a reference for the TableLayout
                     TableLayout table = (TableLayout)findViewById(R.id.copies);
 
@@ -152,6 +161,11 @@ public class EditPokeDetails extends AppCompatActivity {
                     attackSpinner.setId(j);
                     ultiSpinner.setId(j*10);
 
+                    editText = new EditText(getApplicationContext());
+                    editText.setWidth(300);
+                    editText.setHint("Nome");
+                    editText.setId(j*11);
+
                     List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");
 
                     ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacks);
@@ -167,6 +181,8 @@ public class EditPokeDetails extends AppCompatActivity {
                     // add the TextView  to the new TableRow
                     params.gravity = Gravity.CENTER_VERTICAL;
                     row.addView(iv);
+                    editText.setLayoutParams(params);
+                    row.addView(editText);
                     attackRow.addView(attackSpinner);
                     ultiRow.addView(ultiSpinner);
                     internaltable.addView(attackRow);
@@ -192,12 +208,20 @@ public class EditPokeDetails extends AppCompatActivity {
                     String attack = (String) attackSpinner.getSelectedItem();
                     ultiSpinner = (Spinner)findViewById(pokeId*10);
                     String ulti = (String) ultiSpinner.getSelectedItem();
-                    pokemonHelper.updatePokeAttacks(attack, ulti, pokeId);
+                    editText = (EditText)findViewById(pokeId*11);
+                    String copyName = editText.getText().toString();
+                    pokemonHelper.updatePokeAttacks(attack, ulti, copyName, pokeId);
                 }
 
-                System.err.println("Ho inserito "+spinner.getSelectedItem()+" "+pokeName);
-                for (int j = 0; j < (int)spinner.getSelectedItem(); j++) {
-                    pokemonHelper.insertCopy((String)attackSpinner.getSelectedItem(), (String)ultiSpinner.getSelectedItem(), pokemonDetails.getName(pokeID));
+                for (int j = 1+pokeIds.size(); j <= (int)spinner.getSelectedItem()+pokeIds.size(); j++) {
+                    attackSpinner = (Spinner)findViewById(j);
+                    String attack = (String) attackSpinner.getSelectedItem();
+                    ultiSpinner = (Spinner)findViewById(j*10);
+                    String ulti = (String) ultiSpinner.getSelectedItem();
+                    editText = (EditText)findViewById(j*11);
+                    String copyName = editText.getText().toString();
+                    System.err.println(attack + " - " + ulti + " - " + copyName);
+                    pokemonHelper.insertCopy(attack, ulti, copyName, pokeID);
                 }
 
                 Intent i = new Intent (getApplicationContext(), MyPokeDetails.class);

@@ -2,11 +2,14 @@ package com.example.thefe.newsmartkedex;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +32,10 @@ public class Welcome extends Activity {
             textView.setText("Inserisci il tuo nome*");
             textView = (TextView)findViewById(R.id.smartkedex);
             textView.setText("Inserisci il nome dello Smartkédex");
+            textView = (TextView)findViewById(R.id.tips);
+            textView.setText("Puoi modificare queste impostazioni in ogni momento\naccedendo al menu delle impostazioni in alto a destra");
+            final Switch pkmnGO = (Switch)findViewById(R.id.POGO);
+            pkmnGO.setText("Giochi a Pokémon GO?");
 
             Button button = (Button)findViewById(R.id.enter);
             button.setText("Conferma ed Entra");
@@ -44,7 +51,10 @@ public class Welcome extends Activity {
                         Toast.makeText(getApplicationContext(), "Inserisci il tuo nome\nper accedere all'App", Toast.LENGTH_LONG).show();
                     }
                     else {
-                        pokemonHelper.insertSettingsData(owner, smartkedex, "ITA", 0);
+                        if (pkmnGO.isChecked())
+                            pokemonHelper.insertSettingsData(owner, smartkedex, "ITA", 1);
+                        else
+                            pokemonHelper.insertSettingsData(owner, smartkedex, "ITA", 0);
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(i);
                         finish();
@@ -72,6 +82,12 @@ public class Welcome extends Activity {
             parent = (ViewGroup)remove.getParent();
             parent.removeView(remove);
             remove = findViewById(R.id.smartkedex);
+            parent = (ViewGroup)remove.getParent();
+            parent.removeView(remove);
+            remove = findViewById(R.id.POGO);
+            parent = (ViewGroup)remove.getParent();
+            parent.removeView(remove);
+            remove = findViewById(R.id.tips);
             parent = (ViewGroup)remove.getParent();
             parent.removeView(remove);
 

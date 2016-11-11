@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -35,9 +36,9 @@ public class PokemonDatabaseAdapter {
         db.close();
     }
 
-    void insertCopy (String attackName, String ultiName, String pokeName) {
+    void insertCopy (String attackName, String ultiName, String pokeName, int pokeID) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("INSERT INTO Copy (AttackName, UltiName, PokemonName) VALUES ('"+attackName+"', '"+ultiName+"', '"+pokeName+"')");
+        db.execSQL("INSERT INTO Copy (AttackName, UltiName, PokemonName, PokemonID) VALUES ('"+attackName+"', '"+ultiName+"', '"+pokeName+"', '"+pokeID+"')");
         db.close();
     }
 
@@ -53,6 +54,19 @@ public class PokemonDatabaseAdapter {
 
         db.close();
         return rows;
+    }
+
+    String getCopyName (int copyID) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {PokemonHelper.POKEMONNAME};
+        String name = "";
+        Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.ID+"='"+copyID+"'", null, null, null, null);
+        while (cursor.moveToNext()) {
+            name = cursor.getString(cursor.getColumnIndex(PokemonHelper.POKEMONNAME));
+        }
+
+        db.close();
+        return name;
     }
 
     String getMovesType (String name, String type) {
@@ -123,11 +137,11 @@ public class PokemonDatabaseAdapter {
         return rows;
     }
 
-    List<Integer> getIdsFromPokeName (String pokeName) {
+    List<Integer> getIdsFromPokeID (int pokeID) {
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns = {PokemonHelper.ID};
         List<Integer> list = new ArrayList<>();
-        Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.POKEMONNAME+"='"+pokeName+"'", null, null, null, null);
+        Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.POKEMONID+"='"+pokeID+"'", null, null, null, null);
         while (cursor.moveToNext()) {
             list.add(cursor.getInt(cursor.getColumnIndex(PokemonHelper.ID)));
         }
@@ -255,15 +269,15 @@ public class PokemonDatabaseAdapter {
         db.close();
     }
 
-    void updatePokeAttacks (String attack, String ulti, int pokeID) {
+    void updatePokeAttacks (String attack, String ulti, String copyName, int pokeID) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE Copy SET AttackName = '"+attack+"', UltiName = '" + ulti + "' WHERE ID = "+pokeID);
+        db.execSQL("UPDATE Copy SET AttackName = '"+attack+"', UltiName = '" + ulti + "', PokemonName = '"+copyName+"' WHERE ID = "+pokeID);
         db.close();
     }
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 32;
+        private static final int DATABASE_VERSION = 1;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -289,6 +303,7 @@ public class PokemonDatabaseAdapter {
         private static final String SMARTKEDEXNAME = "SmartkedexName";
         private static final String POKEMONGO = "PokemonGO";
         private static final String ID = "ID";
+        private static final String POKEMONID = "PokemonID";
         private static final String POKEMONNAME = "PokemonName";
         private static final String ULTI_NAME = "UltiName";
         private static final String ATTACK_NAME = "AttackName";
@@ -296,8 +311,6 @@ public class PokemonDatabaseAdapter {
         private static final String DURATION = "Duration";
         private static final String CRITICAL_CHANCE = "CriticalChance";
         private static final String TYPE_NAME = "TypeName";
-        private static final String IDCOPY = "IDCopy";
-        private static final String IDPOKEMON = "IDPokemon";
 
 
 
@@ -359,17 +372,11 @@ public class PokemonDatabaseAdapter {
 
         private static final String CREATE_COPY = "CREATE TABLE IF NOT EXISTS " + COPY + "(" +
                                                   ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                                                  POKEMONID + INT + " 3), " +
                                                   ATTACK_NAME + VARCHAR + "15), " +
                                                   ULTI_NAME + VARCHAR + "15), " +
                                                   POKEMONNAME + VARCHAR + "20), " +
-                                                  "FOREIGN KEY (" + POKEMONNAME + ") REFERENCES " + POKEMON + " (" + POKEMONNAME + "))";
-
-        private static final String CREATE_HASCOPY = "CREATE TABLE IF NOT EXISTS " + HASCOPY + "(" +
-                                                     IDCOPY + INT + "3), " +
-                                                     IDPOKEMON + INT + "3), " +
-                                                     "PRIMARY KEY (" + IDCOPY + ", " + IDPOKEMON + "), " +
-                                                     "FOREIGN KEY (" + IDPOKEMON + ") REFERENCES " + POKEMON + " (" + ID + "), " +
-                                                     "FOREIGN KEY (" + IDCOPY + ") REFERENCES " + COPY + " (" + ID + "))";
+                                                  "FOREIGN KEY (" + POKEMONID + ") REFERENCES " + POKEMON + " (" + ID + "))";
 
         private Context context;
 
@@ -390,7 +397,6 @@ public class PokemonDatabaseAdapter {
             db.execSQL(CREATE_HASATTACK);
             db.execSQL(CREATE_HASULTI);
             db.execSQL(CREATE_COPY);
-            db.execSQL(CREATE_HASCOPY);
             db.execSQL(CREATE_HASTYPE);
 
             //Populating the DB
@@ -1503,23 +1509,23 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasUlti VALUES (151, 'Psichico')");
 
 
-            Toast.makeText(context, "onCreate called", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Creazione del Database\neseguita correttamente", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db = this.getWritableDatabase();
-            context.deleteDatabase(DATABASE_NAME);
-            /*db.execSQL("DROP TABLE IF EXISTS " + SETTINGS);
-            db.execSQL("DROP TABLE " + HASATTACK);
-            db.execSQL("DROP TABLE " + HASULTI);
-            db.execSQL("DROP TABLE " + ATTACK);
-            db.execSQL("DROP TABLE " + ULTI);
-            db.execSQL("DROP TABLE " + TYPE);
-            db.execSQL("DROP TABLE " + POKEMON);
-            db.execSQL("DROP TABLE " + CATCHES);
-            db.execSQL("DROP TABLE " + HASTYPE);
-            db.execSQL("DROP TABLE " + HASCOPY);*/
+            /*db = this.getWritableDatabase();
+            context.deleteDatabase(DATABASE_NAME);*/
+            db.execSQL("DROP TABLE IF EXISTS " + SETTINGS);
+            db.execSQL("DROP TABLE IF EXISTS " + HASATTACK);
+            db.execSQL("DROP TABLE IF EXISTS " + HASULTI);
+            db.execSQL("DROP TABLE IF EXISTS " + ATTACK);
+            db.execSQL("DROP TABLE IF EXISTS " + ULTI);
+            db.execSQL("DROP TABLE IF EXISTS " + TYPE);
+            db.execSQL("DROP TABLE IF EXISTS " + POKEMON);
+            db.execSQL("DROP TABLE IF EXISTS " + CATCHES);
+            db.execSQL("DROP TABLE IF EXISTS " + HASTYPE);
+            db.execSQL("DROP TABLE IF EXISTS " + COPY);
             Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
             onCreate(db);
         }

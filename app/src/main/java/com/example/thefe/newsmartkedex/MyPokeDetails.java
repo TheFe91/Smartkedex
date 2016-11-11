@@ -56,7 +56,7 @@ public class MyPokeDetails extends AppCompatActivity {
 
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
-        List<Integer> ids = pokemonHelper.getIdsFromPokeName(pokemonDetails.getName(pokeID));
+        List<Integer> ids = pokemonHelper.getIdsFromPokeID(pokeID);
 
         for (int element:ids) {
             TableLayout tableLayout = (TableLayout)findViewById(R.id.tableNumber);
@@ -64,12 +64,14 @@ public class MyPokeDetails extends AppCompatActivity {
             TableLayout attacchi = new TableLayout(getApplicationContext());
             TableRow attackRow = new TableRow(getApplicationContext());
             TableRow ultiRow = new TableRow(getApplicationContext());
+            TableRow nameRow = new TableRow(getApplicationContext());
             ImageView imageView = new ImageView(getApplicationContext());
             imageView.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
             TextView attack = new TextView(getApplicationContext());
             TextView ulti = new TextView(getApplicationContext());
+            TextView name = new TextView(getApplicationContext());
 
-            TableRow.LayoutParams trparams = new TableRow.LayoutParams(200,200);
+            TableRow.LayoutParams trparams = new TableRow.LayoutParams(250,250);
 
             imageView.setLayoutParams(trparams);
             imageView.setId(element);
@@ -104,12 +106,22 @@ public class MyPokeDetails extends AppCompatActivity {
             attack.setLayoutParams(trparams);
             ulti.setLayoutParams(trparams);
 
+            String copyName = pokemonHelper.getCopyName(element);
+
+            if (!copyName.equals("")) {
+                name.setText(copyName);
+            }
+            else
+                name.setText(pokemonDetails.getName(pokeID));
+
             trparams.gravity = Gravity.CENTER_VERTICAL;
             attacchi.setLayoutParams(trparams);
 
             tableRow.addView(imageView);
+            nameRow.addView(name);
             attackRow.addView(attack);
             ultiRow.addView(ulti);
+            attacchi.addView(nameRow);
             attacchi.addView(attackRow);
             attacchi.addView(ultiRow);
             tableRow.addView(attacchi);

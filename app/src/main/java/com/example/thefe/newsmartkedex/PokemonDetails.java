@@ -125,7 +125,7 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
 
         final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
-        pokeSwitch.setText("Catturato  ");
+        pokeSwitch.setText("Posseduto  ");
 
 
         if (pokemonHelper.getPokemonGO() == 1) { //if my user plays PokémonGO

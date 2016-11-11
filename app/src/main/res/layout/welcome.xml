@@ -21,7 +21,8 @@
         android:layout_below="@+id/splashwrite"
         android:layout_centerHorizontal="true"
         android:id="@+id/welcome"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,7 +35,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/owner"
         android:layout_below="@+id/break1"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -57,7 +59,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/smartkedex"
         android:layout_below="@+id/break2"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -74,6 +77,28 @@
         android:layout_height="wrap_content"
         android:id="@+id/break3"
         android:layout_below="@+id/setSmartkedex"/>
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/POGO"
+        android:layout_below="@+id/break3"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold|italic"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/break4"
+        android:layout_below="@+id/POGO"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tips"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/break4"
+        android:textStyle="bold"/>
 
     <Button
         android:layout_width="wrap_content"

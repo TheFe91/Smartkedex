@@ -1,71 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/pkmnName"
+        android:layout_centerHorizontal="true"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/break1"
+        android:textSize="20sp"
+        android:layout_below="@+id/pkmnName"/>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/break1"
+        android:id="@+id/tableNumber">
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/number"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinnerNumber"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/tableNumber"
+        android:layout_above="@+id/apply">
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeEdit">
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tableNumber"
+                android:id="@+id/copies">
+            </TableLayout>
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/copies"
+                android:id="@+id/internalcopies">
+            </TableLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/relativeEdit"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin">
+        android:id="@+id/apply"
+        android:text="Applica"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/pkmnName"
-            android:layout_centerHorizontal="true"
-            android:textSize="20dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/break1"
-            android:textSize="20sp"
-            android:layout_below="@+id/pkmnName"/>
-
-        <TableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/break1"
-            android:id="@+id/tableNumber">
-            <TableRow>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/number"/>
-                <Spinner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/spinnerNumber"/>
-            </TableRow>
-
-        </TableLayout>
-
-        <TableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tableNumber"
-            android:id="@+id/copies">
-        </TableLayout>
-        <TableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/copies"
-            android:id="@+id/internalcopies">
-        </TableLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/apply"
-            android:text="Applica"
-            android:layout_below="@+id/internalcopies"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"/>
-
-    </RelativeLayout>
-</ScrollView>
+</RelativeLayout>
