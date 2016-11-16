@@ -277,7 +277,7 @@ public class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 32;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";

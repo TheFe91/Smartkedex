@@ -1,5 +1,7 @@
 package com.example.thefe.newsmartkedex;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,8 +21,8 @@ import android.widget.TextView;
 public class Settings extends AppCompatActivity {
 
     public String lingua = "ITA";
-    private RadioGroup radioGroup;
-    private RadioButton radioButton;
+    //private RadioGroup radioGroup;
+    //private RadioButton radioButton;
     private int setpokeGO = 0;
 
     @Override
@@ -47,6 +49,7 @@ public class Settings extends AppCompatActivity {
         final EditText inputProprietario = (EditText)findViewById(R.id.inputProprietario);
         Button presentazione = (Button)findViewById(R.id.presentazione);
         final Switch playPokemonGO = (Switch)findViewById(R.id.playPokemonGO);
+        final Button reset = (Button)findViewById(R.id.reset);
         Button conferma = (Button)findViewById(R.id.conferma);
 
         inputNome.setText(pokemonHelper.getSmartkedex());
@@ -78,6 +81,7 @@ public class Settings extends AppCompatActivity {
                 name.setText("Nome dello Smartkédex");
                 proprietario.setText("Questo Smartkédex è di proprietà di:");
                 presentazione.setText("Presentazione");
+                reset.setText("Cancella tutti i dati");
                 conferma.setText("Applica");
                 //RadioButton radioIta = (RadioButton)findViewById(R.id.lang_ita);
                 //radioIta.setChecked(true);
@@ -100,6 +104,19 @@ public class Settings extends AppCompatActivity {
                     setpokeGO = 1;
                 else
                     setpokeGO = 0;
+            }
+        });
+
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reset.setText("Stai per eliminare tutto\nTocca per confermare");
+                reset.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        System.out.println("sono dentro");
+                    }
+                });
             }
         });
 
