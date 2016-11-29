@@ -2,8 +2,8 @@ package com.example.thefe.newsmartkedex;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,12 +12,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +34,16 @@ public class EditPokeDetails extends AppCompatActivity {
     Spinner attackSpinner;
     Spinner ultiSpinner;
     EditText editText;
+    CheckBox checkBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_poke_details);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        final int dpi = displayMetrics.densityDpi;
 
         Intent i = getIntent();
         pokeID = i.getExtras().getInt("id");
@@ -69,7 +76,7 @@ public class EditPokeDetails extends AppCompatActivity {
 
         //defining and Setting-up the already in the database Pokémons
         for (int pokeId:pokeIds) {
-            // get a reference for the TableLayout
+            //get a reference for the TableLayout
             TableLayout table = (TableLayout)findViewById(R.id.copies);
 
             //create a new TableLayout
@@ -82,7 +89,7 @@ public class EditPokeDetails extends AppCompatActivity {
 
             ImageView iv = new ImageView(getApplicationContext());
             iv.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
-            TableRow.LayoutParams params = new TableRow.LayoutParams(250,250);
+            TableRow.LayoutParams params = new TableRow.LayoutParams(200,200);
             iv.setLayoutParams(params);
 
             attackSpinner = new Spinner(getApplicationContext());
@@ -93,8 +100,10 @@ public class EditPokeDetails extends AppCompatActivity {
             attackSpinner.setId(pokeId);
             ultiSpinner.setId(pokeId*10);
 
-            CheckBox checkBox = new CheckBox(getApplicationContext());
+            checkBox = new CheckBox(getApplicationContext());
+            checkBox.setButtonDrawable(R.drawable.checkbox_selector);
             checkBox.setId(pokeId);
+            //Toast.makeText(getApplicationContext(), ""+checkBox.getId(), Toast.LENGTH_SHORT).show();
 
             String[] moves = pokemonHelper.getPokeAttacks(pokeId); //0 is attack, 1 is ulti
 
@@ -115,7 +124,13 @@ public class EditPokeDetails extends AppCompatActivity {
             ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti").toLowerCase(), "color", getPackageName())));
 
             editText = new EditText(getApplicationContext());
-            editText.setWidth(300);
+            if (dpi == 480) {
+                editText.setWidth(250);
+                editText.setTextSize(13);
+            }
+            else if (dpi == 420)
+                editText.setWidth(300);
+
             editText.setHint("(Nome)");
             editText.setHintTextColor(getResources().getColor(R.color.acciaio));
             editText.setTextColor(getResources().getColor(android.R.color.black));
@@ -125,7 +140,6 @@ public class EditPokeDetails extends AppCompatActivity {
             params.gravity = Gravity.CENTER_VERTICAL;
             params.setMargins(0,10,0,0);
             row.addView(iv);
-            checkBox.setLayoutParams(params);
             editText.setLayoutParams(params);
             row.addView(editText);
             attackRow.addView(attackSpinner);
@@ -134,10 +148,20 @@ public class EditPokeDetails extends AppCompatActivity {
             internaltable.addView(ultiRow);
             internaltable.setLayoutParams(params);
             row.addView(internaltable);
+            params.setMargins(15,0,0,0);
+            checkBox.setLayoutParams(params);
             row.addView(checkBox);
 
             // add the TableRow to the TableLayout
             table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if (isChecked)
+                        Toast.makeText(getApplicationContext(), ""+checkBox.getId(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         //defining and setting-up the new Pokémons
@@ -145,7 +169,7 @@ public class EditPokeDetails extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 for (int j = 1+pokeIds.size(); j <= (int)spinner.getSelectedItem()+pokeIds.size(); j++) {
-                    // get a reference for the TableLayout
+                    //get a reference for the TableLayout
                     TableLayout table = (TableLayout)findViewById(R.id.copies);
 
                     //create a new TableLayout
@@ -172,9 +196,20 @@ public class EditPokeDetails extends AppCompatActivity {
                     ultiSpinner.setId(j*10);
 
                     editText = new EditText(getApplicationContext());
-                    editText.setWidth(300);
-                    editText.setHint("Nome");
+                    if (dpi == 480) {
+                        editText.setWidth(250);
+                        editText.setTextSize(13);
+                    }
+                    else if (dpi == 420)
+                        editText.setWidth(300);
+                    editText.setHint("(Nome)");
+                    editText.setHintTextColor(getResources().getColor(R.color.acciaio));
+                    editText.setTextColor(getResources().getColor(android.R.color.black));
                     editText.setId(j*11);
+
+                    checkBox = new CheckBox(getApplicationContext());
+                    checkBox.setButtonDrawable(R.drawable.checkbox_selector);
+                    checkBox.setId(j);
 
                     List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");
 
@@ -190,6 +225,7 @@ public class EditPokeDetails extends AppCompatActivity {
 
                     // add the TextView  to the new TableRow
                     params.gravity = Gravity.CENTER_VERTICAL;
+                    params.setMargins(0,10,0,0);
                     row.addView(iv);
                     editText.setLayoutParams(params);
                     row.addView(editText);
@@ -199,6 +235,9 @@ public class EditPokeDetails extends AppCompatActivity {
                     internaltable.addView(ultiRow);
                     internaltable.setLayoutParams(params);
                     row.addView(internaltable);
+                    params.setMargins(15,0,0,0);
+                    checkBox.setLayoutParams(params);
+                    row.addView(checkBox);
 
                     // add the TableRow to the TableLayout
                     table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
