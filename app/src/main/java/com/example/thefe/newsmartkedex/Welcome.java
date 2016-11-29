@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,6 +26,10 @@ public class Welcome extends Activity {
 
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int dpi = displayMetrics.densityDpi;
+
         if (pokemonHelper.getRows("Settings") == 0) { //it's the first app launch ever
             TextView textView = (TextView)findViewById(R.id.welcome);
             textView.setText("Benvenuto!");
@@ -33,6 +38,8 @@ public class Welcome extends Activity {
             textView = (TextView)findViewById(R.id.smartkedex);
             textView.setText("Inserisci il nome dello Smartkédex");
             textView = (TextView)findViewById(R.id.tips);
+            if (dpi == 480)
+                textView.setTextSize(13);
             textView.setText("Puoi modificare queste impostazioni in ogni momento\naccedendo al menu delle impostazioni in alto a destra");
             final Switch pkmnGO = (Switch)findViewById(R.id.POGO);
             pkmnGO.setText("Giochi a Pokémon GO?");

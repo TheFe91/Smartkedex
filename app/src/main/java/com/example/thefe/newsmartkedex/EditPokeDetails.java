@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -66,6 +67,7 @@ public class EditPokeDetails extends AppCompatActivity {
 
         final ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext());
 
+        //defining and Setting-up the already in the database Pokémons
         for (int pokeId:pokeIds) {
             // get a reference for the TableLayout
             TableLayout table = (TableLayout)findViewById(R.id.copies);
@@ -91,6 +93,9 @@ public class EditPokeDetails extends AppCompatActivity {
             attackSpinner.setId(pokeId);
             ultiSpinner.setId(pokeId*10);
 
+            CheckBox checkBox = new CheckBox(getApplicationContext());
+            checkBox.setId(pokeId);
+
             String[] moves = pokemonHelper.getPokeAttacks(pokeId); //0 is attack, 1 is ulti
 
             List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");
@@ -111,13 +116,16 @@ public class EditPokeDetails extends AppCompatActivity {
 
             editText = new EditText(getApplicationContext());
             editText.setWidth(300);
-            editText.setHint("Nome");
+            editText.setHint("(Nome)");
+            editText.setHintTextColor(getResources().getColor(R.color.acciaio));
+            editText.setTextColor(getResources().getColor(android.R.color.black));
             editText.setId(pokeId*11);
 
             // add the TextView  to the new TableRow
             params.gravity = Gravity.CENTER_VERTICAL;
             params.setMargins(0,10,0,0);
             row.addView(iv);
+            checkBox.setLayoutParams(params);
             editText.setLayoutParams(params);
             row.addView(editText);
             attackRow.addView(attackSpinner);
@@ -126,11 +134,13 @@ public class EditPokeDetails extends AppCompatActivity {
             internaltable.addView(ultiRow);
             internaltable.setLayoutParams(params);
             row.addView(internaltable);
+            row.addView(checkBox);
 
             // add the TableRow to the TableLayout
             table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
         }
 
+        //defining and setting-up the new Pokémons
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
