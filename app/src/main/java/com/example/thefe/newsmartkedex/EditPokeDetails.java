@@ -199,10 +199,6 @@ public class EditPokeDetails extends AppCompatActivity {
                     editText.setTextColor(getResources().getColor(android.R.color.black));
                     editText.setId(j*11);
 
-                    checkBox = new CheckBox(getApplicationContext());
-                    checkBox.setButtonDrawable(R.drawable.checkbox_selector);
-                    checkBox.setId(j*13);
-
                     List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");
 
                     ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacks);
