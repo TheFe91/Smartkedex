@@ -100,11 +100,6 @@ public class EditPokeDetails extends AppCompatActivity {
             attackSpinner.setId(pokeId);
             ultiSpinner.setId(pokeId*10);
 
-            checkBox = new CheckBox(getApplicationContext());
-            checkBox.setButtonDrawable(R.drawable.checkbox_selector);
-            checkBox.setId(pokeId);
-            //Toast.makeText(getApplicationContext(), ""+checkBox.getId(), Toast.LENGTH_SHORT).show();
-
             String[] moves = pokemonHelper.getPokeAttacks(pokeId); //0 is attack, 1 is ulti
 
             List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");
@@ -136,6 +131,11 @@ public class EditPokeDetails extends AppCompatActivity {
             editText.setTextColor(getResources().getColor(android.R.color.black));
             editText.setId(pokeId*11);
 
+            checkBox = new CheckBox(getApplicationContext());
+            checkBox.setButtonDrawable(R.drawable.checkbox_selector);
+            checkBox.setId(pokeId*13);
+            //Toast.makeText(getApplicationContext(), ""+checkBox.getId(), Toast.LENGTH_SHORT).show();
+
             // add the TextView  to the new TableRow
             params.gravity = Gravity.CENTER_VERTICAL;
             params.setMargins(0,10,0,0);
@@ -154,14 +154,6 @@ public class EditPokeDetails extends AppCompatActivity {
 
             // add the TableRow to the TableLayout
             table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    if (isChecked)
-                        Toast.makeText(getApplicationContext(), ""+checkBox.getId(), Toast.LENGTH_SHORT).show();
-                }
-            });
         }
 
         //defining and setting-up the new Pokémons
@@ -209,7 +201,7 @@ public class EditPokeDetails extends AppCompatActivity {
 
                     checkBox = new CheckBox(getApplicationContext());
                     checkBox.setButtonDrawable(R.drawable.checkbox_selector);
-                    checkBox.setId(j);
+                    checkBox.setId(j*13);
 
                     List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");
 
@@ -260,6 +252,10 @@ public class EditPokeDetails extends AppCompatActivity {
                     editText = (EditText)findViewById(pokeId*11);
                     String copyName = editText.getText().toString();
                     pokemonHelper.updatePokeAttacks(attack, ulti, copyName, pokeId);
+                    checkBox = (CheckBox)findViewById(pokeId*13);
+                    if (checkBox.isChecked()) {
+                        pokemonHelper.deleteCopy(pokeId);
+                    }
                 }
 
                 for (int j = 1+pokeIds.size(); j <= (int)spinner.getSelectedItem()+pokeIds.size(); j++) {

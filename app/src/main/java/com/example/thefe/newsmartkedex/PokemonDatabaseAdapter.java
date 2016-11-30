@@ -42,6 +42,12 @@ public class PokemonDatabaseAdapter {
         db.close();
     }
 
+    void deleteCopy (int pokeId) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("DELETE FROM Copy WHERE ID = '"+pokeId+"'");
+        db.close();
+    }
+
     ////////////////////////////////////////////////////////////////////GETTERS////////////////////////////////////////////////////////////////////////////////////
 
     int getRows (String tableName) {
