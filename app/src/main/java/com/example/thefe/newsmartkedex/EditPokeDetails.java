@@ -12,14 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +54,11 @@ public class EditPokeDetails extends AppCompatActivity {
         TextView textView = (TextView)findViewById(R.id.pkmnName);
         textView.setText("Modifica i tuoi "+pokeName);
         textView = (TextView)findViewById(R.id.number);
-        textView.setText("Numero di "+pokeName);
+        textView.setText("Numero di "+pokeName + "da inserire");
+        textView = (TextView)findViewById(R.id.oldcopies);
+        textView.setText("Pokémon già inseriti");
+        textView = (TextView)findViewById(R.id.newcopies);
+        textView.setText("Pokémon da inserire");
 
 
         //defining and setting up the SpinnerNumber
@@ -162,7 +164,7 @@ public class EditPokeDetails extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 for (int j = 1+pokeIds.size(); j <= (int)spinner.getSelectedItem()+pokeIds.size(); j++) {
                     //get a reference for the TableLayout
-                    TableLayout table = (TableLayout)findViewById(R.id.copies);
+                    TableLayout table = (TableLayout)findViewById(R.id.internalcopies);
 
                     //create a new TableLayout
                     TableLayout internaltable = new TableLayout(getApplicationContext());
@@ -223,9 +225,6 @@ public class EditPokeDetails extends AppCompatActivity {
                     internaltable.addView(ultiRow);
                     internaltable.setLayoutParams(params);
                     row.addView(internaltable);
-                    params.setMargins(15,0,0,0);
-                    checkBox.setLayoutParams(params);
-                    row.addView(checkBox);
 
                     // add the TableRow to the TableLayout
                     table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));

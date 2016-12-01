@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +32,10 @@ public class MyPokeDetails extends AppCompatActivity {
         setContentView(R.layout.my_poke_details);
 
         getActionBar();
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int dpi = displayMetrics.densityDpi;
 
         Intent i = getIntent();
         pokeID = i.getExtras().getInt("id");
@@ -79,6 +84,8 @@ public class MyPokeDetails extends AppCompatActivity {
 
             Map<String, String> attackStuff = pokemonHelper.getAttacksStuff(attacks[0], "Attack"); //keys are "duration", "type" and "damage"
             attack.setTypeface(null, Typeface.BOLD);
+            if (dpi == 480)
+                attack.setTextSize(13);
             attack.setText(attacks[0] + " - " + attackStuff.get("damage") + " ");
             List<String> pokeTypes = pokemonHelper.getPokeTypes(pokeID);
             for (String type:pokeTypes)
@@ -92,6 +99,8 @@ public class MyPokeDetails extends AppCompatActivity {
 
             Map<String, String> ultiStuff = pokemonHelper.getAttacksStuff(attacks[1], "Ulti"); //keys are "duration", "critical", type" and "damage"
             ulti.setTypeface(null, Typeface.BOLD);
+            if (dpi == 480)
+                ulti.setTextSize(13);
             ulti.setText(attacks[1] + " - " + ultiStuff.get("damage") + " ");
             for (String type:pokeTypes)
                 if (type.equals(ultiStuff.get("type"))) {
