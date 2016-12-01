@@ -54,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
                 i = new Intent(this, AboutUs.class);
                 this.startActivity(i);
                 break;
+            case R.id.share:
+                i = new Intent(this, Share.class);
+                this.startActivity(i);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
