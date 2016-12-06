@@ -38,6 +38,7 @@ public class ShareResult extends AppCompatActivity {
 
         //TextView textView = (TextView)findViewById(R.id.titleshareresult);
         //textView.setText("Ecco il risultato dei tuoi filtri");
+
         CallbackManager callbackManager = CallbackManager.Factory.create();
         LoginManager loginManager = LoginManager.getInstance();
 
