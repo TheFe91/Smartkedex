@@ -11,6 +11,14 @@
         android:label="Smartkedex 1.0 Beta9r9"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+                   android:value="@string/facebook_app_id"/>
+
+        <provider
+            android:authorities="com.facebook.app.FacebookContentProvider1900435046854354"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
         
         <activity android:name=".SplashActivity"
                   android:theme="@style/SplashTheme"
@@ -96,6 +104,15 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.Share"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".ShareResult"
+                  android:parentActivityName=".Share"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.ShareResult"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>

@@ -114,7 +114,7 @@ public class Settings extends AppCompatActivity {
                 reset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        System.out.println("sono dentro");
+                        //TODO: FARE
                     }
                 });
             }
