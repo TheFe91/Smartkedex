@@ -112,13 +112,17 @@ public class EditPokeDetails extends AppCompatActivity {
             attackSpinner.setSelection(attacksAdapter.getPosition(moves[0]));
             attackSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[0], "Attack").toLowerCase(), "color", getPackageName())));
 
-            List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
+            try {
 
-            ArrayAdapter<String>ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
-            attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            ultiSpinner.setAdapter(ultiAdapter);
-            ultiSpinner.setSelection(ultiAdapter.getPosition(moves[1]));
-            ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti").toLowerCase(), "color", getPackageName())));
+                List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
+
+                ArrayAdapter<String> ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
+                attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                ultiSpinner.setAdapter(ultiAdapter);
+                ultiSpinner.setSelection(ultiAdapter.getPosition(moves[1]));
+                ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti").toLowerCase(), "color", getPackageName())));
+            }
+            catch (Exception e) {}
 
             editText = new EditText(getApplicationContext());
             if (dpi == 480) {
@@ -145,7 +149,10 @@ public class EditPokeDetails extends AppCompatActivity {
             editText.setLayoutParams(params);
             row.addView(editText);
             attackRow.addView(attackSpinner);
-            ultiRow.addView(ultiSpinner);
+            try {
+                ultiRow.addView(ultiSpinner);
+            }
+            catch (Exception e) {}
             internaltable.addView(attackRow);
             internaltable.addView(ultiRow);
             internaltable.setLayoutParams(params);

@@ -97,23 +97,29 @@ public class MyPokeDetails extends AppCompatActivity {
             attack.append(" - " + attackStuff.get("duration") + "s");
             attack.setTextColor(getResources().getColor(getResources().getIdentifier(attackStuff.get("type").toLowerCase(), "color", getPackageName())));
 
-            Map<String, String> ultiStuff = pokemonHelper.getAttacksStuff(attacks[1], "Ulti"); //keys are "duration", "critical", type" and "damage"
-            ulti.setTypeface(null, Typeface.BOLD);
-            if (dpi == 480)
-                ulti.setTextSize(13);
-            ulti.setText(attacks[1] + " - " + ultiStuff.get("damage") + " ");
-            for (String type:pokeTypes)
-                if (type.equals(ultiStuff.get("type"))) {
-                    int stab = Integer.parseInt(ultiStuff.get("damage"));
-                    stab = stab + (stab / 4);
-                    ulti.append("(STAB: " + stab + ")");
-                }
-            ulti.append(" - " + ultiStuff.get("duration") + "s - " + ultiStuff.get("critical") + "%");
-            ulti.setTextColor(getResources().getColor(getResources().getIdentifier(ultiStuff.get("type").toLowerCase(), "color", getPackageName())));
+            try {
+                Map<String, String> ultiStuff = pokemonHelper.getAttacksStuff(attacks[1], "Ulti"); //keys are "duration", "critical", type" and "damage"
+                ulti.setTypeface(null, Typeface.BOLD);
+                if (dpi == 480)
+                    ulti.setTextSize(13);
+                ulti.setText(attacks[1] + " - " + ultiStuff.get("damage") + " ");
+                for (String type:pokeTypes)
+                    if (type.equals(ultiStuff.get("type"))) {
+                        int stab = Integer.parseInt(ultiStuff.get("damage"));
+                        stab = stab + (stab / 4);
+                        ulti.append("(STAB: " + stab + ")");
+                    }
+                ulti.append(" - " + ultiStuff.get("duration") + "s - " + ultiStuff.get("critical") + "%");
+                ulti.setTextColor(getResources().getColor(getResources().getIdentifier(ultiStuff.get("type").toLowerCase(), "color", getPackageName())));
+            }
+            catch (Exception e){}
 
             trparams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             attack.setLayoutParams(trparams);
-            ulti.setLayoutParams(trparams);
+            try {
+                ulti.setLayoutParams(trparams);
+            }
+            catch (Exception e){}
 
             String copyName = pokemonHelper.getCopyName(element);
 
@@ -129,7 +135,9 @@ public class MyPokeDetails extends AppCompatActivity {
             tableRow.addView(imageView);
             nameRow.addView(name);
             attackRow.addView(attack);
-            ultiRow.addView(ulti);
+            try {
+                ultiRow.addView(ulti);
+            } catch (Exception e){}
             attacchi.addView(nameRow);
             attacchi.addView(attackRow);
             attacchi.addView(ultiRow);
