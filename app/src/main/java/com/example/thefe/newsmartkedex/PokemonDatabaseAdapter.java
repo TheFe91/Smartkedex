@@ -48,6 +48,14 @@ public class PokemonDatabaseAdapter {
         db.close();
     }
 
+    void erase () {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("DELETE FROM Copy");
+        db.execSQL("DELETE FROM Catches");
+        db.execSQL("DELETE FROM Settings");
+        db.close();
+    }
+
     ////////////////////////////////////////////////////////////////////GETTERS////////////////////////////////////////////////////////////////////////////////////
 
     int getRows (String tableName) {
