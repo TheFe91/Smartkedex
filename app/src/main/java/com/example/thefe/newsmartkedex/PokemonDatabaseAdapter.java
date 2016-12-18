@@ -300,7 +300,8 @@ public class PokemonDatabaseAdapter {
         private static final String COPY = "Copy";
         private static final String HASATTACK = "HasAttack";
         private static final String HASULTI = "HasUlti";
-        private static final String HASCOPY = "HasCopy";
+        private static final String HASSTRENGHT = "HasStrenght";
+        private static final String HASWEAKNESS = "HasWeakness";
         private static final String HASTYPE = "HasType";
 
         //Columns Declaration
@@ -317,6 +318,7 @@ public class PokemonDatabaseAdapter {
         private static final String DURATION = "Duration";
         private static final String CRITICAL_CHANCE = "CriticalChance";
         private static final String TYPE_NAME = "TypeName";
+        private static final String DESCRIPTION = "Description";
 
 
 
@@ -329,6 +331,7 @@ public class PokemonDatabaseAdapter {
 
         private static final String CREATE_POKEMON = "CREATE TABLE IF NOT EXISTS " + POKEMON + "(" +
                                                       POKEMONNAME + VARCHAR + "20), " +
+                                                      DESCRIPTION + VARCHAR + "150)" +
                                                       ID + INT + "3) PRIMARY KEY)";
 
         private static final String CREATE_TYPE = "CREATE TABLE IF NOT EXISTS " + TYPE + "(" + TYPE_NAME + VARCHAR + "10) PRIMARY KEY)";
@@ -376,6 +379,20 @@ public class PokemonDatabaseAdapter {
                                                      "FOREIGN KEY (" + ID + ") REFERENCES " + POKEMON + " (" + ID + "), " +
                                                      "FOREIGN KEY (" + TYPE_NAME + ") REFERENCES " + TYPE + " (" + TYPE_NAME + "))";
 
+        private static final String CREATE_HASSTRENGHT = "CREATE TABLE IF NOT EXISTS " + HASSTRENGHT + "(" +
+                                                         ID + INT + "3), " +
+                                                         TYPE_NAME + VARCHAR + "10), " +
+                                                         "PRIMARY KEY (" + ID + ", " + TYPE_NAME + "), " +
+                                                         "FOREIGN KEY (" + ID + ") REFERENCES " + POKEMON + "(" + ID + "), " +
+                                                         "FOREIGN KEY (" + TYPE_NAME + ") REFERENCES " + TYPE + "(" + TYPE_NAME + "))";
+
+        private static final String CREATE_HASWEAKNESS = "CREATE TABLE IF NOT EXISTS " + HASWEAKNESS + "(" +
+                                                         ID + INT + "3), " +
+                                                         TYPE_NAME + VARCHAR + "10), " +
+                                                         "PRIMARY KEY (" + ID + ", " + TYPE_NAME + "), " +
+                                                         "FOREIGN KEY (" + ID + ") REFERENCES " + POKEMON + "(" + ID + "), " +
+                                                         "FOREIGN KEY (" + TYPE_NAME + ") REFERENCES " + TYPE + "(" + TYPE_NAME + "))";
+
         private static final String CREATE_COPY = "CREATE TABLE IF NOT EXISTS " + COPY + "(" +
                                                   ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                   POKEMONID + INT + " 3), " +
@@ -404,6 +421,8 @@ public class PokemonDatabaseAdapter {
             db.execSQL(CREATE_HASULTI);
             db.execSQL(CREATE_COPY);
             db.execSQL(CREATE_HASTYPE);
+            db.execSQL(CREATE_HASSTRENGHT);
+            db.execSQL(CREATE_HASWEAKNESS);
 
             //Populating the DB
 
@@ -558,8 +577,10 @@ public class PokemonDatabaseAdapter {
             //Populating Pokémon
             for (int i = 1; i < 152; i++) {
                 PokemonDetails pokemonDetails = new PokemonDetails();
-                db.execSQL("INSERT INTO Pokemon VALUES ('" + pokemonDetails.getName(i) + "', " + i + ")");
+                db.execSQL("INSERT INTO Pokemon (PokemonName, ID) VALUES ('" + pokemonDetails.getName(i) + "', " + i + ")");
             }
+
+            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('è possibile vedere Bulbasaur mentre schiaccia un pisolino sotto il sole. Ha un seme piantato sulla schiena. Grazie ai raggi solari, il seme cresce, ingrandendosi progressivamente')");
 
             //Populatinh HasType
             db.execSQL("INSERT INTO HasType VALUES (1, 'Erba')");
@@ -1525,6 +1546,8 @@ public class PokemonDatabaseAdapter {
             db.execSQL("DROP TABLE IF EXISTS " + SETTINGS);
             db.execSQL("DROP TABLE IF EXISTS " + HASATTACK);
             db.execSQL("DROP TABLE IF EXISTS " + HASULTI);
+            db.execSQL("DROP TABLE IF EXISTS " + HASSTRENGHT);
+            db.execSQL("DROP TABLE IF EXISTS " + HASWEAKNESS);
             db.execSQL("DROP TABLE IF EXISTS " + ATTACK);
             db.execSQL("DROP TABLE IF EXISTS " + ULTI);
             db.execSQL("DROP TABLE IF EXISTS " + TYPE);
