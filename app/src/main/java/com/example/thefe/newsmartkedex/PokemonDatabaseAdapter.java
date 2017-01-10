@@ -291,7 +291,7 @@ public class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 32;
+        private static final int DATABASE_VERSION = 33;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -339,7 +339,7 @@ public class PokemonDatabaseAdapter {
 
         private static final String CREATE_POKEMON = "CREATE TABLE IF NOT EXISTS " + POKEMON + "(" +
                                                       POKEMONNAME + VARCHAR + "20), " +
-                                                      DESCRIPTION + VARCHAR + "150)" +
+                                                      DESCRIPTION + VARCHAR + "150), " +
                                                       ID + INT + "3) PRIMARY KEY)";
 
         private static final String CREATE_TYPE = "CREATE TABLE IF NOT EXISTS " + TYPE + "(" + TYPE_NAME + VARCHAR + "10) PRIMARY KEY)";
@@ -589,10 +589,10 @@ public class PokemonDatabaseAdapter {
             }
             
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Bulbasaur. È possibile vedere Bulbasaur mentre schiaccia un pisolino sotto al sole. Ha un seme piantato sulla schiena. Grazie ai raggi solari, il seme cresce, ingrandendosi progressivamente')");
-            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Ivysaur. C'è un germoglio piantato nella schiena di Ivysaur. Per sopportarne il peso, le zampe e il corpo crescono robusti. Quando inizia a passare più tempo esposto al sole, significa che il germoglio sboccerà presto in un grande fiore')");
-            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Venusaur. Cè un grande fiore sulla schiena di Venusaur. Si dice che i colori diventino più vividi con il giusto nutrimento e i raggi solari. Il suo profumo calma le reazioni emotive delle persone')");
+            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Ivysaur. Cè un germoglio piantato nella schiena di Ivysaur. Per sopportarne il peso, le zampe e il corpo crescono robusti. Quando inizia a passare più tempo esposto al sole, significa che il germoglio sboccerà presto in un grande fiore')");
+            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Venusaur. C\'è un grande fiore sulla schiena di Venusaur. Si dice che i colori diventino più vividi con il giusto nutrimento e i raggi solari. Il suo profumo calma le reazioni emotive delle persone')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Charmander. La fiamma sulla punta della coda indica il suo stato emotivo. Se la fiamma ondeggia significa che Charmander si sta divertendo. Quando il Pokémon si infuria, la fiamma arde violentemente')");
-            db.execSQL("INSERT INTO Pokemon (Description) VALUES (' Charmeleon. Charmeleon distrugge il nemico senza pietà con i suoi artigli affilati. Quando incontra un avversario molto forte diventa aggressivo. In questo stato di grande agitazione la fiamma della coda diventa di colore bianco bluastro')");
+            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Charmeleon. Charmeleon distrugge il nemico senza pietà con i suoi artigli affilati. Quando incontra un avversario molto forte diventa aggressivo. In questo stato di grande agitazione la fiamma della coda diventa di colore bianco bluastro')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Charizard. Charizard solca i cieli in cerca di nemici molto forti. Riesce a emettere fiammate di un calore tale da fondere ogni cosa. Tuttavia, non rivolge mai le sue micidiali lingue di fuoco contro avversari più deboli di lui')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Squirtle. La corazza di Squirtle non serve soltando da protezione. La particolare forma arrotondata e le scanalature superficiali lo aiutano a minimizzare l'attrito dell'acqua per nuotare ad alta velocità')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Wartortle. La grande coda di Wartortle è coperta da una folta pelliccia, che diventa sempre più scura con l'avanzare dell'età. I graffi sulla corazza indicano la potenza di questo Pokémon come lottare')");
@@ -670,7 +670,7 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Slowbro. Slowbro ha uno Shellder saldamente attaccato alla coda, che quindi non può più essere usata per pescare. Così Slowbro può essere visto nuotare di malavoglia per catturare una preda')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Magnemite. Magnemite si attacca alle linee elettriche per caricarsi di energia. In caso di assenza di corrente in casa, controllare gli interruttori. Potrebbero esserci dei Pokémon attaccati alla cassetta degli interruttori')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Magneton. Magneton emette una potente carica magnetica fatale per tutte le apparecchiature meccaniche. Nelle città, le sirene avvertono la popolazione di grandi invasioni di questi Pokémon')");
-            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Farfetch'd. Farfetch'd ha sempre con sé il gambo di qualche pianta. Pare che alcuni gambi siano migliori di altri. Spesso lotta con altri Pokémon per avere i gambi migliori')");
+            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Farfetch\'d. Farfetch\'d ha sempre con sé il gambo di qualche pianta. Pare che alcuni gambi siano migliori di altri. Spesso lotta con altri Pokémon per avere i gambi migliori')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Doduo. Le due teste di Doduo non dormono mai nello stesso momento, in modo che una sia sempre vigile per difendersi dai nemici, mentre l'altra può riposare tranquilla')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Dodrio. Se le tre teste di Dodrio guardano in tre direzioni diverse, significa che il Pokémon è vigile. In questo stato il Pokémon non va avvicinato, poiché potrebbe decidere di attaccare')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Seel. Seel caccia le prede nel mare gelido sotto le lastre di ghiaccio. Per respirare apre un foro nel ghiaccio usando la protuberanza appuntita sulla sommità del capo')");
