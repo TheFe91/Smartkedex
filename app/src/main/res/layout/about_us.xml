@@ -45,7 +45,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/app-design-programming"
+        android:id="@+id/app_design_programming"
         android:text=": App Design and Programming"
         android:layout_toEndOf="@+id/defendenti"
         android:layout_below="@+id/name"
@@ -65,7 +65,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/two-d-design"
+        android:id="@+id/two_d_design"
         android:text=": 2D Design"
         android:layout_toEndOf="@+id/sangalli"
         android:layout_below="@+id/defendenti"
@@ -85,7 +85,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/two-d-design-and-app-design"
+        android:id="@+id/two_d_design_and_app_design"
         android:text=": 2D Design and App Design"
         android:layout_toEndOf="@+id/silletti"
         android:layout_below="@+id/sangalli"
@@ -125,7 +125,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/three-d-design-and-brand-communication"
+        android:id="@+id/three_d_design_and_brand_communication"
         android:text=": 3D Design and Brand Communication"
         android:layout_toEndOf="@+id/zanaboni"
         android:layout_below="@+id/tagliabue"
