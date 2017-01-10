@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,7 +23,7 @@ import java.util.Locale;
  * Created by TheFe on 02/10/2016.
  */
 
-public class PokemonDetails extends AppCompatActivity implements WebServicesAsyncResponse {
+public class PokemonDetails extends AppCompatActivity {
 
     private TextView tv;
     private TextToSpeech t1;
@@ -57,11 +58,6 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
 
         //Setting up server and database calls
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
-
-        //calling webservice method to retrieve Pokémon's description
-        ResponseFromWebService responseFromWebService = new ResponseFromWebService();
-        WebServicesAsyncResponse ar = this;
-        responseFromWebService.getPokeData(pokeName, ar);
 
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
@@ -170,6 +166,8 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
         //this button controls the text and the "read" button under it, making it appear and disappear
         Button showhide = (Button) findViewById(R.id.showhidedescr);
         final Button leggi = (Button)findViewById(R.id.leggidescrizione);
+        tv.setText(pokemonHelper.getDescription(pokeID));
+        toSpeech = pokemonHelper.getDescription(pokeID);
         tv.setVisibility(View.GONE);
         leggi.setVisibility(View.GONE);
         showhide.setOnClickListener(new View.OnClickListener() {
@@ -199,12 +197,6 @@ public class PokemonDetails extends AppCompatActivity implements WebServicesAsyn
                 });
             }
         });
-    }
-
-    @Override
-    public void processFinish(String output){
-        tv.setText(output);
-        toSpeech = output;
     }
 
     public String getName (int pokeID) {
