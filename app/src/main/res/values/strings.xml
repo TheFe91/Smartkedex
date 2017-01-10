@@ -1,4 +1,11 @@
 <resources>
-    <string name="app_name">NewSmartkedex</string>
-    <string name="facebook_app_id">1900435046854354</string>
+    <string name="app_name" translatable="false">NewSmartkedex</string>
+    <string name="facebook_app_id" translatable="false">1900435046854354</string>
+    <string name="defendenti" translatable="false">Alessandro Defendenti</string>
+    <string name="tagliabue" translatable="false">Luca Tagliabue</string>
+    <string name="sangalli" translatable="false">Alessia Sangalli</string>
+    <string name="silletti" translatable="false">Maria Elena Silletti</string>
+    <string name="zanaboni" translatable="false">Greta Zanaboni</string>
+    <string name="team_name" translatable="false">CiccioPasticcio Team</string>
+    <string name="contact">Contattaci</string>
 </resources>
