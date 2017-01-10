@@ -54,7 +54,7 @@ public class EditPokeDetails extends AppCompatActivity {
         TextView textView = (TextView)findViewById(R.id.pkmnName);
         textView.setText("Modifica i tuoi "+pokeName);
         textView = (TextView)findViewById(R.id.number);
-        textView.setText("Numero di "+pokeName + "da inserire");
+        textView.setText("Numero di "+pokeName + " da inserire");
         textView = (TextView)findViewById(R.id.oldcopies);
         textView.setText("Pokémon già inseriti");
         textView = (TextView)findViewById(R.id.newcopies);
