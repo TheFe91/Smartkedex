@@ -616,10 +616,10 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Raichu. Se l'elettricità accumulata nelle guance diventa eccessiva, Raichu la scarica piantando la coda nel terreno. Vicino al suo nido sono presenti spesso chiazze di erba arsa')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Sandshrew. Il corpo di Sandshrew ha una conformazione che gli consente di assorbire l'acqua senza perdite e di sopravvivere nell'aridità del deserto. Questo Pokémon si avvolge su se stesso per proteggersi dai nemici')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Sandslash. Il corpo di Sandslash è ricoperto da aculei coriacei, costituiti da parti di corazza indurita. I vecchi aculei cadono una volta all'anno per essere sostituiti dai nuovi che crescono sotto i precedenti')");
-            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Nidoran♀ . Gli aculei di Nidoran♀ secernono un potente veleno. Si pensa che si siano sviluppati per proteggere questo Pokémon dal corpo minuto. Quando è adirato, rilascia una potente tossina dal corno')");
+            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Nidoran Femmina. Gli aculei di Nidoran Femmina secernono un potente veleno. Si pensa che si siano sviluppati per proteggere questo Pokémon dal corpo minuto. Quando è adirato, rilascia una potente tossina dal corno')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Nidorina. Quando questi Pokémon si riuniscono con gli amici e la famiglia, tengono i loro aculei a debita distanza per evitare di ferirsi a vicenda. Se allontanati dal branco, diventano nervosi e irascibili')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Nidoqueen. Il corpo di Nidoqueen è racchiuso in una corazza durissima. Riesce a scagliare i nemici lontano con un colpo secco. Questo Pokémon dà il massimo di sé quando difende i propri cuccioli')");
-            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Nidoran♂. Nidoran♂ ha sviluppato dei muscoli per muovere liberamente le orecchie in qualsiasi direzione. Così, questo Pokémon è in grado di percepire anche il più flebile fruscio')");
+            db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Nidoran Maschio. Nidoran Maschio ha sviluppato dei muscoli per muovere liberamente le orecchie in qualsiasi direzione. Così, questo Pokémon è in grado di percepire anche il più flebile fruscio')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Nidorino. Nidorino è dotato di un corno più duro del diamante. Quando percepisce una presenza ostile, gli si rizzano immediatamente tutti gli aculei sulla schiena. A questo punto sfida il nemico con tutta la sua forza')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Nidoking. La possente coda di Nidoking è dotata di un enorme potere distruttivo. Con un solo colpo riesce ad abbattere un pilone metallico. Quando si scatena non c'è modo di fermare la sua furia')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Clefairy. In ogni notte di luna piena questi Pokémon escono in gruppo a giocare. All'alba i Clefairy tornano stanchi nella quiete delle loro tane montane e vanno a dormire stretti fra loro')");
@@ -739,8 +739,6 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Dragonite. Dragonite è in grado di fare il giro del mondo in sole sedici ore. È un Pokémon buono e mansueto che guida fino alla terraferma le navi prossime al naufragio')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Mewtwo. Mewtwo è stato creato grazie a una manipolazione genetica. Tuttavia, sebbene la scienza sia riuscita a creare un corpo di Pokémon, ha fallito nell'intento di dare a Mewtwo un animo generoso')");
             db.execSQL("INSERT INTO Pokemon (Description) VALUES ('Mew. Si dice che Mew possegga il patrimonio genetico di tutti i Pokémon. È in grado di rendersi invisibile, quando vuole, in modo da non farsi notare nemmeno da vicino')");
-            
-            
             
             //Populatinh HasType
             db.execSQL("INSERT INTO HasType VALUES (1, 'Erba')");
