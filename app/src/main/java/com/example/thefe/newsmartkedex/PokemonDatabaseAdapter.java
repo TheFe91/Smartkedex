@@ -24,6 +24,8 @@ public class PokemonDatabaseAdapter {
         helper = new PokemonHelper(context);
     }
 
+    ////////////////////////////////////////////////////////////////////INSERTS////////////////////////////////////////////////////////////////////////////////////
+
     void insertSettingsData(String owner, String smartkedex, String language, int pokemonGO) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("INSERT INTO Settings (Owner, SmartkedexName, Language, PokemonGO) VALUES ('"+owner+"', '"+smartkedex+"', '"+language+"', '"+pokemonGO+"')");
@@ -1705,6 +1707,79 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasUlti VALUES (151, 'Iperraggio')");
             db.execSQL("INSERT INTO HasUlti VALUES (151, 'Forza Lunare')");
             db.execSQL("INSERT INTO HasUlti VALUES (151, 'Psichico')");
+
+            db.execSQL("INSERT INTO HasWeakness VALUES (1, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (1, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (1, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (1, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (2, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (2, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (2, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (2, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (3, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (3, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (3, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (3, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (4, 'Terra')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (4, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (4, 'Acqua')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (5, 'Terra')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (5, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (5, 'Acqua')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (6, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (6, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (6, 'Acqua')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (7, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (7, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (8, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (8, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (9, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (9, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (10, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (10, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (10, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (11, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (11, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (11, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (12, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (12, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (12, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (12, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (13, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (13, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (13, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (13, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (14, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (14, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (14, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (14, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (15, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (15, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (15, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (15, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (16, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (16, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (16, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (17, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (17, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (17, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (18, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (18, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (18, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (19, 'Lotta')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (20, 'Lotta')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (21, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (21, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (21, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (22, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (22, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (22, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (23, 'Terra')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (23, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (24, 'Terra')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (24, 'Psico')");
+
+
 
 
             Toast.makeText(context, "Creazione del Database\neseguita correttamente", Toast.LENGTH_SHORT).show();

@@ -15,25 +15,33 @@ Ci sono due bottoni di test presentazione della macchina, uno in inglese e uno i
 Versione 1.0 Beta 3 Stable
 Aggiunto bottone di Test per switch di Activity (100% working)
 
--*-*-*-TODO*-*-*-*
+-*-*-*-*-*-*-
+
+Versione 1.0 Beta 10 r1
+Dopo diverse migliorie siamo quasi pronti per la pubblicazione:
+Aggiunti disegni a mano dei Pokémon (WIP)
+Aggiunta schermata dettagli (mancano solo debolezze e punti di forza)
+Aggiunta possibilità di inserire i propri Pokémon, personalizzandoli al 100% come in Pokémon GO
+
+-*-*-*- TODO -*-*-*-
 
 [GENERAL]
 -Ottimizzare il codice in generale
--Eliminare il frame skipping
+-Eliminare il frame skipping [DONE]
 
 [Versione 1.0]
 -Gestire i click/tap incondizionati
--Inserire tutte le descrizioni
+-Inserire tutte le descrizioni [DONE]
 -Disabilitare Landscape [DONE]
 -Aggiungere feature: quando premo un Pokémon si apre una nuova schermata con i suoi dati, punti deboli e punti forti,
-                     tipo debole e tipo forte e un bottone "Speak" o simile che mi legge la descrizione (vedi schemi) [WIP]
+                     tipo debole e tipo forte e un bottone "Speak" o simile che mi legge la descrizione (vedi schemi) [DONE]
 
 [Versione 1.1 --> Ingresso nel mercato inglese e internazionale]
--Aggiungere Menu dei Settaggi:
+-Aggiungere Menu dei Settaggi: [DONE in v1.0]
     -Lingua dello Smartkédex
     -Nome dello Smartkédex
     -Propri dati personali
--Aggiungere tasto di presentazione dello Smartkédex
+-Aggiungere tasto di presentazione dello Smartkédex [DONE in v1.0]
 -Supporto a Lingua Inglese
 
 [Versione 1.2]
