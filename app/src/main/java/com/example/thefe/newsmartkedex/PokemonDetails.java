@@ -123,6 +123,10 @@ public class PokemonDetails extends AppCompatActivity {
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
         pokeSwitch.setText("Posseduto  ");
 
+        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+        for (String weakness:weaknesses) {
+            imageView = (ImageView)findViewById(R.id.tsd???) //gotta find a way to assign every image to a single id with a number inside in it
+        }
 
         if (pokemonHelper.getPokemonGO() == 1) { //if my user plays PokémonGO
             pokeDetails.setText("Dettagli");

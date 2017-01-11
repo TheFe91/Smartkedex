@@ -272,6 +272,19 @@ public class PokemonDatabaseAdapter {
         return description;
     }
 
+    List<String> getWeaknesses (int pokeID) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        List<String> weaknesses = new ArrayList<>();
+        String[] columns = {PokemonHelper.TYPE_NAME};
+
+        Cursor cursor = db.query(PokemonHelper.HASWEAKNESS, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
+        while (cursor.moveToNext()) {
+            weaknesses.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME)));
+        }
+        db.close();
+        return weaknesses;
+    }
+
     ////////////////////////////////////////////////////////////////////UPDATERS////////////////////////////////////////////////////////////////////////////////////
 
     void updateLanguage (String newLanguage, String oldLanguage) {
@@ -1858,6 +1871,18 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasWeakness VALUES (51, 'Erba')");
             db.execSQL("INSERT INTO HasWeakness VALUES (51, 'Ghiaccio')");
             db.execSQL("INSERT INTO HasWeakness VALUES (51, 'Acqua')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (52, 'Lotta')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (53, 'Lotta')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (54, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (54, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (55, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (55, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (56, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (56, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (56, 'Folletto')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (57, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (57, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (57, 'Folletto')");
 
 
 
