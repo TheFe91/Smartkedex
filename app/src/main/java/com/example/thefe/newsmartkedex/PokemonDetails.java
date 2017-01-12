@@ -123,9 +123,15 @@ public class PokemonDetails extends AppCompatActivity {
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
         pokeSwitch.setText("Posseduto  ");
 
+        //setting the Pokémon's weaknesses
         List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+        int counter = 1;
         for (String weakness:weaknesses) {
-            imageView = (ImageView)findViewById(R.id.tsd???) //gotta find a way to assign every image to a single id with a number inside in it
+            String id = "tsd"+counter;
+            weakness = weakness.toLowerCase();
+            imageView = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+            imageView.setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
+            counter++;
         }
 
         if (pokemonHelper.getPokemonGO() == 1) { //if my user plays PokémonGO

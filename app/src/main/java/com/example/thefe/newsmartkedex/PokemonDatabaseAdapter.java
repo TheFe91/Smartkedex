@@ -268,7 +268,6 @@ public class PokemonDatabaseAdapter {
             description = cursor.getString(0); //0 because column is always 1 and only 1
         }
         db.close();
-        System.err.println(description);
         return description;
     }
 

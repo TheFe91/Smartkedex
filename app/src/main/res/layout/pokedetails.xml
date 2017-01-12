@@ -119,29 +119,25 @@
         android:layout_width="80dp"
         android:layout_height="26dp"
         android:id="@+id/tsd1"
-        android:layout_below="@+id/deboleContro"
-        android:src="@drawable/acqua"/>
+        android:layout_below="@+id/deboleContro"/>
     <ImageView
         android:layout_width="80dp"
         android:layout_height="26dp"
         android:id="@+id/tsd2"
         android:layout_below="@+id/deboleContro"
-        android:layout_toEndOf="@+id/tsd1"
-        android:src="@drawable/psico"/>
+        android:layout_toEndOf="@+id/tsd1"/>
     <ImageView
         android:layout_width="80dp"
         android:layout_height="26dp"
         android:id="@+id/tsd3"
         android:layout_below="@+id/deboleContro"
-        android:layout_toEndOf="@+id/tsd2"
-        android:src="@drawable/lotta"/>
+        android:layout_toEndOf="@+id/tsd2"/>
     <ImageView
         android:layout_width="80dp"
         android:layout_height="26dp"
         android:id="@+id/tsd4"
         android:layout_below="@+id/deboleContro"
-        android:layout_toEndOf="@+id/tsd3"
-        android:src="@drawable/terra"/>
+        android:layout_toEndOf="@+id/tsd3"/>
 
     <TableLayout
         android:layout_width="wrap_content"
