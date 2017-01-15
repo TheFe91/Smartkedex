@@ -2002,7 +2002,33 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasWeakness VALUES (95, 'Terra')");
             db.execSQL("INSERT INTO HasWeakness VALUES (95, 'Acqua')");
             db.execSQL("INSERT INTO HasWeakness VALUES (95, 'Ghiaccio')");
-
+            db.execSQL("INSERT INTO HasWeakness VALUES (96, 'Coleottero')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (96, 'Buio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (96, 'Spettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (97, 'Coleottero')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (97, 'Buio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (97, 'Spettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (98, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (98, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (99, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (99, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (100, 'Terra')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (101, 'Terra')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (102, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (102, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (102, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (102, 'Veleno')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (103, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (103, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (103, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (103, 'Veleno')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (104, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (104, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (104, 'Acqua')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (105, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (105, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (105, 'Acqua')");
+            
 
 
 
