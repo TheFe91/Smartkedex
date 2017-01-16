@@ -2028,7 +2028,7 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasWeakness VALUES (105, 'Erba')");
             db.execSQL("INSERT INTO HasWeakness VALUES (105, 'Ghiaccio')");
             db.execSQL("INSERT INTO HasWeakness VALUES (105, 'Acqua')");
-
+            //aggiungo una riga di prova
 
 
 
