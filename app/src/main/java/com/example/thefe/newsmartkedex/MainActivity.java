@@ -1,12 +1,8 @@
 package com.example.thefe.newsmartkedex;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -33,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        AppRater appRater = new AppRater(this);
+        appRater.setLaunchesBeforePrompt(3);
+        appRater.setPhrases("Dacci un Feedback!!!", "Ti è piaciuta la nostra app? Dedicaci un paio di minuti e dacci un feedback sul Play Store", "FEEDBACK", "DOPO", "MAI");
+        appRater.demo();
     }
 
     @Override
