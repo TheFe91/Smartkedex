@@ -942,6 +942,7 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasType VALUES (121, 'Acqua')");
             db.execSQL("INSERT INTO HasType VALUES (121, 'Psico')");
             db.execSQL("INSERT INTO HasType VALUES (122, 'Psico')");
+            db.execSQL("INSERT INTO HasType VALUES (122, 'Folletto')");
             db.execSQL("INSERT INTO HasType VALUES (123, 'Coleottero')");
             db.execSQL("INSERT INTO HasType VALUES (123, 'Volante')");
             db.execSQL("INSERT INTO HasType VALUES (124, 'Ghiaccio')");
@@ -2028,9 +2029,63 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasWeakness VALUES (105, 'Erba')");
             db.execSQL("INSERT INTO HasWeakness VALUES (105, 'Ghiaccio')");
             db.execSQL("INSERT INTO HasWeakness VALUES (105, 'Acqua')");
-            //aggiungo una riga di prova
-
-
+            db.execSQL("INSERT INTO HasWeakness VALUES (106, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (106, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (106, 'Folletto')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (107, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (107, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (107, 'Folletto')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (108, 'Lotta')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (109, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (110, 'Psico')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (111, 'Acciaio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (111, 'Terra')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (111, 'Acqua')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (111, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (112, 'Acciaio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (112, 'Terra')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (112, 'Acqua')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (112, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (113, 'Lotta')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (114, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (114, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (114, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (114, 'Coleottero')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (115, 'Lotta')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (116, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (116, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (117, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (117, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (118, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (118, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (119, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (119, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (120, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (120, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (121, 'Elettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (121, 'Erba')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (121, 'Coleottero')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (121, 'Buio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (122, 'Spettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (122, 'Acciaio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (122, 'Veleno')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (123, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (123, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (123, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (123, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (124, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (124, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (124, 'Buio')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (124, 'Spettro')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (125, 'Terra')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (126, 'Terra')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (126, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (126, 'Acqua')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (127, 'Fuoco')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (127, 'Volante')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (127, 'Roccia')");
+            db.execSQL("INSERT INTO HasWeakness VALUES (128, 'Lotta')");
+            
 
 
 
