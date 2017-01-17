@@ -100,7 +100,7 @@ public class EditPokeDetails extends AppCompatActivity {
             attackSpinner.setLayoutParams(params);
             ultiSpinner.setLayoutParams(params);
             attackSpinner.setId(pokeId);
-            ultiSpinner.setId(pokeId*10);
+            ultiSpinner.setId(pokeId*11);
 
             String[] moves = pokemonHelper.getPokeAttacks(pokeId); //0 is attack, 1 is ulti
 
@@ -112,8 +112,8 @@ public class EditPokeDetails extends AppCompatActivity {
             attackSpinner.setSelection(attacksAdapter.getPosition(moves[0]));
             attackSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[0], "Attack").toLowerCase(), "color", getPackageName())));
 
+            //this is necessary because there can be Pokémons like Ditto who don't have a ulti, otherwise the app crashes
             try {
-
                 List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
 
                 ArrayAdapter<String> ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
@@ -135,11 +135,12 @@ public class EditPokeDetails extends AppCompatActivity {
             editText.setHint("(Nome)");
             editText.setHintTextColor(getResources().getColor(R.color.acciaio));
             editText.setTextColor(getResources().getColor(android.R.color.black));
-            editText.setId(pokeId*11);
+            editText.setId(pokeId*13);
+            editText.setText(pokemonHelper.getCopyName(pokeId));
 
             checkBox = new CheckBox(getApplicationContext());
             checkBox.setButtonDrawable(R.drawable.checkbox_selector);
-            checkBox.setId(pokeId*13);
+            checkBox.setId(pokeId*17);
             //Toast.makeText(getApplicationContext(), ""+checkBox.getId(), Toast.LENGTH_SHORT).show();
 
             // add the TextView  to the new TableRow
@@ -246,20 +247,35 @@ public class EditPokeDetails extends AppCompatActivity {
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //for loop to enter modifications
                 for (int pokeId:pokeIds) {
                     attackSpinner = (Spinner)findViewById(pokeId);
                     String attack = (String) attackSpinner.getSelectedItem();
-                    ultiSpinner = (Spinner)findViewById(pokeId*10);
+4                    ultiSpinner = (Spinner)findViewById(pokeId*11);
                     String ulti = (String) ultiSpinner.getSelectedItem();
-                    editText = (EditText)findViewById(pokeId*11);
+                    editText = (EditText)findViewById(pokeId*13);
                     String copyName = editText.getText().toString();
-                    pokemonHelper.updatePokeAttacks(attack, ulti, copyName, pokeId);
-                    checkBox = (CheckBox)findViewById(pokeId*13);
+                    String[] attacks = pokemonHelper.getPokeAttacks(pokeId); //attacks[0] contains the attack, attack[1] contains the ulti
+                    if (!attack.equals(attacks[0])) {
+                        pokemonHelper.updatePokeAttack(attack, pokeId);
+                        System.err.println("sono nel primo IF");
+                    }
+                    if (!ulti.equals(attacks[1])) {
+                        pokemonHelper.updatePokeUlti(ulti, pokeId);
+                        System.err.println("sono nel secondo IF");
+                    }
+                    if (!copyName.equals(pokemonHelper.getCopyName(pokeId))) {
+                        pokemonHelper.updatePokeName(copyName, pokeId);
+                        System.err.println("sono nel terzo IF");
+                    }
+                    checkBox = (CheckBox)findViewById(pokeId*17);
                     if (checkBox.isChecked()) {
                         pokemonHelper.deleteCopy(pokeId);
                     }
                 }
 
+                //for loop to enter new Pokémons
                 for (int j = 1+pokeIds.size(); j <= (int)spinner.getSelectedItem()+pokeIds.size(); j++) {
                     attackSpinner = (Spinner)findViewById(j);
                     String attack = (String) attackSpinner.getSelectedItem();
@@ -267,7 +283,7 @@ public class EditPokeDetails extends AppCompatActivity {
                     String ulti = (String) ultiSpinner.getSelectedItem();
                     editText = (EditText)findViewById(j*11);
                     String copyName = editText.getText().toString();
-                    System.err.println(attack + " - " + ulti + " - " + copyName);
+                    System.err.println(attack + " - " + ulti + " - " + copyName + " - " + j);
                     pokemonHelper.insertCopy(attack, ulti, copyName, pokeID);
                 }
 

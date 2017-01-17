@@ -310,9 +310,21 @@ public class PokemonDatabaseAdapter {
         db.close();
     }
 
-    void updatePokeAttacks (String attack, String ulti, String copyName, int pokeID) {
+    void updatePokeAttack (String attack, int pokeID) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE Copy SET AttackName = '"+attack+"', UltiName = '" + ulti + "', PokemonName = '"+copyName+"' WHERE ID = "+pokeID);
+        db.execSQL("UPDATE Copy SET AttackName = '"+attack+"' WHERE ID = "+pokeID);
+        db.close();
+    }
+
+    void updatePokeUlti (String ulti, int pokeID) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("UPDATE Copy SET UltiName = '"+ulti+"' WHERE ID = "+pokeID);
+        db.close();
+    }
+
+    void updatePokeName (String name, int pokeID) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("UPDATE Copy SET PokemonName = '"+name+"' WHERE ID = "+pokeID);
         db.close();
     }
 
