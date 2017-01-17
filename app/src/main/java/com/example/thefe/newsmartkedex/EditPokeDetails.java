@@ -252,7 +252,7 @@ public class EditPokeDetails extends AppCompatActivity {
                 for (int pokeId:pokeIds) {
                     attackSpinner = (Spinner)findViewById(pokeId);
                     String attack = (String) attackSpinner.getSelectedItem();
-4                    ultiSpinner = (Spinner)findViewById(pokeId*11);
+                    ultiSpinner = (Spinner)findViewById(pokeId*11);
                     String ulti = (String) ultiSpinner.getSelectedItem();
                     editText = (EditText)findViewById(pokeId*13);
                     String copyName = editText.getText().toString();
