@@ -117,7 +117,11 @@ public class PokemonDetails extends AppCompatActivity {
             }
         }
         else
-            pkmnName.setText("#"+pokeID+" - "+pokeName);
+            if (pokeID == 122) {
+                pkmnName.setText("#122 - Mr. Mime");
+            }
+            else
+                pkmnName.setText("#"+pokeID+" - "+pokeName);
 
         final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
