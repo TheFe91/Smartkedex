@@ -8,6 +8,9 @@ import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -141,24 +144,24 @@ public class PokemonDetails extends AppCompatActivity {
         if (pokemonHelper.getPokemonGO() == 1) { //if my user plays PokémonGO
             pokeDetails.setText("Dettagli");
             int catched = pokemonHelper.getCatched(pokeID);
-            if (catched == 0)
+            if (catched == 0) {
                 pokeDetails.setEnabled(false);
+                pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (pokeSwitch.isChecked()) {
+                            pokeDetails.setEnabled(true);
+                            pokemonHelper.insertCatches(pokeID, pokemonHelper.getOwner()); //storing into Catches that my user caught that Pokémon
+                            fadeOutAndHideSwitch(pokeSwitch);
+                        } else
+                            pokeDetails.setEnabled(false);
+                    }
+                });
+            }
             else {
                 pokeDetails.setEnabled(true);
-                pokeSwitch.setChecked(true);
+                pokeSwitch.setVisibility(View.GONE);
             }
-
-            pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (pokeSwitch.isChecked()) {
-                        pokeDetails.setEnabled(true);
-                        pokemonHelper.insertCatches(pokeID, pokemonHelper.getOwner()); //storing into Catches that my user caught that Pokémon
-                    }
-                    else
-                        pokeDetails.setEnabled(false);
-                }
-            });
 
             //listening if the Details button is pressed
             pokeDetails.setOnClickListener(new View.OnClickListener() {
@@ -211,6 +214,26 @@ public class PokemonDetails extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void fadeOutAndHideSwitch (final Switch aSwitch) {
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(1000);
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                aSwitch.setVisibility(View.GONE);
+            }
+
+            public void onAnimationStart(Animation animation) {}
+            public void onAnimationRepeat(Animation animation) {}
+
+        });
+
+        aSwitch.startAnimation(fadeOut);
     }
 
     public String getName (int pokeID) {
