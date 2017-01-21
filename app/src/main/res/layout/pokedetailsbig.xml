@@ -158,43 +158,39 @@
         android:textSize="8dp"
         android:layout_below="@+id/tsd1"/>
 
-    <TableLayout
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/break3"
-        android:id="@+id/descriptionTable">
+        android:id="@+id/showhidedescr"
+        android:text="Descrizione"
+        android:height="53dp"
+        android:layout_below="@+id/break3"/>
 
-        <TableRow
-            android:padding="2dp">
-            <Button
-                android:text="Descrizione"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="11sp"
-                android:layout_gravity="start"
-                android:id="@+id/showhidedescr"/>
-        </TableRow>
-        <TableRow
-            android:padding="2dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/descriptiontext"
-                android:textSize="11dp"
-                android:layout_gravity="center_horizontal">
-            </TextView>
-        </TableRow>
-        <TableRow
-            android:padding="2dp">
-            <Button
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Leggi\ndescrizione"
-                android:textSize="11sp"
-                android:id="@+id/leggidescrizione"
-                android:layout_gravity="center_horizontal">
-            </Button>
-        </TableRow>
-    </TableLayout>
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Leggi\ndescrizione"
+        android:id="@+id/leggidescrizione"
+        android:layout_below="@+id/break3"
+        android:layout_alignParentEnd="true">
+    </Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/break4"
+        android:textSize="8dp"
+        android:layout_below="@+id/showhidedescr"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/break4">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/descriptiontext">
+        </TextView>
+    </ScrollView>
 
 </RelativeLayout>

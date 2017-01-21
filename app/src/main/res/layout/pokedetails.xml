@@ -139,7 +139,49 @@
         android:layout_below="@+id/deboleContro"
         android:layout_toEndOf="@+id/tsd3"/>
 
-    <TableLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/break3"
+        android:textSize="8dp"
+        android:layout_below="@+id/tsd1"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/showhidedescr"
+        android:text="Descrizione"
+        android:height="53dp"
+        android:layout_below="@+id/break3"/>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Leggi\ndescrizione"
+        android:id="@+id/leggidescrizione"
+        android:layout_below="@+id/break3"
+        android:layout_alignParentEnd="true">
+    </Button>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/break4"
+        android:textSize="8dp"
+        android:layout_below="@+id/showhidedescr"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/break4">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/descriptiontext">
+        </TextView>
+    </ScrollView>
+
+    <!--<TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tsd4"
@@ -176,6 +218,6 @@
                 android:layout_gravity="center_horizontal">
             </Button>
         </TableRow>
-    </TableLayout>
+    </TableLayout>-->
 
 </RelativeLayout>
