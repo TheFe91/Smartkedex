@@ -1,10 +1,9 @@
-package com.example.thefe.newsmartkedex;
+package com.rollercoders.smartkedex;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.thefe.newsmartkedex;
+package com.rollercoders.smartkedex;
 
 /**
  * Created by TheFe on 18/10/16.

@@ -1,4 +1,4 @@
-package com.example.thefe.newsmartkedex;
+package com.rollercoders.smartkedex;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.rollercoders.smartkedex.R;
 
 import java.util.ArrayList;
 import java.util.List;

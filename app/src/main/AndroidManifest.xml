@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.thefe.newsmartkedex">
+    package="com.rollercoders.smartkedex">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -20,7 +20,7 @@
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true"/>
         
-        <activity android:name=".SplashActivity"
+        <activity android:name="com.rollercoders.smartkedex.SplashActivity"
                   android:theme="@style/SplashTheme"
                   android:screenOrientation="portrait">
 
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Welcome"
+        <activity android:name="com.rollercoders.smartkedex.Welcome"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.Welcome" />
@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"
+        <activity android:name="com.rollercoders.smartkedex.MainActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MainActivity" />
@@ -49,8 +49,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".PokemonDetails"
-                  android:parentActivityName=".MainActivity"
+        <activity android:name="com.rollercoders.smartkedex.PokemonDetails"
+                  android:parentActivityName="com.rollercoders.smartkedex.MainActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.PokemonDetails" />
@@ -59,8 +59,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MyPokeDetails"
-            android:parentActivityName=".PokemonDetails"
+        <activity android:name="com.rollercoders.smartkedex.MyPokeDetails"
+            android:parentActivityName="com.rollercoders.smartkedex.PokemonDetails"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MyPokeDetails"/>
@@ -69,8 +69,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".EditPokeDetails"
-                  android:parentActivityName=".PokemonDetails"
+        <activity android:name="com.rollercoders.smartkedex.EditPokeDetails"
+                  android:parentActivityName="com.rollercoders.smartkedex.PokemonDetails"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.EditPokeDetails"/>
@@ -79,8 +79,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AboutUs"
-                  android:parentActivityName=".MainActivity"
+        <activity android:name="com.rollercoders.smartkedex.AboutUs"
+                  android:parentActivityName="com.rollercoders.smartkedex.MainActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.AboutUs"/>
@@ -89,8 +89,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Settings"
-            android:parentActivityName=".MainActivity"
+        <activity android:name="com.rollercoders.smartkedex.Settings"
+            android:parentActivityName="com.rollercoders.smartkedex.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.Settings"/>
@@ -99,8 +99,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Share"
-            android:parentActivityName=".MainActivity"
+        <activity android:name="com.rollercoders.smartkedex.Share"
+            android:parentActivityName="com.rollercoders.smartkedex.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.Share"/>
@@ -108,8 +108,8 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ShareResult"
-                  android:parentActivityName=".Share"
+        <activity android:name="com.rollercoders.smartkedex.ShareResult"
+                  android:parentActivityName="com.rollercoders.smartkedex.Share"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.ShareResult"/>

@@ -1,18 +1,18 @@
-package com.example.thefe.newsmartkedex;
+package com.rollercoders.smartkedex;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.rollercoders.smartkedex.R;
 
 /**
  * Created by TheFe on 04/11/2016.

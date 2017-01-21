@@ -1,4 +1,4 @@
-package com.example.thefe.newsmartkedex;
+package com.rollercoders.smartkedex;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import com.rollercoders.smartkedex.R;
 
 public class MainActivity extends AppCompatActivity {
 

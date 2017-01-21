@@ -1,4 +1,4 @@
-package com.example.thefe.newsmartkedex;
+package com.rollercoders.smartkedex;
 
 import android.app.Activity;
 import android.content.Context;

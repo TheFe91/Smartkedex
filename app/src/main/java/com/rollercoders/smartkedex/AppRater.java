@@ -1,4 +1,4 @@
-package com.example.thefe.newsmartkedex;
+package com.rollercoders.smartkedex;
 
 /*
  * Copyright (c) delight.im <info@delight.im>

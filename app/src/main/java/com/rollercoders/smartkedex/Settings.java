@@ -1,7 +1,5 @@
-package com.example.thefe.newsmartkedex;
+package com.rollercoders.smartkedex;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,10 +8,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.rollercoders.smartkedex.R;
 
 /**
  * Created by TheFe on 17/10/2016.
