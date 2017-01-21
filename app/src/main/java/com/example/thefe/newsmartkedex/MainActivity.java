@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        AppRater appRater = new AppRater(this);
-        appRater.setLaunchesBeforePrompt(3);
-        appRater.setPhrases("Dacci un Feedback", "Ti è piaciuta la nostra app? Dedicaci un paio di minuti e dacci un feedback sul Play Store", "FEEDBACK", "DOPO", "MAI");
-        appRater.demo();
+        //AppRater appRater = new AppRater(this);
+        //appRater.setLaunchesBeforePrompt(3);
+        //appRater.setPhrases("Dacci un Feedback", "Ti è piaciuta la nostra app? Dedicaci un paio di minuti e dacci un feedback sul Play Store", "FEEDBACK", "DOPO", "MAI");
+        //appRater.demo();
     }
 
     @Override
