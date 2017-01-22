@@ -1,4 +1,4 @@
-package com.rollercoders.smartkedex;
+/*package com.rollercoders.smartkedex;
 
 import android.app.Application;
 
@@ -6,7 +6,7 @@ import com.facebook.FacebookSdk;
 
 /**
  * Created by TheFe on 06/12/16.
- */
+ *
 
 public class ShareOnFacebook extends Application {
 
@@ -15,4 +15,4 @@ public class ShareOnFacebook extends Application {
         super.onCreate();
         FacebookSdk.sdkInitialize(getApplicationContext());
     }
-}
+}*/

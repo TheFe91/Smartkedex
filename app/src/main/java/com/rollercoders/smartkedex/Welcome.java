@@ -12,8 +12,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rollercoders.smartkedex.R;
-
 /**
  * Created by TheFe on 04/11/2016.
  */
@@ -110,6 +108,5 @@ public class Welcome extends Activity {
                 }
             });
         }
-
     }
 }

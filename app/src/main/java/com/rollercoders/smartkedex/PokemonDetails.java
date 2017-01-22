@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.rollercoders.smartkedex.R;
-
 import java.util.List;
 import java.util.Locale;
 

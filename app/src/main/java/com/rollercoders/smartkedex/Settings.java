@@ -11,8 +11,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.rollercoders.smartkedex.R;
-
 /**
  * Created by TheFe on 17/10/2016.
  */

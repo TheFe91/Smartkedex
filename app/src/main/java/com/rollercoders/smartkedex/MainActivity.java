@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.rollercoders.smartkedex.R;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override

@@ -4,11 +4,11 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
     defaultConfig {
-        applicationId "com.example.thefe.newsmartkedex"
+        applicationId "com.rollercoders.smartkedex"
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 1
-        versionName "1.0 Beta 10 Release 1"
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -27,5 +27,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
     // https://mvnrepository.com/artifact/com.facebook.android/facebook-android-sdk
-    compile group: 'com.facebook.android', name: 'facebook-android-sdk', version: '4.+'
+    //compile group: 'com.facebook.android', name: 'facebook-android-sdk', version: '4.+'
 }

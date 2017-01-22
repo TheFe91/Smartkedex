@@ -1,4 +1,4 @@
-package com.rollercoders.smartkedex;
+/*package com.rollercoders.smartkedex;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * Created by TheFe on 01/12/16.
- */
+ *
 
 public class ShareResult extends AppCompatActivity {
     @Override
@@ -93,4 +93,4 @@ public class ShareResult extends AppCompatActivity {
             }
         });
     }
-}
+}*/

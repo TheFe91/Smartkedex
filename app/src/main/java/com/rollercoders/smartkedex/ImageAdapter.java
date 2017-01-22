@@ -7,8 +7,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.rollercoders.smartkedex.R;
-
 /**
  * Created by TheFe on 27/09/2016.
  */

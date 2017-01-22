@@ -15,8 +15,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.rollercoders.smartkedex.R;
-
 import java.util.List;
 import java.util.Map;
 
