@@ -172,10 +172,11 @@ public class EditPokeDetails extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                for (int j = 1+pokeIds.size(); j <= (int)spinner.getSelectedItem()+pokeIds.size(); j++) {
-                    //get a reference for the TableLayout
-                    TableLayout table = (TableLayout)findViewById(R.id.internalcopies);
+                //get a reference for the TableLayout
+                TableLayout table = (TableLayout)findViewById(R.id.internalcopies);
+                table.removeAllViews(); //this is to remove all previous views created from an eventual prevuious tap
 
+                for (int j = 1+pokeIds.size(); j <= (int)spinner.getSelectedItem()+pokeIds.size(); j++) {
                     //create a new TableLayout
                     TableLayout internaltable = new TableLayout(getApplicationContext());
 
