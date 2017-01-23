@@ -25,7 +25,7 @@ public class AboutUs extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mailClient = new Intent();
                 mailClient.setAction(Intent.ACTION_SEND);
-                mailClient.putExtra(Intent.EXTRA_EMAIL, "test@example.com");
+                mailClient.putExtra(Intent.EXTRA_EMAIL, "rollercodersteam@gmail.com");
                 mailClient.setType("text/plain");
                 startActivity(mailClient);
             }

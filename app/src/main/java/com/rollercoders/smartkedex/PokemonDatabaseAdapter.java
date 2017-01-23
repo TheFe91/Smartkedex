@@ -1732,6 +1732,51 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasUlti VALUES (151, 'Forza Lunare')");
             db.execSQL("INSERT INTO HasUlti VALUES (151, 'Psichico')");
 
+            db.execSQL("INSERT INTO HasStrenght VALUES (1, 'Acqua')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (1, 'Terra')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (1, 'Roccia')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (1, 'Coleottero')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (2, 'Acqua')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (2, 'Terra')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (2, 'Roccia')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (2, 'Coleottero')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (3, 'Acqua')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (3, 'Terra')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (3, 'Roccia')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (3, 'Coleottero')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (4, 'Erba')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (4, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (4, 'Coleottero')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (5, 'Erba')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (5, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (5, 'Coleottero')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (6, 'Erba')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (6, 'Ghiaccio')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (6, 'Coleottero')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (6, 'Lotta')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (7, 'Fuoco')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (7, 'Terra')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (7, 'Roccia')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (8, 'Fuoco')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (8, 'Terra')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (8, 'Roccia')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (9, 'Fuoco')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (9, 'Terra')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (9, 'Roccia')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (10, 'Erba')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (10, 'Veleno')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (10, 'Psico')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (11, 'Erba')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (11, 'Veleno')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (11, 'Psico')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (12, 'Erba')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (12, 'Veleno')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (12, 'Psico')");
+
+
+
+
+
             db.execSQL("INSERT INTO HasWeakness VALUES (1, 'Fuoco')");
             db.execSQL("INSERT INTO HasWeakness VALUES (1, 'Volante')");
             db.execSQL("INSERT INTO HasWeakness VALUES (1, 'Ghiaccio')");

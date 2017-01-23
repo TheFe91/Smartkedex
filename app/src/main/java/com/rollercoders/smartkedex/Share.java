@@ -1,4 +1,4 @@
-package com.rollercoders.smartkedex;
+/*package com.rollercoders.smartkedex;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 /**
  * Created by TheFe on 17/10/2016.
- */
+ *
 
 public class Share extends AppCompatActivity {
 
@@ -48,4 +48,4 @@ public class Share extends AppCompatActivity {
         });
 
     }
-}
+}*/
