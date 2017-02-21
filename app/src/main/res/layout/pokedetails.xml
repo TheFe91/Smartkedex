@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.rollercoders.smartkedex.MainActivity">
+    tools:context="com.rollercoders.smartkedex.MainActivity">
 
     <TableLayout
         android:layout_width="wrap_content"
@@ -83,29 +83,25 @@
         android:layout_width="80dp"
         android:layout_height="26dp"
         android:id="@+id/tsf1"
-        android:layout_below="@+id/forteContro"
-        android:src="@drawable/veleno"/>
+        android:layout_below="@+id/forteContro"/>
     <ImageView
         android:layout_width="80dp"
         android:layout_height="26dp"
         android:id="@+id/tsf2"
         android:layout_below="@+id/forteContro"
-        android:layout_toEndOf="@+id/tsf1"
-        android:src="@drawable/acciaio"/>
+        android:layout_toEndOf="@+id/tsf1"/>
     <ImageView
         android:layout_width="80dp"
         android:layout_height="26dp"
         android:id="@+id/tsf3"
         android:layout_below="@+id/forteContro"
-        android:layout_toEndOf="@+id/tsf2"
-        android:src="@drawable/fuoco"/>
+        android:layout_toEndOf="@+id/tsf2"/>
     <ImageView
         android:layout_width="80dp"
         android:layout_height="26dp"
         android:id="@+id/tsf4"
         android:layout_below="@+id/forteContro"
-        android:layout_toEndOf="@+id/tsf3"
-        android:src="@drawable/erba"/>
+        android:layout_toEndOf="@+id/tsf3"/>
 
     <TextView
         android:text="Debole contro"

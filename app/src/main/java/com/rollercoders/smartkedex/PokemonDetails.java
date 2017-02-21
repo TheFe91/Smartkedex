@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -128,6 +130,23 @@ public class PokemonDetails extends AppCompatActivity {
         final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
         pokeSwitch.setText("Posseduto  ");
+
+        //setting the Pokémon's strenghts
+        List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+        if (strenghts.size() == 0) {
+            TextView tv = (TextView)findViewById(R.id.forteContro);
+            tv.setText("Forte contro: Nessuno in particolare");
+        }
+        else {
+            int counter = 1;
+            for (String strenght:strenghts) {
+                String id = "tsf"+counter;
+                strenght = strenght.toLowerCase();
+                imageView = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                imageView.setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
+                counter++;
+            }
+        }
 
         //setting the Pokémon's weaknesses
         List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);

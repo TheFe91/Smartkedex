@@ -283,6 +283,19 @@ public class PokemonDatabaseAdapter {
         return weaknesses;
     }
 
+    List<String> getStrenghts (int pokeID) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        List<String> strenghts = new ArrayList<>();
+        String[] columns = {PokemonHelper.TYPE_NAME};
+
+        Cursor cursor = db.query(PokemonHelper.HASSTRENGHT, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
+        while (cursor.moveToNext()) {
+            strenghts.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME)));
+        }
+        db.close();
+        return strenghts;
+    }
+
     ////////////////////////////////////////////////////////////////////UPDATERS////////////////////////////////////////////////////////////////////////////////////
 
     void updateLanguage (String newLanguage, String oldLanguage) {
@@ -329,7 +342,7 @@ public class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 35;
+        private static final int DATABASE_VERSION = 36;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
