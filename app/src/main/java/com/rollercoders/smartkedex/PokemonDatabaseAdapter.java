@@ -342,7 +342,7 @@ public class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 3;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -1840,10 +1840,10 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasStrenght VALUES (34, 'Coleottero')");
             db.execSQL("INSERT INTO HasStrenght VALUES (34, 'Fuoco')");
             db.execSQL("INSERT INTO HasStrenght VALUES (34, 'Elettro')");
-            db.execSQL("INSERT INTO HasStrenght VALUES (35, 'Drago ')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (35, 'Drago')");
             db.execSQL("INSERT INTO HasStrenght VALUES (35, 'Lotta')");
             db.execSQL("INSERT INTO HasStrenght VALUES (35, 'Buio')");
-            db.execSQL("INSERT INTO HasStrenght VALUES (36, 'Drago ')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (36, 'Drago')");
             db.execSQL("INSERT INTO HasStrenght VALUES (36, 'Lotta')");
             db.execSQL("INSERT INTO HasStrenght VALUES (36, 'Buio')");
             db.execSQL("INSERT INTO HasStrenght VALUES (37, 'Erba')");
@@ -1852,7 +1852,7 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasStrenght VALUES (38, 'Erba')");
             db.execSQL("INSERT INTO HasStrenght VALUES (38, 'Ghiaccio')");
             db.execSQL("INSERT INTO HasStrenght VALUES (38, 'Coleottero')");
-            db.execSQL("INSERT INTO HasStrenght VALUES (39, 'Drago ')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (39, 'Drago')");
             db.execSQL("INSERT INTO HasStrenght VALUES (39, 'Lotta')");
             db.execSQL("INSERT INTO HasStrenght VALUES (39, 'Buio')");
             db.execSQL("INSERT INTO HasStrenght VALUES (40, 'Lotta')");
@@ -2100,7 +2100,7 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasStrenght VALUES (121, 'Terra')");
             db.execSQL("INSERT INTO HasStrenght VALUES (121, 'Lotta')");
             db.execSQL("INSERT INTO HasStrenght VALUES (121, 'Veleno')");
-            db.execSQL("INSERT INTO HasStrenght VALUES (122, 'Drago ')");
+            db.execSQL("INSERT INTO HasStrenght VALUES (122, 'Drago')");
             db.execSQL("INSERT INTO HasStrenght VALUES (122, 'Lotta')");
             db.execSQL("INSERT INTO HasStrenght VALUES (122, 'Buio')");
             db.execSQL("INSERT INTO HasStrenght VALUES (122, 'Veleno')");
