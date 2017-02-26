@@ -43,7 +43,6 @@ public class PokemonDetails extends AppCompatActivity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int dpi = displayMetrics.densityDpi;
-        System.err.println(dpi);
 
         if (dpi <= 420) { //Nexus 5X et simila
             setContentView(R.layout.pokedetailsbig);
@@ -143,7 +142,6 @@ public class PokemonDetails extends AppCompatActivity {
             for (String strenght:strenghts) {
                 String id = "tsf"+counter;
                 strenght = strenght.toLowerCase();
-                System.err.println("ID: "+id+" - Strenght: "+strenght);
                 imageView = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
                 imageView.setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
                 counter++;
