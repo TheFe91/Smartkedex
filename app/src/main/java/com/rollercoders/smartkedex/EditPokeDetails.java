@@ -94,13 +94,15 @@ public class EditPokeDetails extends AppCompatActivity {
             TableRow.LayoutParams params = new TableRow.LayoutParams(200,200);
             iv.setLayoutParams(params);
 
-            attackSpinner = new Spinner(getApplicationContext());
-            ultiSpinner = new Spinner(getApplicationContext());
             params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            attackSpinner = new Spinner(getApplicationContext());
             attackSpinner.setLayoutParams(params);
-            ultiSpinner.setLayoutParams(params);
             attackSpinner.setId(pokeId);
-            ultiSpinner.setId(pokeId*11);
+            if (pokeID != 132) {
+                ultiSpinner = new Spinner(getApplicationContext());
+                ultiSpinner.setLayoutParams(params);
+                ultiSpinner.setId(pokeId*11);
+            }
 
             String[] moves = pokemonHelper.getPokeAttacks(pokeId); //0 is attack, 1 is ulti
 
@@ -113,16 +115,18 @@ public class EditPokeDetails extends AppCompatActivity {
             attackSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[0], "Attack").toLowerCase(), "color", getPackageName())));
 
             //this is necessary because there can be Pokémons like Ditto who don't have a ulti, otherwise the app crashes
-            try {
-                List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
+            if (pokeID != 132) {
+                try {
+                    List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
 
-                ArrayAdapter<String> ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
-                attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                ultiSpinner.setAdapter(ultiAdapter);
-                ultiSpinner.setSelection(ultiAdapter.getPosition(moves[1]));
-                ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti").toLowerCase(), "color", getPackageName())));
+                    ArrayAdapter<String> ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
+                    attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    ultiSpinner.setAdapter(ultiAdapter);
+                    ultiSpinner.setSelection(ultiAdapter.getPosition(moves[1]));
+                    ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti").toLowerCase(), "color", getPackageName())));
+                }
+                catch (Exception e) {}
             }
-            catch (Exception e) {}
 
             editText = new EditText(getApplicationContext());
             if (dpi == 480) {
@@ -150,12 +154,14 @@ public class EditPokeDetails extends AppCompatActivity {
             editText.setLayoutParams(params);
             row.addView(editText);
             attackRow.addView(attackSpinner);
-            try {
-                ultiRow.addView(ultiSpinner);
-            }
-            catch (Exception e) {}
+            if (pokeID != 132)
+                try {
+                    ultiRow.addView(ultiSpinner);
+                }
+                catch (Exception e) {}
             internaltable.addView(attackRow);
-            internaltable.addView(ultiRow);
+            if (pokeID != 132)
+                internaltable.addView(ultiRow);
             internaltable.setLayoutParams(params);
             row.addView(internaltable);
             params.setMargins(15,0,0,0);
@@ -253,8 +259,11 @@ public class EditPokeDetails extends AppCompatActivity {
                 for (int pokeId:pokeIds) {
                     attackSpinner = (Spinner)findViewById(pokeId);
                     String attack = (String) attackSpinner.getSelectedItem();
-                    ultiSpinner = (Spinner)findViewById(pokeId*11);
-                    String ulti = (String) ultiSpinner.getSelectedItem();
+                    String ulti = "";
+                    if (pokeID != 132) {
+                        ultiSpinner = (Spinner) findViewById(pokeId * 11);
+                        ulti = (String) ultiSpinner.getSelectedItem();
+                    }
                     editText = (EditText)findViewById(pokeId*13);
                     String copyName = editText.getText().toString();
                     String[] attacks = pokemonHelper.getPokeAttacks(pokeId); //attacks[0] contains the attack, attack[1] contains the ulti
