@@ -1,5 +1,6 @@
 package com.rollercoders.smartkedex;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -198,11 +200,11 @@ public class PokemonDetails extends AppCompatActivity {
 
         getActionBar();
 
-        //this button controls the text and the "read" button under it, making it appear and disappear
+        //this button controls the text and the "read" button next to it, making it appear and disappear
         Button showhide = (Button) findViewById(R.id.showhidedescr);
         final Button leggi = (Button)findViewById(R.id.leggidescrizione);
-        tv.setText(pokemonHelper.getDescription(pokeID));
-        toSpeech = pokemonHelper.getDescription(pokeID);
+        tv.setText(getResources().getString(getResources().getIdentifier("pkmn"+pokeID, "string", getPackageName())));
+        toSpeech = getResources().getString(getResources().getIdentifier("pkmn"+pokeID, "string", getPackageName()));
         tv.setVisibility(View.GONE);
         leggi.setVisibility(View.GONE);
         showhide.setOnClickListener(new View.OnClickListener() {
@@ -214,6 +216,8 @@ public class PokemonDetails extends AppCompatActivity {
                 }
                 else if (tv.getVisibility() == View.GONE) {
                     tv.setVisibility(View.VISIBLE);
+                    if (!leggi.isEnabled())
+                        leggi.setEnabled(true);
                     leggi.setVisibility(View.VISIBLE);
                 }
             }
@@ -222,17 +226,29 @@ public class PokemonDetails extends AppCompatActivity {
         leggi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+                leggi.setEnabled(false);
+                System.err.println("ciao button");
+                t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     public void onInit(int status) {
                         if(status != TextToSpeech.ERROR) {
-                            t1.setLanguage(Locale.ITALIAN);
-                            t1.speak(toSpeech, TextToSpeech.QUEUE_FLUSH, null);
+                            HashMap<String, String> parameters = new HashMap<String, String>();
+                            parameters.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "fine");
+                            t1.speak(toSpeech, TextToSpeech.QUEUE_FLUSH, parameters);
                         }
                     }
                 });
             }
         });
     }
+
+//    @Override
+//    public void onUtteranceCompleted(String uttId) {
+//        System.err.println("ciao");
+//        Button leggi = (Button)findViewById(R.id.leggidescrizione);
+//        if (uttId.equals("fine")) {
+//            leggi.setEnabled(true);
+//        }
+//    }
 
     private void fadeOutAndHideSwitch (final Switch aSwitch) {
         Animation fadeOut = new AlphaAnimation(1, 0);
@@ -253,6 +269,8 @@ public class PokemonDetails extends AppCompatActivity {
 
         aSwitch.startAnimation(fadeOut);
     }
+
+
 
     public String getName (int pokeID) {
         String pokeName = "";

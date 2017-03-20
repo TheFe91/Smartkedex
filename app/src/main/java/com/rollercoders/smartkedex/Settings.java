@@ -67,7 +67,7 @@ public class Settings extends AppCompatActivity {
                 language.setText("Language");
                 name.setText("Smartkédex Name");
                 proprietario.setText("This Smartkédex is property of:");
-                presentazione.setText("Presentation");
+                presentazione.setText("Speaking");
                 conferma.setText("Apply changes");
                 RadioButton radioEng = (RadioButton)findViewById(R.id.lang_eng);
                 radioEng.setChecked(true);
@@ -89,8 +89,8 @@ public class Settings extends AppCompatActivity {
         presentazione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Presentation presentation = new Presentation(lingua, getApplicationContext()); //passo la lingua corrente e il context
-                presentation.presentati();
+                Speaking speaking = new Speaking(lingua, getApplicationContext()); //passo la lingua corrente e il context
+                speaking.presentati();
             }
         });
 
