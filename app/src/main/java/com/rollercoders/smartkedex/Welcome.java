@@ -17,12 +17,17 @@ import android.widget.Toast;
  */
 
 public class Welcome extends Activity {
+
+    private final PokemonDatabaseAdapter pokemonHelper;
+
+    public Welcome () {
+        pokemonHelper = new PokemonDatabaseAdapter(this);
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
-
-        final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -30,20 +35,20 @@ public class Welcome extends Activity {
 
         if (pokemonHelper.getRows("Settings") == 0) { //it's the first app launch ever
             TextView textView = (TextView)findViewById(R.id.welcome);
-            textView.setText("Benvenuto!");
+            textView.setText(getResources().getString(getResources().getIdentifier("welcome", "string", getPackageName())));
             textView = (TextView)findViewById(R.id.owner);
-            textView.setText("Inserisci il tuo nome*");
+            textView.setText(getResources().getString(getResources().getIdentifier("insertname", "string", getPackageName())));
             textView = (TextView)findViewById(R.id.smartkedex);
-            textView.setText("Inserisci il nome dello Smartkédex");
+            textView.setText(getResources().getString(getResources().getIdentifier("smartkedexname", "string", getPackageName())));
             textView = (TextView)findViewById(R.id.tips);
             if (dpi == 480)
                 textView.setTextSize(13);
-            textView.setText("Puoi modificare queste impostazioni in ogni momento\naccedendo al menu delle impostazioni in alto a destra");
+            textView.setText(getResources().getString(getResources().getIdentifier("edit_settings", "string", getPackageName())));
             final Switch pkmnGO = (Switch)findViewById(R.id.POGO);
-            pkmnGO.setText("Giochi a Pokémon GO?");
+            pkmnGO.setText(getResources().getString(getResources().getIdentifier("playpokego", "string", getPackageName())));
 
             Button button = (Button)findViewById(R.id.enter);
-            button.setText("Conferma ed Entra");
+            button.setText(getResources().getString(getResources().getIdentifier("confirm_enter", "string", getPackageName())));
 
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -53,7 +58,7 @@ public class Welcome extends Activity {
                     editText = (EditText)findViewById(R.id.setSmartkedex);
                     String smartkedex = editText.getText().toString();
                     if (owner.equals("")) {
-                        Toast.makeText(getApplicationContext(), "Inserisci il tuo nome\nper accedere all'App", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getResources().getString(getResources().getIdentifier("insertname_error", "string", getPackageName())), Toast.LENGTH_LONG).show();
                     }
                     else {
                         if (pkmnGO.isChecked())
@@ -97,7 +102,7 @@ public class Welcome extends Activity {
             parent.removeView(remove);
 
             Button button = (Button)findViewById(R.id.enter);
-            button.setText("Entra nell ' App");
+            button.setText(getResources().getString(getResources().getIdentifier("enterapp", "string", getPackageName())));
 
             button.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -4,4 +4,21 @@
     <string name="pkmn1">Bulbasaur. Bulbasaur can be seen napping in bright sunlight. There is a seed on its back. By soaking up the sun\'s rays, the seed grows progressively larger.</string>
     <string name="pkmn2">There is a bud on this Pokémon\'s back. To support its weight, Ivysaur\'s legs and trunk grow thick and strong. If it starts spending more time lying in the sunlight, it\'s a sign that the bud will bloom into a large flower soon.</string>
     <string name="pkmn3">There is a large flower on Venusaur\'s back. The flower is said to take on vivid colors if it gets plenty of nutrition and sunlight. The flower\'s aroma soothes the emotions of people.</string>
+    <string name="caught">"Caught  "</string>
+    <string name="confirm_enter">Confirm and Enter</string>
+    <string name="details">Details:</string>
+    <string name="enterapp">Enter the App</string>
+    <string name="insertname">Insert your name*</string>
+    <string name="not_strong">Strong Against: Nothing</string>
+    <string name="playpokego">Do you play Pokémon GO?</string>
+    <string name="smartkedexname">Insert the Smartkédex name</string>
+    <string name="tipi">Types</string>
+    <string name="tipo">Type</string>
+    <string name="welcome">Welcome!</string>
+    <string name="description">Description</string>
+    <string name="read_description">Read\nDescription</string>
+    <string name="strong">Strong Against</string>
+    <string name="weak">Weak Against</string>
+    <string name="edit_settings">You can edit these settings at any time\nby tapping on the button in the high-right corner</string>
+    <string name="insertname_error">Insert your name to access the App</string>
 </resources>

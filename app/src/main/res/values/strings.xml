@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">NewSmartkedex</string>
+    <string name="app_name" translatable="false">Smartkédex</string>
     <string name="facebook_app_id" translatable="false">1900435046854354</string>
     <string name="defendenti" translatable="false">Alessandro Defendenti</string>
     <string name="tagliabue" translatable="false">Luca Tagliabue</string>
@@ -8,9 +8,26 @@
     <string name="zanaboni" translatable="false">Greta Zanaboni</string>
     <string name="team_name" translatable="false">RollerCoders Team</string>
     <string name="contact">Contattaci</string>
+    <string name="welcome">Benvenuto!</string>
+    <string name="insertname">Inserisci il tuo nome*</string>
+    <string name="smartkedexname">Inserisci il nome dello Smartkédex</string>
+    <string name="playpokego">Giochi a Pokémon GO?</string>
+    <string name="confirm_enter">Conferma ed Entra</string>
+    <string name="enterapp">Entra nell \' App</string>
+    <string name="edit_settings">"Puoi modificare queste impostazioni in ogni momento\naccedendo al menu delle impostazioni in alto a destra"</string>
+    <string name="insertname_error">Inserisci il tuo nome per accedere all\'App</string>
+    <string name="tipo">Tipo:</string>
+    <string name="tipi">Tipi:</string>
+    <string name="caught">Posseduto  </string>
+    <string name="strong">Forte Contro</string>
+    <string name="weak">Debole Contro</string>
+    <string name="not_strong">Forte Contro: Nessuno in particolare</string>
+    <string name="details">Dettagli:</string>
+    <string name="description">Descrizione</string>
+    <string name="read_description">Leggi\nDescrizione</string>
     <string name="pkmn1">È possibile vedere Bulbasaur mentre schiaccia un pisolino sotto al sole. Ha un seme piantato sulla schiena. Grazie ai raggi solari, il seme cresce, ingrandendosi progressivamente</string>
     <string name="pkmn2">C\'è un germoglio piantato nella schiena di Ivysaur. Per sopportarne il peso, le zampe e il corpo crescono robusti. Quando inizia a passare più tempo esposto al sole, significa che il germoglio sboccerà presto in un grande fiore</string>
-    <string name="pkmn3">C\'è un grande fiore sulla schiena di Venusaur. Si dice che i colori diventino più vividi con il giusto nutrimento e i raggi solari. Il suo profumo calma le reazioni emotive delle persone</string>
+    <string name="pkmn3">C\'è un grande fiore sulla schiena di Venusaur. Si dice che i colori diventino più vividi con il giusto nutrimento e i raggi solari. Il suo profumo calma le reazioni emotive delle persone</string><!--
     <string name="pkmn4">La fiamma sulla punta della coda indica il suo stato emotivo. Se la fiamma ondeggia significa che Charmander si sta divertendo. Quando il Pokémon si infuria, la fiamma arde violentemente</string>
     <string name="pkmn5">Charmeleon distrugge il nemico senza pietà con i suoi artigli affilati. Quando incontra un avversario molto forte diventa aggressivo. In questo stato di grande agitazione la fiamma della coda diventa di colore bianco bluastro</string>
     <string name="pkmn6">Charizard solca i cieli in cerca di nemici molto forti. Riesce a emettere fiammate di un calore tale da fondere ogni cosa. Tuttavia, non rivolge mai le sue micidiali lingue di fuoco contro avversari più deboli di lui</string>
@@ -118,5 +135,5 @@
     <string name="pkmn108"></string>
     <string name="pkmn109"></string>
     <string name="pkmn110"></string>
-    <string name="pkmn111"></string>
+    <string name="pkmn111"></string>-->
 </resources>

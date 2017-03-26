@@ -82,7 +82,7 @@
         android:layout_below="@+id/pokeImgName"/>
 
     <TextView
-        android:text="Forte contro"
+        android:text="@string/strong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/break1"
@@ -121,7 +121,7 @@
         android:layout_below="@+id/tsf1"/>
 
     <TextView
-        android:text="Debole contro"
+        android:text="@string/weak"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -156,21 +156,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/break3"
-        android:textSize="8dp"
+        android:textSize="8sp"
         android:layout_below="@+id/tsd1"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/showhidedescr"
-        android:text="Descrizione"
+        android:text="@string/description"
         android:height="53dp"
         android:layout_below="@+id/break3"/>
 
     <Button
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Leggi\ndescrizione"
+        android:text="@string/read_description"
         android:id="@+id/leggidescrizione"
         android:layout_below="@+id/break3"
         android:layout_alignParentEnd="true">
@@ -180,7 +180,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/break4"
-        android:textSize="8dp"
+        android:textSize="8sp"
         android:layout_below="@+id/showhidedescr"/>
 
     <ScrollView

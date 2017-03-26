@@ -29,6 +29,8 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.2.0'
     testCompile 'junit:junit:4.12'
+    // https://mvnrepository.com/artifact/org.mockito/mockito-all
+    //compile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     // https://mvnrepository.com/artifact/com.facebook.android/facebook-android-sdk
     //compile group: 'com.facebook.android', name: 'facebook-android-sdk', version: '4.+'
 }

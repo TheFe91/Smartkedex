@@ -1,6 +1,5 @@
 package com.rollercoders.smartkedex;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
@@ -18,11 +17,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 
 /**
@@ -81,7 +77,7 @@ public class PokemonDetails extends AppCompatActivity {
         TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
         if (numberOfTypes == 1) { //it can be 1 or 2
-            tipiScritta.setText("Tipo:");
+            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
             for (String element:types) {
                 element = element.toLowerCase();
                 imageView = (ImageView) findViewById(R.id.tipo1);
@@ -94,7 +90,7 @@ public class PokemonDetails extends AppCompatActivity {
             }
         }
         else {
-            tipiScritta.setText("Tipi:");
+            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
             int j = 1;
             for (String element:types) {
                 element = element.toLowerCase();
@@ -131,13 +127,13 @@ public class PokemonDetails extends AppCompatActivity {
 
         final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
-        pokeSwitch.setText("Posseduto  ");
+        pokeSwitch.setText(getResources().getString(getResources().getIdentifier("caught", "string", getPackageName())));
 
         //setting the Pokémon's strenghts
         List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
         if (strenghts.size() == 0) {
             TextView tv = (TextView)findViewById(R.id.forteContro);
-            tv.setText("Forte contro: Nessuno in particolare");
+            tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
         }
         else {
             int counter = 1;
@@ -162,7 +158,7 @@ public class PokemonDetails extends AppCompatActivity {
         }
 
         if (pokemonHelper.getPokemonGO() == 1) { //if my user plays PokémonGO
-            pokeDetails.setText("Dettagli");
+            pokeDetails.setText(getResources().getString(getResources().getIdentifier("details", "string", getPackageName())));
             int catched = pokemonHelper.getCatched(pokeID);
             if (catched == 0) {
                 pokeDetails.setEnabled(false);
