@@ -107,7 +107,7 @@ Poliwhirl. La superficie del corpo di Poliwhirl è sempre umida e unta di fluido
 
 Poliwrath. Poliwrath è dotato di muscoli molto sviluppati e robusti. Per quanto si alleni, non si stanca mai. Questo Pokémon è così infaticabile e forte che riesce ad attraversare a nuoto interi oceani
 
-63. db.execSQL(INSERT INTO Pokemon (Description) VALUES (‘Abra. Abra dorme per 18 ore al giorno, ma riesce a captare la presenza dei nemici anche durante il sonno. In questo caso il Pokémon si teletrasporta immediatamente al sicuro
+Abra. Abra dorme per 18 ore al giorno, ma riesce a captare la presenza dei nemici anche durante il sonno. In questo caso il Pokémon si teletrasporta immediatamente al sicuro
 
 Kadabra. Kadabra emette particolari onde alfa che causano mal di testa a chi si trova nelle vicinanze. Soltanto chi ha una psiche molto stabile può sperare di diventare Allenatore di questo Pokémon
 
@@ -128,8 +128,6 @@ Victreebel. Victreebel è dotato di una lunga liana che parte dalla testa. Il Po
 Tentacool. Il corpo di Tentacool è costituito quasi solo d'acqua. Se pescato ed esposto all'aria, si secca totalmente. In caso di disidratazione, dunque, si consiglia di rimetterlo in mare
 
 Tentacruel. Tentacruel ha due grandi sfere rosse sulla testa. Le sfere brillano prima di emettere potenti ultrasuoni. Gli attacchi di questo Pokémon creano onde impetuose nei dintorni
-
-
 
 Geodude. Col passare del tempo, i profili di Geodude diventano sempre più levigati, rendendolo più tondeggiante. Tuttavia il cuore di questo Pokémon rimane sempre duro, ruvido e roccioso
 

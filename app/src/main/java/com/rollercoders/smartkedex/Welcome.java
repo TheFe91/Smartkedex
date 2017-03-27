@@ -75,11 +75,11 @@ public class Welcome extends Activity {
         else {
             String owner = pokemonHelper.getOwner();
             TextView textView = (TextView)findViewById(R.id.welcome);
-            textView.setText("Bentornato " + owner + "!");
+            textView.setText(getResources().getString(getResources().getIdentifier("welcome_back", "string", getPackageName()), owner));
             if (pokemonHelper.getPokemonGO() == 1) {
                 int total = pokemonHelper.getRows("Catches");
                 int copies = pokemonHelper.getRows("Copy");
-                textView.append("\n\nGiocando a PokémonGO hai catturato " + total + " Pokémon,\nper un totale di " + copies + " esemplari.");
+                textView.append(getResources().getString(getResources().getIdentifier("pokemongo_recap", "string", getPackageName()), total, copies));
             }
 
             View remove = findViewById(R.id.owner);

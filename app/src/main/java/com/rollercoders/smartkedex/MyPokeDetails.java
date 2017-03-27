@@ -45,10 +45,10 @@ public class MyPokeDetails extends AppCompatActivity {
         String owner = pokemonHelper.getOwner();
 
         TextView textView = (TextView)findViewById(R.id.pkmnName);
-        textView.setText("I "+pokeName+" di "+owner);
+        textView.setText(getResources().getString(getResources().getIdentifier("pokemon_owned_by", "string", getPackageName()), pokeName, owner));
 
         Button button = (Button)findViewById(R.id.edit);
-        button.setText("Modifica i Dettagli dei tuoi "+pokeName);
+        button.setText(getResources().getString(getResources().getIdentifier("edit_details", "string", getPackageName()), pokeName));
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,7 +113,9 @@ public class MyPokeDetails extends AppCompatActivity {
                     ulti.append(" - " + ultiStuff.get("duration") + "s - " + ultiStuff.get("critical") + "%");
                     ulti.setTextColor(getResources().getColor(getResources().getIdentifier(ultiStuff.get("type").toLowerCase(), "color", getPackageName())));
                 }
-                catch (Exception e) {}
+                catch (Exception e) {
+                    System.err.println(e);
+                }
             }
 
             trparams = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -121,7 +123,9 @@ public class MyPokeDetails extends AppCompatActivity {
             try {
                 ulti.setLayoutParams(trparams);
             }
-            catch (Exception e){}
+            catch (Exception e){
+                System.err.println(e);
+            }
 
             String copyName = pokemonHelper.getCopyName(element);
 
@@ -140,7 +144,9 @@ public class MyPokeDetails extends AppCompatActivity {
             try {
                 ultiRow.addView(ulti);
             }
-            catch (Exception e){}
+            catch (Exception e){
+                System.err.println(e);
+            }
             attacchi.addView(nameRow);
             attacchi.addView(attackRow);
             attacchi.addView(ultiRow);

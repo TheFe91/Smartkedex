@@ -52,19 +52,19 @@ public class EditPokeDetails extends AppCompatActivity {
         getActionBar();
 
         TextView textView = (TextView)findViewById(R.id.pkmnName);
-        textView.setText("Modifica i tuoi "+pokeName);
+        textView.setText(getResources().getString(getResources().getIdentifier("edit_your_pokemons", "string", getPackageName()), pokeName));
         textView = (TextView)findViewById(R.id.number);
-        textView.setText("Numero di "+pokeName + " da inserire");
+        textView.setText(getResources().getString(getResources().getIdentifier("number_insert_pokemons", "string", getPackageName()), pokeName));
         textView = (TextView)findViewById(R.id.oldcopies);
-        textView.setText("Pokémon già inseriti");
+        textView.setText(getResources().getString(getResources().getIdentifier("already_inserted", "string", getPackageName())));
         textView = (TextView)findViewById(R.id.newcopies);
-        textView.setText("Pokémon da inserire");
+        textView.setText(getResources().getString(getResources().getIdentifier("pokemon_to_insert", "string", getPackageName())));
 
 
         //defining and setting up the SpinnerNumber
         final Spinner spinner = (Spinner)findViewById(R.id.spinnerNumber);
         List<Integer> list = new ArrayList<>();
-        for (int j = 0; j < 51; j++) {
+        for (int j = 0; j < 11; j++) {
             list.add(j);
         }
 
@@ -116,16 +116,13 @@ public class EditPokeDetails extends AppCompatActivity {
 
             //this is necessary because there can be Pokémons like Ditto who don't have a ulti, otherwise the app crashes
             if (pokeID != 132) {
-                try {
-                    List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
+                List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
 
-                    ArrayAdapter<String> ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
-                    attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    ultiSpinner.setAdapter(ultiAdapter);
-                    ultiSpinner.setSelection(ultiAdapter.getPosition(moves[1]));
-                    ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti").toLowerCase(), "color", getPackageName())));
-                }
-                catch (Exception e) {}
+                ArrayAdapter<String> ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
+                attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                ultiSpinner.setAdapter(ultiAdapter);
+                ultiSpinner.setSelection(ultiAdapter.getPosition(moves[1]));
+                ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti").toLowerCase(), "color", getPackageName())));
             }
 
             editText = new EditText(getApplicationContext());
@@ -136,7 +133,7 @@ public class EditPokeDetails extends AppCompatActivity {
             else if (dpi == 420)
                 editText.setWidth(300);
 
-            editText.setHint("(Nome)");
+            editText.setHint(getResources().getString(getResources().getIdentifier("hint_color", "string", getPackageName())));
             editText.setHintTextColor(getResources().getColor(R.color.acciaio));
             editText.setTextColor(getResources().getColor(android.R.color.black));
             editText.setId(pokeId*13);
@@ -155,10 +152,7 @@ public class EditPokeDetails extends AppCompatActivity {
             row.addView(editText);
             attackRow.addView(attackSpinner);
             if (pokeID != 132)
-                try {
-                    ultiRow.addView(ultiSpinner);
-                }
-                catch (Exception e) {}
+                ultiRow.addView(ultiSpinner);
             internaltable.addView(attackRow);
             if (pokeID != 132)
                 internaltable.addView(ultiRow);
@@ -211,7 +205,7 @@ public class EditPokeDetails extends AppCompatActivity {
                     }
                     else if (dpi == 420)
                         editText.setWidth(300);
-                    editText.setHint("(Nome)");
+                    editText.setHint(getResources().getString(getResources().getIdentifier("hint_color", "string", getPackageName())));
                     editText.setHintTextColor(getResources().getColor(R.color.acciaio));
                     editText.setTextColor(getResources().getColor(android.R.color.black));
                     editText.setId(j*11);
@@ -269,15 +263,12 @@ public class EditPokeDetails extends AppCompatActivity {
                     String[] attacks = pokemonHelper.getPokeAttacks(pokeId); //attacks[0] contains the attack, attack[1] contains the ulti
                     if (!attack.equals(attacks[0])) {
                         pokemonHelper.updatePokeAttack(attack, pokeId);
-                        System.err.println("sono nel primo IF");
                     }
                     if (!ulti.equals(attacks[1])) {
                         pokemonHelper.updatePokeUlti(ulti, pokeId);
-                        System.err.println("sono nel secondo IF");
                     }
                     if (!copyName.equals(pokemonHelper.getCopyName(pokeId))) {
                         pokemonHelper.updatePokeName(copyName, pokeId);
-                        System.err.println("sono nel terzo IF");
                     }
                     checkBox = (CheckBox)findViewById(pokeId*17);
                     if (checkBox.isChecked()) {
@@ -293,7 +284,6 @@ public class EditPokeDetails extends AppCompatActivity {
                     String ulti = (String) ultiSpinner.getSelectedItem();
                     editText = (EditText)findViewById(j*11);
                     String copyName = editText.getText().toString();
-                    System.err.println(attack + " - " + ulti + " - " + copyName + " - " + j);
                     pokemonHelper.insertCopy(attack, ulti, copyName, pokeID);
                 }
 
