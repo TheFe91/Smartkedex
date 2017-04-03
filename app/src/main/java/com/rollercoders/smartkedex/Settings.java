@@ -75,14 +75,14 @@ public class Settings extends AppCompatActivity {
                 break;*/
             case "ITA":
                 //language.setText("Lingua dell'App");
-                name.setText("Nome dello Smartkédex");
-                proprietario.setText("Questo Smartkédex è di proprietà di:");
-                presentazione.setText("Presentazione");
-                reset.setText("Cancella tutti i dati");
-                conferma.setText("Applica");
+                name.setText(getResources().getString(getResources().getIdentifier("editsmartkedexname", "string", getPackageName())));
+                proprietario.setText(getResources().getString(getResources().getIdentifier("owner", "string", getPackageName())));
+                presentazione.setText(getResources().getString(getResources().getIdentifier("presentazione", "string", getPackageName())));
+                reset.setText(getResources().getString(getResources().getIdentifier("erase", "string", getPackageName())));
+                conferma.setText(getResources().getString(getResources().getIdentifier("apply", "string", getPackageName())));
                 //RadioButton radioIta = (RadioButton)findViewById(R.id.lang_ita);
                 //radioIta.setChecked(true);
-                playPokemonGO.setText("Gioco a Pokemon GO");
+                playPokemonGO.setText(getResources().getString(getResources().getIdentifier("inside_playpokego", "string", getPackageName())));
                 break;
         }
 
@@ -107,7 +107,7 @@ public class Settings extends AppCompatActivity {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reset.setText("Stai per eliminare tutto\nTocca per confermare");
+                reset.setText(getResources().getString(getResources().getIdentifier("erase_confirm", "string", getPackageName())));
                 reset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

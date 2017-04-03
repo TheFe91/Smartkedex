@@ -23,6 +23,5 @@ public class FirstTest {
     @Test
     public void Test01 () {
         Intent i = new Intent(null, Welcome.class);
-        startactivity
     }
 }
