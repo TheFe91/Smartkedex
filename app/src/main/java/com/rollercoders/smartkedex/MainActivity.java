@@ -37,12 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
         MenuInflater mf = getMenuInflater();
-        if (pokemonHelper.getLanguage().equals("ENG"))
-            mf.inflate(R.menu.eng_main_menu, menu);
-        else if (pokemonHelper.getLanguage().equals("ITA"))
-            mf.inflate(R.menu.ita_main_menu, menu);
+        mf.inflate(R.menu.main_menu, menu);
         return true;
     }
 

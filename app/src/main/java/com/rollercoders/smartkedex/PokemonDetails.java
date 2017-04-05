@@ -108,10 +108,10 @@ public class PokemonDetails extends AppCompatActivity {
         else if (pokeID > 9 && pokeID < 100) {
             switch (pokeName) {
                 case "Nidoran_femmina":
-                    pkmnName.setText("#029 - Nidoran Femmina");
+                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_female_adjust", "string", getPackageName())));
                     break;
                 case "Nidoran_maschio":
-                    pkmnName.setText("#032 - Nidoran Maschio");
+                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_male_adjust", "string", getPackageName())));
                     break;
                 default:
                     pkmnName.setText("#0" + pokeID + " - " + pokeName);
@@ -120,7 +120,7 @@ public class PokemonDetails extends AppCompatActivity {
         }
         else
             if (pokeID == 122) {
-                pkmnName.setText("#122 - Mr. Mime");
+                pkmnName.setText(getResources().getString(getResources().getIdentifier("mrmime_adjust", "string", getPackageName())));
             }
             else
                 pkmnName.setText("#"+pokeID+" - "+pokeName);

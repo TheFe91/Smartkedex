@@ -18,6 +18,7 @@
     <string name="weak">Weak Against</string>
     <string name="edit_settings">You can edit these settings at any time\nby tapping on the button in the high-right corner</string>
     <string name="insertname_error">Insert your name to access the App</string>
+    <string name="editname_error">You can\'t leave your name blank</string>
     <string name="edit_details">Edit your %1$ss details</string>
     <string name="pokemon_owned_by">%2$s\'s %1$ss</string>
     <string name="edit_your_pokemons">Edit your %1$ss</string>
@@ -29,6 +30,11 @@
     <string name="welcome_back">Welcome back %1$s!</string>
     <string name="pokemongo_recap">\n\nPlaying PokémonGO you caught %1$d Pokémon,\nfor a total of %2$d specimens</string>
     <string name="settings">Settings</string>
+    <string name="full_presentation">I\'m %1$s, and I\'m a Smarktkédex in beta version. I\'m property of %2$s</string>
+    <string name="partial_presentation">I\'m a Smartkédex in beta version. I\'m property of %1$s</string>
+    <string name="nidoran_female_adjust" translatable="false">#029 - Nidoran ♀</string>
+    <string name="nidoran_male_adjust" translatable="false">#032 - Nidoran ♂</string>
+    <string name="mrmime_adjust" translatable="false">#122 - Mr. Mime</string>
     <string name="defendenti" translatable="false">Alessandro Defendenti</string>
     <string name="credits" translatable="false">Credits</string>
     <string name="app_name" translatable="false">Smartkédex</string>

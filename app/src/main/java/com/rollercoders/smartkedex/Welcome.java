@@ -62,9 +62,9 @@ public class Welcome extends Activity {
                     }
                     else {
                         if (pkmnGO.isChecked())
-                            pokemonHelper.insertSettingsData(owner, smartkedex, "ITA", 1);
+                            pokemonHelper.insertSettingsData(owner, smartkedex, 1);
                         else
-                            pokemonHelper.insertSettingsData(owner, smartkedex, "ITA", 0);
+                            pokemonHelper.insertSettingsData(owner, smartkedex, 0);
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(i);
                         finish();
