@@ -200,6 +200,12 @@
     <string name="inside_playpokego">I Play Pokémon GO</string>
     <string name="owner">This Smartkédex is property of:</string>
     <string name="presentazione">Presentation</string>
+    <string name="rate_title">Give us your feedback</string>
+    <string name="rate_text">Do you like our app? Take a 5 minutes break from Pokémon and give us your feedback on the Play Store.</string>
+    <string name="dopo">LATER</string>
+    <string name="mai">NEVER</string>
+    <string name="vota">RATE</string>
+    <string name="packagename" translatable="false">com.rollercoders.smartkedex</string>
 
 
 </resources>

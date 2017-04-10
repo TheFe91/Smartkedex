@@ -188,4 +188,9 @@
     <string name="editname_error">Non puoi lasciare vuoto il tuo nome</string>
     <string name="full_presentation">Sono %1$s e sono uno Smàrtkedex in versione beta. Sono proprietà di %2$s</string>
     <string name="partial_presentation">Sono uno Smàrtkedex in versione beta. Sono proprietà di %1$s</string>
+    <string name="dopo">DOPO</string>
+    <string name="mai">MAI</string>
+    <string name="vota">VOTA</string>
+    <string name="rate_text">Ti è piaciuta la nostra app? Dedicaci 5 minuti dandoci un feedback sul Play Store</string>
+    <string name="rate_title">Dacci un Feedback</string>
 </resources>

@@ -1,7 +1,14 @@
 package com.rollercoders.smartkedex;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,10 +36,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //AppRater appRater = new AppRater(this);
-        //appRater.setLaunchesBeforePrompt(3);
-        //appRater.setPhrases("Dacci un Feedback", "Ti è piaciuta la nostra app? Dedicaci un paio di minuti e dacci un feedback sul Play Store", "FEEDBACK", "DOPO", "MAI");
-        //appRater.demo();
+        AppRater.app_launched(this);
     }
 
     @Override
