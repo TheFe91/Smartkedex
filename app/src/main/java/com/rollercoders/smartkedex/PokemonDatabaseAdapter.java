@@ -2,6 +2,7 @@ package com.rollercoders.smartkedex;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
@@ -316,7 +317,7 @@ public class PokemonDatabaseAdapter {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 1;
+        private static final int DATABASE_VERSION = 6;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -903,7 +904,7 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasAttack VALUES (36, 'Cozzata Zen')");
             db.execSQL("INSERT INTO HasAttack VALUES (36, 'Botta')");
             db.execSQL("INSERT INTO HasAttack VALUES (37, 'Braciere')");
-            db.execSQL("INSERT INTO HasAttack VALUES (37, 'Attazzo Rapido')");
+            db.execSQL("INSERT INTO HasAttack VALUES (37, 'Attacco Rapido')");
             db.execSQL("INSERT INTO HasAttack VALUES (38, 'Finta')");
             db.execSQL("INSERT INTO HasAttack VALUES (38, 'Braciere')");
             db.execSQL("INSERT INTO HasAttack VALUES (39, 'Finta')");
@@ -2435,22 +2436,20 @@ public class PokemonDatabaseAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            /*db = this.getWritableDatabase();
-            context.deleteDatabase(DATABASE_NAME);*/
-            db.execSQL("DROP TABLE IF EXISTS " + SETTINGS);
-            db.execSQL("DROP TABLE IF EXISTS " + HASATTACK);
-            db.execSQL("DROP TABLE IF EXISTS " + HASULTI);
-            db.execSQL("DROP TABLE IF EXISTS " + HASSTRENGHT);
-            db.execSQL("DROP TABLE IF EXISTS " + HASWEAKNESS);
-            db.execSQL("DROP TABLE IF EXISTS " + ATTACK);
-            db.execSQL("DROP TABLE IF EXISTS " + ULTI);
-            db.execSQL("DROP TABLE IF EXISTS " + TYPE);
-            db.execSQL("DROP TABLE IF EXISTS " + POKEMON);
-            db.execSQL("DROP TABLE IF EXISTS " + CATCHES);
-            db.execSQL("DROP TABLE IF EXISTS " + HASTYPE);
-            db.execSQL("DROP TABLE IF EXISTS " + COPY);
+            try {
+                db.execSQL("UPDATE " + ATTACK + " SET " + ATTACK_NAME + "='Attacco Rapido' WHERE "+ATTACK_NAME+"='Attazzo Rapido';");
+            } catch (SQLiteConstraintException e) {
+                System.err.println(e);
+            }
+            try {
+                db.execSQL("DELETE FROM "+HASATTACK+" WHERE ID=37");
+                db.execSQL("INSERT INTO HasAttack VALUES (37, 'Attacco Rapido')");
+            } catch (SQLiteConstraintException e) {
+                System.err.println(e);
+            }
+            db.execSQL("ALTER TABLE " + SETTINGS + " ADD Disclaimer_OK VARCHAR(1);");
+            db.execSQL("UPDATE " + SETTINGS + " SET Disclaimer_OK = 0");
             Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
-            onCreate(db);
         }
     }
 }

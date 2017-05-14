@@ -133,7 +133,7 @@ public class EditPokeDetails extends AppCompatActivity {
             else if (dpi == 420)
                 editText.setWidth(300);
 
-            editText.setHint(getResources().getString(getResources().getIdentifier("hint_color", "string", getPackageName())));
+            editText.setHint(getResources().getString(getResources().getIdentifier("hint_name", "string", getPackageName())));
             editText.setHintTextColor(getResources().getColor(R.color.acciaio));
             editText.setTextColor(getResources().getColor(android.R.color.black));
             editText.setId(pokeId*13);
