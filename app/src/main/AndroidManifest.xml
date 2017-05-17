@@ -30,6 +30,7 @@
         </activity>
 
         <activity android:name="com.rollercoders.smartkedex.Welcome"
+                  android:parentActivityName="com.rollercoders.smartkedex.Disclaimer"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.Welcome" />
@@ -92,6 +93,16 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.Settings"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.rollercoders.smartkedex.Disclaimer"
+            android:parentActivityName="com.rollercoders.smartkedex.SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.Disclaimer"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>

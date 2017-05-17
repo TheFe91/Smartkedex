@@ -271,13 +271,20 @@ public class PokemonDatabaseAdapter {
         return strenghts;
     }
 
-    ////////////////////////////////////////////////////////////////////UPDATERS////////////////////////////////////////////////////////////////////////////////////
+    int getDisclaimer () {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        int disclaimer = 0;
+        String[] columns = {PokemonHelper.DISCLAIMER_OK};
 
-    void updateLanguage (String newLanguage, String oldLanguage) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE Settings SET Language = '"+newLanguage+"' WHERE Language = '"+oldLanguage+"';");
+        Cursor cursor = db.query(PokemonHelper.DISCLAIMER_OK, columns, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            disclaimer = cursor.getInt(0);
+        }
         db.close();
+        return disclaimer;
     }
+
+    ////////////////////////////////////////////////////////////////////UPDATERS////////////////////////////////////////////////////////////////////////////////////
 
     void updateOwner (String newOwner, String oldOwner) {
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -315,9 +322,15 @@ public class PokemonDatabaseAdapter {
         db.close();
     }
 
+    void updateDisclaimer () {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("UPDATE Disclaimer_OK SET Disclaimer_OK = 1");
+        db.close();
+    }
+
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 6;
+        private static final int DATABASE_VERSION = 10;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -352,6 +365,7 @@ public class PokemonDatabaseAdapter {
         private static final String DURATION = "Duration";
         private static final String CRITICAL_CHANCE = "CriticalChance";
         private static final String TYPE_NAME = "TypeName";
+        private static final String DISCLAIMER_OK = "Disclaimer_OK";
 
 
 
@@ -432,12 +446,13 @@ public class PokemonDatabaseAdapter {
                                                   POKEMONNAME + VARCHAR + "20), " +
                                                   "FOREIGN KEY (" + POKEMONID + ") REFERENCES " + POKEMON + " (" + ID + "))";
 
+        private static final String CREATE_DISCLAIMER_TABLE = "CREATE TABLE IF NOT EXISTS " + DISCLAIMER_OK + "(" + DISCLAIMER_OK + VARCHAR + "1) PRIMARY KEY)";
+
         private Context context;
 
         PokemonHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             this.context = context;
-//            Toast.makeText(context, "Constructor called", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -454,6 +469,7 @@ public class PokemonDatabaseAdapter {
             db.execSQL(CREATE_HASTYPE);
             db.execSQL(CREATE_HASSTRENGHT);
             db.execSQL(CREATE_HASWEAKNESS);
+            db.execSQL(CREATE_DISCLAIMER_TABLE);
 
             //Populating the DB
 
@@ -2431,25 +2447,31 @@ public class PokemonDatabaseAdapter {
             db.execSQL("INSERT INTO HasWeakness VALUES (151, 'Buio')");
             db.execSQL("INSERT INTO HasWeakness VALUES (151, 'Spettro')");
 
+            db.execSQL("INSERT INTO "+DISCLAIMER_OK+" VALUES (\"0\")");
+
             Toast.makeText(context, "Creazione del Database\neseguita correttamente", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            try {
-                db.execSQL("UPDATE " + ATTACK + " SET " + ATTACK_NAME + "='Attacco Rapido' WHERE "+ATTACK_NAME+"='Attazzo Rapido';");
-            } catch (SQLiteConstraintException e) {
-                System.err.println(e);
+            Cursor cursor = db.query(SETTINGS, null, null, null, null, null, null);
+            int pokemongo = 0;
+            String owner = "", smartkedex = "";
+            while (cursor.moveToNext()) {
+                pokemongo = cursor.getInt(cursor.getColumnIndex(POKEMONGO));
+                owner = cursor.getString(cursor.getColumnIndex(OWNER));
+                smartkedex = cursor.getString(cursor.getColumnIndex(SMARTKEDEXNAME));
             }
-            try {
-                db.execSQL("DELETE FROM "+HASATTACK+" WHERE ID=37");
-                db.execSQL("INSERT INTO HasAttack VALUES (37, 'Attacco Rapido')");
-            } catch (SQLiteConstraintException e) {
-                System.err.println(e);
-            }
-            db.execSQL("ALTER TABLE " + SETTINGS + " ADD Disclaimer_OK VARCHAR(1);");
-            db.execSQL("UPDATE " + SETTINGS + " SET Disclaimer_OK = 0");
+            db.execSQL("DROP TABLE " + SETTINGS + ";");
+            db.execSQL(CREATE_SETTINGS);
+            db.execSQL("INSERT INTO " + SETTINGS + " VALUES ('"+owner+"', '"+smartkedex+"', '"+pokemongo+"')");
+            Toast.makeText(context, "Settings OK", Toast.LENGTH_SHORT).show();
+            db.execSQL("DROP TABLE IF EXISTS " + DISCLAIMER_OK + ";");
+            db.execSQL(CREATE_DISCLAIMER_TABLE);
+            db.execSQL("INSERT INTO "+DISCLAIMER_OK+" VALUES (\"0\")");
+            Toast.makeText(context, "Disclaimer OK", Toast.LENGTH_SHORT).show();
             Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
+
         }
     }
 }

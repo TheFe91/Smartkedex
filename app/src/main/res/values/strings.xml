@@ -206,6 +206,9 @@
     <string name="mai">NEVER</string>
     <string name="vota">RATE</string>
     <string name="packagename" translatable="false">com.rollercoders.smartkedex</string>
+    <string name="disclaimer">Dear all,\n\nwe\'re sorry to communicate that something went wrong on developing our app on version 1.4.2. If you\'ve this version, close the app with the button below and download now version 1.4.5 to be sure not to lose your data. If you had already updated to 1.4.2, you\'ve to insert again all of your submissions. We\'re working hard on the issue to prevent other problems in future. Thanks for making our app growing every day! We appreciate that.\n\nRollerCoders Team</string>
+    <string name="acceptDisclaimer">I understood (don\'t show this message again)</string>
+    <string name="confirmDisclaimer">Confirm and Enter</string>
 
 
 </resources>

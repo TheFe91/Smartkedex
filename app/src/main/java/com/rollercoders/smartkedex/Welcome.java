@@ -18,11 +18,7 @@ import android.widget.Toast;
 
 public class Welcome extends Activity {
 
-    private final PokemonDatabaseAdapter pokemonHelper;
-
-    public Welcome () {
-        pokemonHelper = new PokemonDatabaseAdapter(this);
-    }
+    private final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
