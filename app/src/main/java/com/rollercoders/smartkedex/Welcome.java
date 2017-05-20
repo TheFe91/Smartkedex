@@ -29,6 +29,15 @@ public class Welcome extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int dpi = displayMetrics.densityDpi;
 
+        Button enter = (Button)findViewById(R.id.asynctest);
+        enter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), AsyncTest.class);
+                startActivity(i);
+            }
+        });
+
         if (pokemonHelper.getRows("Settings") == 0) { //it's the first app launch ever
             TextView textView = (TextView)findViewById(R.id.welcome);
             textView.setText(getResources().getString(getResources().getIdentifier("welcome", "string", getPackageName())));

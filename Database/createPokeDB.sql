@@ -1,12 +1,16 @@
 USE my_smartkedexwebservices;
 
+DROP TABLE IF EXISTS Catches;
+DROP TABLE IF EXISTS Settings;
+/*DROP TABLE IF EXISTS Pokemon;*/
+
 CREATE TABLE IF NOT EXISTS Settings (
-	Owner VARCHAR(20) PRIMARY KEY,
+	Username VARCHAR(20) PRIMARY KEY,
+	Password VARCHAR(20),
+	Owner VARCHAR(20),
     SmartkedexName VARCHAR(20),
     PokemonGO INT(1)
 ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS Pokemon;
 
 CREATE TABLE IF NOT EXISTS Pokemon (
 	ID INT (3) PRIMARY KEY,
@@ -83,13 +87,11 @@ CREATE TABLE IF NOT EXISTS Copy (
 	FOREIGN KEY (PokemonID) REFERENCES Pokemon (ID)
 ) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS CATCHES;
-
 CREATE TABLE IF NOT EXISTS Catches (
 	ID INT(3),
-	Owner VARCHAR(40),
-	PRIMARY KEY (ID, Owner),
-	FOREIGN KEY (Owner) REFERENCES Settings (Owner),
+	Username VARCHAR(40),
+	PRIMARY KEY (ID, Username),
+	FOREIGN KEY (Username) REFERENCES Settings (Username),
 	FOREIGN KEY (ID) REFERENCES Copy (ID)
 ) ENGINE=InnoDB;
 

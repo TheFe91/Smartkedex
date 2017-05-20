@@ -29,6 +29,16 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.rollercoders.smartkedex.AsyncTest"
+            android:parentActivityName="com.rollercoders.smartkedex.Welcome"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.AsyncTest" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name="com.rollercoders.smartkedex.Welcome"
                   android:parentActivityName="com.rollercoders.smartkedex.Disclaimer"
                   android:screenOrientation="portrait">
