@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -17,15 +18,18 @@ import java.net.URLEncoder;
  * Created by TheFe on 20/05/17.
  */
 
-class BackgroundWorker extends AsyncTask<String, Void, String> {
+class BackgroundWorker extends AsyncTask<Void, Void, String> {
 
     WebServicesAsyncResponse delegate = null;
+    String page, table;
+
+    public BackgroundWorker (String page) {this.page=page;}
+    public BackgroundWorker (String page, String table) {this.page=page; this.table=table;}
 
     @Override
-    protected String doInBackground(String... params) {
-        String link = "http://smartkedexwebservices.altervista.org/getOwner.php";
+    protected String doInBackground(Void... aVoid) {
+        String link = "http://smartkedexwebservices.altervista.org/"+page+".php";
         try {
-            String owner = params[0];
             URL url = new URL(link);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
             httpURLConnection.setRequestMethod("POST");
@@ -33,7 +37,7 @@ class BackgroundWorker extends AsyncTask<String, Void, String> {
             httpURLConnection.setDoInput(true);
             OutputStream outputStream = httpURLConnection.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            String post_data = URLEncoder.encode("owner", "UTF-8")+"="+URLEncoder.encode(owner, "UTF-8");
+            String post_data = URLEncoder.encode("table", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8"); //il primo è il nome della casella POST, il secondo è il suo valore
             bufferedWriter.write(post_data);
             bufferedWriter.flush();
             bufferedWriter.close();

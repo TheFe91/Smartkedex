@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class AsyncTest extends AppCompatActivity implements WebServicesAsyncResponse {
-    BackgroundWorker backgroundWorker = new BackgroundWorker();
+    BackgroundWorker backgroundWorker = new BackgroundWorker("getRows", "Settings");
     EditText editText;
     TextView textView, log;
 
@@ -31,11 +31,11 @@ public class AsyncTest extends AppCompatActivity implements WebServicesAsyncResp
             @Override
             public void onClick(View view) {
                 String ownerTest = editText.getText().toString();
-                backgroundWorker.execute(ownerTest);
+                backgroundWorker.execute();
                 textView = (TextView)findViewById(R.id.ownerresult);
                 try {
                     log.append(backgroundWorker.get());
-                } catch (InterruptedException | ExecutionException e) {
+                } catch (InterruptedException | ExecutionException | NullPointerException e) {
                     e.printStackTrace();
                 }
             }
@@ -44,7 +44,8 @@ public class AsyncTest extends AppCompatActivity implements WebServicesAsyncResp
 
     @Override
     public void processFinish(String output) {
-        backgroundWorker = new BackgroundWorker();
+        String ownerTest = editText.getText().toString();
+        backgroundWorker = new BackgroundWorker("getRows", ownerTest);
         backgroundWorker.delegate = this;
     }
 }
