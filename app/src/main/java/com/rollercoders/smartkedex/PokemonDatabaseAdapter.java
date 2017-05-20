@@ -352,7 +352,6 @@ public class PokemonDatabaseAdapter {
         private static final String HASTYPE = "HasType";
 
         //Columns Declaration
-        private static final String LANGUAGE = "Language";
         private static final String OWNER = "Owner";
         private static final String SMARTKEDEXNAME = "SmartkedexName";
         private static final String POKEMONGO = "PokemonGO";

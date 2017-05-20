@@ -209,6 +209,47 @@
     <string name="disclaimer">Dear all,\n\nwe\'re sorry to communicate that something went wrong on developing our app on version 1.4.2. If you\'ve this version, close the app with the button below and download now version 1.4.5 to be sure not to lose your data. If you had already updated to 1.4.2, you\'ve to insert again all of your submissions. We\'re working hard on the issue to prevent other problems in future. Thanks for making our app growing every day! We appreciate that.\n\nRollerCoders Team</string>
     <string name="acceptDisclaimer">I understood (don\'t show this message again)</string>
     <string name="confirmDisclaimer">Confirm and Enter</string>
+    <string name='Acido'>Acid</string>
+    <string name='Alacciaio'>Steel Wing</string>
+    <string name='Alitogelido'>Frost Breath</string>
+    <string name='Attaccodala'>Wing Attack</string>
+    <string name='Attaccorapido'>Quick Attack</string>
+    <string name='Azione'>Tackle</string>
+    <string name='Beccata'>Peck</string>
+    <string name='Bolla'>Bubble</string>
+    <string name='Botta'>Pound</string>
+    <string name='Braciere'>Ember</string>
+    <string name='Coleomorso'>Bug Bite</string>
+    <string name='Colpobasso'>Low Kick</string>
+    <string name='Colpodifango'>Mud Shot</string>
+    <string name='Colpokarate'>Karate Chop</string>
+    <string name='Confusione'>Confusion</string>
+    <string name='Cozzatazen'>Zen Headbutt</string>
+    <string name='Dragospiro'>Dragon Breath</string>
+    <string name='Fangosberla'>Mud-Slap</string>
+    <string name='Ferrartigli'>Metal Claw</string>
+    <string name='Finta'>Feint Attack</string>
+    <string name='Foglielama'>Razor Leaf</string>
+    <string name='Frustata'>Vine Whip</string>
+    <string name='Geloscheggia'>Ice Shard</string>
+    <string name='Graffio'>Scratch</string>
+    <string name='Leccata'>Lick</string>
+    <string name='Morso'>Bite</string>
+    <string name='Ombrartigli'>Shadow Claw</string>
+    <string name='Pistolacqua'>Water Gun</string>
+    <string name='Psicotaglio'>Psycho Cut</string>
+    <string name='Pugnoscarica'>Bullet Punch</string>
+    <string name='Rogodenti'>Fire Fang</string>
+    <string name='Sassata'>Rock Throw</string>
+    <string name='Sbigoattacco'>Sucker Punch</string>
+    <string name='Scintilla'>Spark</string>
+    <string name='Spaccaroccia'>Rock Smash</string>
+    <string name='Taglio'>Cut</string>
+    <string name='Tagliofuria'>Fury Cutter</string>
+    <string name='Trasformazione'>Transform</string>
+    <string name='Tuonoshock'>Thundershock</string>
+    <string name='Velenospina'>Poison Sting</string>
+    <string name='Velenpuntura'>Poison Jab</string>
 
 
 </resources>
