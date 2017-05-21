@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class AsyncTest extends AppCompatActivity implements WebServicesAsyncResponse {
-    BackgroundWorker backgroundWorker = new BackgroundWorker("getRows", "Settings");
+    BackgroundWorker backgroundWorker = new BackgroundWorker("getWeakness", 100);
     EditText editText;
     TextView textView, log;
 
@@ -30,7 +30,6 @@ public class AsyncTest extends AppCompatActivity implements WebServicesAsyncResp
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String ownerTest = editText.getText().toString();
                 backgroundWorker.execute();
                 textView = (TextView)findViewById(R.id.ownerresult);
                 try {
@@ -44,8 +43,7 @@ public class AsyncTest extends AppCompatActivity implements WebServicesAsyncResp
 
     @Override
     public void processFinish(String output) {
-        String ownerTest = editText.getText().toString();
-        backgroundWorker = new BackgroundWorker("getRows", ownerTest);
+        backgroundWorker = new BackgroundWorker("getPokeTypes", 100);
         backgroundWorker.delegate = this;
     }
 }

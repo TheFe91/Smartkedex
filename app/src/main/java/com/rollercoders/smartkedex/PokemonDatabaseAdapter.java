@@ -72,7 +72,7 @@ public class PokemonDatabaseAdapter {
         return rows;
     }
 
-    String getCopyName (int copyID) {
+    String getCopyName (int copyID) { // DA FARE
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns = {PokemonHelper.POKEMONNAME};
         String name = "";
@@ -117,7 +117,7 @@ public class PokemonDatabaseAdapter {
         return list;
     }
 
-    Map<String, String> getAttacksStuff(String name, String table) {
+    Map<String, String> getAttacksStuff(String name, String table) { //DA FARE
         SQLiteDatabase db = helper.getReadableDatabase();
         String columnName;
 
@@ -141,7 +141,7 @@ public class PokemonDatabaseAdapter {
         return map;
     }
 
-    int getCatched (int pokeID) {
+    int getCatched (int pokeID) { //DA FARE
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(PokemonHelper.CATCHES, null, PokemonHelper.ID+"="+pokeID, null, null, null, null);
         int rows = 0;
@@ -153,7 +153,7 @@ public class PokemonDatabaseAdapter {
         return rows;
     }
 
-    List<Integer> getIdsFromPokeID (int pokeID) {
+    List<Integer> getIdsFromPokeID (int pokeID) { //DA FARE
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns = {PokemonHelper.ID};
         List<Integer> list = new ArrayList<>();
@@ -166,7 +166,7 @@ public class PokemonDatabaseAdapter {
         return list;
     }
 
-    String[] getPokeAttacks (int pokeCopy) {
+    String[] getPokeAttacks (int pokeCopy) { //DA FARE
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] attack = {"", ""};
         String[] columns = {PokemonHelper.ATTACK_NAME, PokemonHelper.ULTI_NAME};

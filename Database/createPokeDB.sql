@@ -1,9 +1,5 @@
 USE my_smartkedexwebservices;
 
-DROP TABLE IF EXISTS Catches;
-DROP TABLE IF EXISTS Settings;
-/*DROP TABLE IF EXISTS Pokemon;*/
-
 CREATE TABLE IF NOT EXISTS Settings (
 	Username VARCHAR(20) PRIMARY KEY,
 	Password VARCHAR(20),
@@ -84,7 +80,9 @@ CREATE TABLE IF NOT EXISTS Copy (
 	AttackName VARCHAR(15),
 	UltiName VARCHAR(15),
 	PokemonName VARCHAR(20),
-	FOREIGN KEY (PokemonID) REFERENCES Pokemon (ID)
+	FOREIGN KEY (PokemonID) REFERENCES Pokemon (ID),
+	FOREIGN KEY (AttackName) REFERENCES Attack (AttackName),
+	FOREIGN KEY (UltiName) REFERENCES Ulti (UltiName)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS Catches (
@@ -95,9 +93,9 @@ CREATE TABLE IF NOT EXISTS Catches (
 	FOREIGN KEY (ID) REFERENCES Copy (ID)
 ) ENGINE=InnoDB;
 
-/*
 INSERT INTO Type VALUES ('Acciaio');
 INSERT INTO Type VALUES ('Acqua');
+INSERT INTO Type VALUES ('Buio');
 INSERT INTO Type VALUES ('Coleottero');
 INSERT INTO Type VALUES ('Drago');
 INSERT INTO Type VALUES ('Elettro');
@@ -310,6 +308,7 @@ INSERT INTO Attack VALUES ('Splash', 0, 1.23, 'Acqua');
 INSERT INTO Attack VALUES ('Trasformazione', 0, 0.54, 'Normale');
 
 INSERT INTO Ulti VALUES ('Vigorcolpo', 70, 2.8, 12, 'Erba');
+INSERT INTO Ulti VALUES ('Dragopulsar', 90, 3.6, 5, 'Drago');
 INSERT INTO Ulti VALUES ('Semebomba', 40, 2.4, 5, 'Erba');
 INSERT INTO Ulti VALUES ('Fangobomba', 55, 2.6, 5, 'Veleno');
 INSERT INTO Ulti VALUES ('Solarraggio', 120, 4.9, 5, 'Erba');
@@ -334,7 +333,7 @@ INSERT INTO Ulti VALUES ('Forbice X', 35, 2.1, 5, 'Coleottero');
 INSERT INTO Ulti VALUES ('Aeroassalto', 30, 2.9, 5, 'Volante');
 INSERT INTO Ulti VALUES ('Tornado', 25, 2.7, 5, 'Drago');
 INSERT INTO Ulti VALUES ('Aerasoio', 30, 3.3, 25, 'Volante');
-INSERT INTO Ulti VALUES ('Tifone', 80, 3.2, 5, 'Tifone');
+INSERT INTO Ulti VALUES ('Tifone', 80, 3.2, 5, 'Volante');
 INSERT INTO Ulti VALUES ('Fossa', 70, 5.8, 5, 'Terra');
 INSERT INTO Ulti VALUES ('Corposcontro', 40, 1.56, 5, 'Normale');
 INSERT INTO Ulti VALUES ('Iperzanna', 35, 2.1, 5, 'Normale');
@@ -1152,7 +1151,7 @@ INSERT INTO HasUlti VALUES (86, 'Idrondata');
 INSERT INTO HasUlti VALUES (86, 'Acquagetto');
 INSERT INTO HasUlti VALUES (86, 'Ventogelato');
 INSERT INTO HasUlti VALUES (87, 'Bora');
-INSERT INTO HasUlti VALUES (87, 'Ventogelto');
+INSERT INTO HasUlti VALUES (87, 'Ventogelato');
 INSERT INTO HasUlti VALUES (87, 'Acquagetto');
 INSERT INTO HasUlti VALUES (88, 'Fangobomba');
 INSERT INTO HasUlti VALUES (88, 'Fango');
@@ -1244,7 +1243,7 @@ INSERT INTO HasUlti VALUES (116, 'Cannonflash');
 INSERT INTO HasUlti VALUES (116, 'Bollaraggio');
 INSERT INTO HasUlti VALUES (117, 'Bora');
 INSERT INTO HasUlti VALUES (117, 'Idropompa');
-INSERT INTO HasUlti VALUES (117, 'Dragoopulsar');
+INSERT INTO HasUlti VALUES (117, 'Dragopulsar');
 INSERT INTO HasUlti VALUES (118, 'Idrondata');
 INSERT INTO HasUlti VALUES (118, 'Idropulsar');
 INSERT INTO HasUlti VALUES (118, 'Incornata');
@@ -1272,7 +1271,7 @@ INSERT INTO HasUlti VALUES (125, 'Tuonopugno');
 INSERT INTO HasUlti VALUES (126, 'Fuocobomba');
 INSERT INTO HasUlti VALUES (126, 'Lanciafiamme');
 INSERT INTO HasUlti VALUES (126, 'Fuocopugno');
-INSERT INTO HasUlti VALUES (127, 'Virgocolpo');
+INSERT INTO HasUlti VALUES (127, 'Vigorcolpo');
 INSERT INTO HasUlti VALUES (127, 'Forbice X');
 INSERT INTO HasUlti VALUES (127, 'Sottomissione');
 INSERT INTO HasUlti VALUES (128, 'Terremoto');
@@ -2207,5 +2206,3 @@ INSERT INTO HasWeakness VALUES (150, 'Spettro');
 INSERT INTO HasWeakness VALUES (151, 'Coleottero');
 INSERT INTO HasWeakness VALUES (151, 'Buio');
 INSERT INTO HasWeakness VALUES (151, 'Spettro');
-
-INSERT INTO Disclaimer_OK VALUES ("0");*/
