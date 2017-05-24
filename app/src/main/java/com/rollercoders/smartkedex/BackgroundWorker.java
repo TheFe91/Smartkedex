@@ -26,7 +26,7 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
     private int flag = 0, id;
 
     public BackgroundWorker (String page, String table) {this.page=page; this.table=table; flag=1;} //getRows
-    public BackgroundWorker (String page, String name, String type) {this.page=page; this.name=name; this.type=type; flag=2;} //getMovesType
+    public BackgroundWorker (String page, String name, String type) {this.page=page; this.name=name; this.type=type; flag=2;} //getMovesType and getAttacksStuff
     public BackgroundWorker (String page, int id) {this.page=page; this.id=id; flag=3;} //getPokeTypes, getStrengths and getWeakness
     public BackgroundWorker (String page, String username, boolean settings) {this.page=page; this.username=username; flag=4;} //getOwner, getSmartkedex and getPokemonGO
     public BackgroundWorker (String page, int id, String table) {this.page=page; this.id=id; this.table=table; flag=5;}
@@ -43,12 +43,25 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
                 }
                 break;
             case 2:
-                try {
-                    post_data = URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+"&"+
-                                URLEncoder.encode("type", "UTF-8")+"="+URLEncoder.encode(type, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                switch (page) {
+                    case "getMovesType":
+                        try {
+                            post_data = URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+"&"+
+                                        URLEncoder.encode("type", "UTF-8")+"="+URLEncoder.encode(type, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "getAttacksStuff":
+                        try {
+                            post_data = URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+"&"+
+                                        URLEncoder.encode("table", "UTF-8")+"="+URLEncoder.encode(type, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
                 }
+
                 break;
             case 3:
                 try {

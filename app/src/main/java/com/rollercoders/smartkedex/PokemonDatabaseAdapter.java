@@ -117,7 +117,7 @@ public class PokemonDatabaseAdapter {
         return list;
     }
 
-    Map<String, String> getAttacksStuff(String name, String table) { //DA FARE
+    Map<String, String> getAttacksStuff(String name, String table) {
         SQLiteDatabase db = helper.getReadableDatabase();
         String columnName;
 

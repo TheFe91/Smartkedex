@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class AsyncTest extends AppCompatActivity implements WebServicesAsyncResponse {
-    BackgroundWorker backgroundWorker = new BackgroundWorker("getWeakness", 100);
+    BackgroundWorker backgroundWorker = new BackgroundWorker("getAttacksStuff", "Acquadisale", "Ulti");
     EditText editText;
     TextView textView, log;
 
@@ -43,7 +43,7 @@ public class AsyncTest extends AppCompatActivity implements WebServicesAsyncResp
 
     @Override
     public void processFinish(String output) {
-        backgroundWorker = new BackgroundWorker("getPokeTypes", 100);
+        backgroundWorker = new BackgroundWorker("getAttacksStuff", "Attacco Rapido", "Attack");
         backgroundWorker.delegate = this;
     }
 }
