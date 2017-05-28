@@ -2,8 +2,9 @@
 <resources>
     <string name="contact">Contact Us</string>
     <string name="caught">"Caught  "</string>
-    <string name="confirm_enter">Confirm and Enter</string>
+    <string name="confirmRegistration">Confirm and Enter</string>
     <string name="details">Details</string>
+    <string name="OK" translatable="false">OK</string>
     <string name="enterapp">Enter the App</string>
     <string name="insertname">Insert your name*</string>
     <string name="not_strong">Strong Against: Nothing</string>
@@ -206,9 +207,15 @@
     <string name="mai">NEVER</string>
     <string name="vota">RATE</string>
     <string name="packagename" translatable="false">com.rollercoders.smartkedex</string>
-    <string name="disclaimer">Dear all,\n\nwe\'re sorry to communicate that something went wrong on developing our app on version 1.4.2. If you\'ve this version, close the app with the button below and download now version 1.4.5 to be sure not to lose your data. If you had already updated to 1.4.2, you\'ve to insert again all of your submissions. We\'re working hard on the issue to prevent other problems in future. Thanks for making our app growing every day! We appreciate that.\n\nRollerCoders Team</string>
     <string name="acceptDisclaimer">I understood (don\'t show this message again)</string>
     <string name="confirmDisclaimer">Confirm and Enter</string>
+    <string name="insertUsername">Insert your Username</string>
+    <string name="insertPassword">Insert your Password</string>
+    <string name="rememberME">Remember ME</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="loginFail">Login Failed: Access Denied</string>
+    <string name="loginFailMessage">The data you\'ve entered are not correct.\nPlease try again</string>
     <string name='Acido'>Acid</string>
     <string name='Alacciaio'>Steel Wing</string>
     <string name='Alitogelido'>Frost Breath</string>

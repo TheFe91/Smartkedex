@@ -223,7 +223,6 @@ public class PokemonDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 leggi.setEnabled(false);
-                System.err.println("ciao button");
                 t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     public void onInit(int status) {
                         if(status != TextToSpeech.ERROR) {

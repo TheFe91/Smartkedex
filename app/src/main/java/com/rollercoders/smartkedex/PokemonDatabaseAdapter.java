@@ -7,18 +7,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by TheFe on 19/10/2016.
  */
 
-public class PokemonDatabaseAdapter {
+public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 
     private PokemonHelper helper;
+    private BackgroundWorker backgroundWorker;
 
     PokemonDatabaseAdapter(Context context) {
         helper = new PokemonHelper(context);
@@ -50,6 +54,12 @@ public class PokemonDatabaseAdapter {
         db.close();
     }
 
+    void setRememberME (String username, String password) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("INSERT INTO Settings (Username, Password, RememberME) VALUES ('"+username+"', '"+password+"', 1)");
+        db.close();
+    }
+
     void erase () {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("DELETE FROM Copy");
@@ -59,6 +69,47 @@ public class PokemonDatabaseAdapter {
     }
 
     ////////////////////////////////////////////////////////////////////GETTERS////////////////////////////////////////////////////////////////////////////////////
+
+    int getRememberME () {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {"RememberME"};
+        Cursor cursor = db.query(PokemonHelper.SETTINGS, columns, null, null, null, null, null);
+        int rm = 0;
+        while (cursor.moveToNext()) {
+            rm = cursor.getInt(0);
+        }
+        db.close();
+        return rm;
+    }
+
+    String[] getLoginData() {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {"Username", "Password"};
+        Cursor cursor = db.query(PokemonHelper.SETTINGS, columns, null, null, null, null, null);
+        String[] data = {"", ""};
+        while (cursor.moveToNext()) {
+            data[0] = cursor.getString(0);
+            data[1] = cursor.getString(1);
+        }
+        db.close();
+        return data;
+    }
+
+    int tryLogin (String username, String password) {
+        int result;
+        backgroundWorker = new BackgroundWorker("login", username, password);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        String temp = "";
+        try {
+            temp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        String[] correct = temp.split("\n");
+        result = Integer.parseInt(correct[0]);
+        return result;
+    }
 
     int getRows (String tableName) {
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -72,7 +123,7 @@ public class PokemonDatabaseAdapter {
         return rows;
     }
 
-    String getCopyName (int copyID) { // DA FARE
+    String getCopyName (int copyID) {
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns = {PokemonHelper.POKEMONNAME};
         String name = "";
@@ -105,16 +156,19 @@ public class PokemonDatabaseAdapter {
     }
 
     List<String> getPokeTypes(int pokeID) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String[] columns = {PokemonHelper.TYPE_NAME};
-        Cursor cursor = db.query(PokemonHelper.HASTYPE, columns, PokemonHelper.ID+"="+pokeID, null, null, null, null);
-        List<String> list = new ArrayList<>();
-        while (cursor.moveToNext()) {
-            list.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME)));
+        List<String> types = new ArrayList<>();
+        backgroundWorker = new BackgroundWorker("getPokeTypes", pokeID);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        String temp = "";
+        try {
+            temp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
-
-        db.close();
-        return list;
+        String[] division = temp.split("\n");
+        Collections.addAll(types, division);
+        return types;
     }
 
     Map<String, String> getAttacksStuff(String name, String table) {
@@ -141,19 +195,23 @@ public class PokemonDatabaseAdapter {
         return map;
     }
 
-    int getCatched (int pokeID) { //DA FARE
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(PokemonHelper.CATCHES, null, PokemonHelper.ID+"="+pokeID, null, null, null, null);
-        int rows = 0;
-        while (cursor.moveToNext()) {
-            rows++;
+    int getCatched (int pokeID) {
+        /*int rows = 0;
+        backgroundWorker = new BackgroundWorker("getCatched", pokeID);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        try {
+            String temp = backgroundWorker.get();
+            System.err.println(temp);
+            rows = Integer.parseInt(temp);
+        } catch (InterruptedException | ExecutionException | NullPointerException e) {
+            e.printStackTrace();
         }
-
-        db.close();
-        return rows;
+        return rows;*/
+        return 1;
     }
 
-    List<Integer> getIdsFromPokeID (int pokeID) { //DA FARE
+    List<Integer> getIdsFromPokeID (int pokeID) {
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] columns = {PokemonHelper.ID};
         List<Integer> list = new ArrayList<>();
@@ -166,7 +224,7 @@ public class PokemonDatabaseAdapter {
         return list;
     }
 
-    String[] getPokeAttacks (int pokeCopy) { //DA FARE
+    String[] getPokeAttacks (int pokeCopy) {
         SQLiteDatabase db = helper.getReadableDatabase();
         String[] attack = {"", ""};
         String[] columns = {PokemonHelper.ATTACK_NAME, PokemonHelper.ULTI_NAME};
@@ -246,29 +304,35 @@ public class PokemonDatabaseAdapter {
     }
 
     List<String> getWeaknesses (int pokeID) {
-        SQLiteDatabase db = helper.getReadableDatabase();
         List<String> weaknesses = new ArrayList<>();
-        String[] columns = {PokemonHelper.TYPE_NAME};
-
-        Cursor cursor = db.query(PokemonHelper.HASWEAKNESS, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
-        while (cursor.moveToNext()) {
-            weaknesses.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME)));
+        backgroundWorker = new BackgroundWorker("getWeakness", pokeID);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        String temp = "";
+        try {
+            temp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
-        db.close();
+        String[] division = temp.split("\n");
+        Collections.addAll(weaknesses, division);
         return weaknesses;
     }
 
     List<String> getStrenghts (int pokeID) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        List<String> strenghts = new ArrayList<>();
-        String[] columns = {PokemonHelper.TYPE_NAME};
-
-        Cursor cursor = db.query(PokemonHelper.HASSTRENGHT, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
-        while (cursor.moveToNext()) {
-            strenghts.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME)));
+        List<String> strengths = new ArrayList<>();
+        backgroundWorker = new BackgroundWorker("getStrenghts", pokeID);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        String temp = "";
+        try {
+            temp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
-        db.close();
-        return strenghts;
+        String[] division = temp.split("\n");
+        Collections.addAll(strengths, division);
+        return strengths;
     }
 
     int getDisclaimer () {
@@ -328,9 +392,14 @@ public class PokemonDatabaseAdapter {
         db.close();
     }
 
+    @Override
+    public void processFinish(String output) {
+        backgroundWorker.delegate = this;
+    }
+
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 10;
+        private static final int DATABASE_VERSION = 12;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -370,7 +439,10 @@ public class PokemonDatabaseAdapter {
 
         //CREATE TABLE Statements
         private static final String CREATE_SETTINGS = "CREATE TABLE IF NOT EXISTS " + SETTINGS + "(" +
-                                                       OWNER + VARCHAR + "20) PRIMARY KEY, " +
+                                                       "Username VARCHAR(20) PRIMARY KEY, " +
+                                                       "Password VARCHAR(20), " +
+                                                       "RememberME INT(1), " +
+                                                       OWNER + VARCHAR + "20), " +
                                                        SMARTKEDEXNAME + VARCHAR + "20), " +
                                                        POKEMONGO + INT + "1))";
 
@@ -2453,24 +2525,8 @@ public class PokemonDatabaseAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Cursor cursor = db.query(SETTINGS, null, null, null, null, null, null);
-            int pokemongo = 0;
-            String owner = "", smartkedex = "";
-            while (cursor.moveToNext()) {
-                pokemongo = cursor.getInt(cursor.getColumnIndex(POKEMONGO));
-                owner = cursor.getString(cursor.getColumnIndex(OWNER));
-                smartkedex = cursor.getString(cursor.getColumnIndex(SMARTKEDEXNAME));
-            }
-            db.execSQL("DROP TABLE " + SETTINGS + ";");
+            db.execSQL("DROP TABLE Settings");
             db.execSQL(CREATE_SETTINGS);
-            db.execSQL("INSERT INTO " + SETTINGS + " VALUES ('"+owner+"', '"+smartkedex+"', '"+pokemongo+"')");
-            Toast.makeText(context, "Settings OK", Toast.LENGTH_SHORT).show();
-            db.execSQL("DROP TABLE IF EXISTS " + DISCLAIMER_OK + ";");
-            db.execSQL(CREATE_DISCLAIMER_TABLE);
-            db.execSQL("INSERT INTO "+DISCLAIMER_OK+" VALUES (\"0\")");
-            Toast.makeText(context, "Disclaimer OK", Toast.LENGTH_SHORT).show();
-            Toast.makeText(context, "onUpgrade called", Toast.LENGTH_SHORT).show();
-
         }
     }
 }

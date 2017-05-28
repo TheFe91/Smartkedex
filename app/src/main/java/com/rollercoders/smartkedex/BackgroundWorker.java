@@ -25,23 +25,37 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
     private String page, table, name, type, post_data, username;
     private int flag = 0, id;
 
-    public BackgroundWorker (String page, String table) {this.page=page; this.table=table; flag=1;} //getRows
-    public BackgroundWorker (String page, String name, String type) {this.page=page; this.name=name; this.type=type; flag=2;} //getMovesType and getAttacksStuff
-    public BackgroundWorker (String page, int id) {this.page=page; this.id=id; flag=3;} //getPokeTypes, getStrengths and getWeakness
-    public BackgroundWorker (String page, String username, boolean settings) {this.page=page; this.username=username; flag=4;} //getOwner, getSmartkedex and getPokemonGO
-    public BackgroundWorker (String page, int id, String table) {this.page=page; this.id=id; this.table=table; flag=5;}
+    public BackgroundWorker (String page, String table) {this.page=page; this.table=table; flag=1;} //getRows, getOwner, getSmartkedex, getPokemonGO and getAppVersion
+    public BackgroundWorker (String page, String name, String type) {this.page=page; this.name=name; this.type=type; flag=2;} //getMovesType, getAttacksStuff and setInitialData
+    public BackgroundWorker (String page, int id) {this.page=page; this.id=id; flag=3;} //getPokeTypes, getStrengths, getWeakness, getCopyName, getIdsFromPokeID and getPokeAttacks
+    //public BackgroundWorker (String page, String username, boolean settings) {this.page=page; this.username=username; flag=4;} //
+    public BackgroundWorker (String page, int id, String table) {this.page=page; this.id=id; this.table=table; flag=5;} //getMoves and getCatched
 
 
     @Override
     protected String doInBackground(Void... aVoid) {
         switch (flag) {
             case 1:
-                try {
-                    post_data = URLEncoder.encode("table", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8"); //il primo è il nome della casella POST, il secondo è il suo valore
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                switch (page) {
+                    case "getRows":
+                        try {
+                            post_data = URLEncoder.encode("table", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8"); //il primo è il nome della casella POST, il secondo è il suo valore
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "getOwner":
+                    case "getSmartkedex":
+                    case "getPokemonGO":
+                    case "getAppVersion":
+                        try {
+                            System.err.println(page + " " + table);
+                            post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
                 }
-                break;
             case 2:
                 switch (page) {
                     case "getMovesType":
@@ -60,31 +74,64 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
                             e.printStackTrace();
                         }
                         break;
+                    case "setInitialData":
+                    case "login":
+                        try {
+                            post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+"&"+
+                                        URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(type, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
                 }
 
                 break;
             case 3:
-                try {
-                    post_data = URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                switch (page) {
+                    case "getIdsFromPokeID":
+                        try {
+                            post_data = URLEncoder.encode("pokemonID", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "getPokeAttacks":
+                        try {
+                            post_data = URLEncoder.encode("pokeCopy", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+                        try {
+                            post_data = URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
                 }
-                break;
-            case 4:
-                try {
-                    post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(username, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                break;
+
+            case 4: break;
+
             case 5:
-                try {
-                    post_data = URLEncoder.encode("table", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8")+"&"+
-                            URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
+                switch (page) {
+                    case "getCatched":
+                        try {
+                            post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8")+"&"+
+                                    URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    default:
+                        try {
+                            post_data = URLEncoder.encode("table", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8")+"&"+
+                                    URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
                 }
-                break;
         }
         String link = "http://smartkedexwebservices.altervista.org/"+page+".php";
         try {

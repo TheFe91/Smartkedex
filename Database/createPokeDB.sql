@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS Settings (
 	Password VARCHAR(20),
 	Owner VARCHAR(20),
     SmartkedexName VARCHAR(20),
-    PokemonGO INT(1)
+    PokemonGO INT(1),
+    AppVersion INT(3)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS Pokemon (

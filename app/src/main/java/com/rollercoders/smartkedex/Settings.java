@@ -83,7 +83,7 @@ public class Settings extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         pokemonHelper.erase();
-                        Intent i = new Intent(getApplicationContext(), Welcome.class);
+                        Intent i = new Intent(getApplicationContext(), InitialLogin.class);
                         startActivity(i);
                         finish();
                     }

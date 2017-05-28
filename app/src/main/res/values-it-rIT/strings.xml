@@ -4,7 +4,7 @@
     <string name="insertname">Inserisci il tuo nome*</string>
     <string name="smartkedexname">Inserisci il nome dello Smartkédex</string>
     <string name="playpokego">Giochi a Pokémon GO?</string>
-    <string name="confirm_enter">Conferma ed Entra</string>
+    <string name="confirmRegistration">Conferma ed Entra</string>
     <string name="enterapp">Entra nell \' App</string>
     <string name="edit_settings">"Puoi modificare queste impostazioni in ogni momento\naccedendo al menu delle impostazioni in alto a destra"</string>
     <string name="insertname_error">Inserisci il tuo nome per accedere all\'App</string>
@@ -195,7 +195,6 @@
     <string name="rate_title">Dacci un Feedback</string>
     <string name="acceptDisclaimer">Ho capito (non mostrare più questo messaggio)</string>
     <string name="confirmDisclaimer">Conferma ed Entra</string>
-    <string name="disclaimer">Cari tester,\n\nsiamo spiacenti di informarvi che qualcosa è andato storto nello sviluppo della versione 1.4.2 della nostra app. Se avete questa versione, chiudete l\'applicazione e aggiornate alla nuova 1.4.5 che corregge il problema, evitando così spiacevoli perdite di dati. Se invece avevate già aggiornato alla 1.4.2 siamo spiacenti di informarvi che tutti i vostri dati sono andati persi e quindi dovrete reinserirli tutti. Lavoriamo sodo ogni giorno per evitare che spiacevoli inconveninenti così accadano di nuovo in futuro. Grazie per far crescere la nostra app ogni giorno. Lo apprezziamo molto.\n\nIl Team RollerCoders</string>
     <string name='Acido'>Acido</string>
     <string name='Alacciaio'>Alacciaio</string>
     <string name='Alitogelido'>Alitogelido</string>
@@ -237,4 +236,11 @@
     <string name='Tuonoshock'>Tuonoshock</string>
     <string name='Velenospina'>Velenospina</string>
     <string name='Velenpuntura'>Velenpuntura</string>
+    <string name="insertUsername">Inserisci il tuo Username</string>
+    <string name="loginFail">Login Fallito: Accesso Negato</string>
+    <string name="loginFailMessage">I dati inseriti non sono corretti.\nProva di nuovo</string>
+    <string name="no">No</string>
+    <string name="yes">Sì</string>
+    <string name="insertPassword">Inserisci la tua Password</string>
+    <string name="rememberME">Ricordami</string>
 </resources>

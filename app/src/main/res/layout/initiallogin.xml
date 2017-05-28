@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -23,93 +24,62 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/splashwrite"
+        android:id="@+id/insertusername"
         android:layout_centerHorizontal="true"
-        android:id="@+id/welcome"
+        android:layout_below="@+id/splashwrite"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/insertusername"
+        android:inputType="text"
+        android:width="150dp"
         android:textAlignment="center"
-        android:textStyle="bold"/>
+        android:id="@+id/setusername"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/break1"
-        android:layout_below="@+id/welcome"/>
+        android:layout_below="@+id/setusername"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/owner"
-        android:layout_below="@+id/break1"
+        android:id="@+id/insertpassword"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"/>
+        android:layout_below="@+id/break1"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/setOwner"
-        android:layout_below="@+id/owner"
-        android:inputType="text"
+        android:layout_below="@+id/insertpassword"
+        android:inputType="textPassword"
         android:width="150dp"
         android:textAlignment="center"
+        android:id="@+id/setpassword"
         android:layout_centerHorizontal="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/break2"
-        android:layout_below="@+id/setOwner"/>
+        android:layout_below="@+id/setpassword"/>
 
-    <TextView
+    <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/smartkedex"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/break2"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"/>
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/setSmartkedex"
-        android:layout_below="@+id/smartkedex"
-        android:inputType="text"
-        android:width="150dp"
-        android:textAlignment="center"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/break3"
-        android:layout_below="@+id/setSmartkedex"/>
-
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/POGO"
-        android:layout_below="@+id/break3"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold|italic"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/break4"
-        android:layout_below="@+id/POGO"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tips"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/break4"
-        android:textStyle="bold"/>
+        android:layout_marginTop="100dp"
+        android:id="@+id/remeberMe"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/enter"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:id="@+id/confirmRegistration"/>
 
 </RelativeLayout>

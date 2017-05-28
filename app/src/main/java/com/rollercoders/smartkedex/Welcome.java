@@ -29,16 +29,7 @@ public class Welcome extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int dpi = displayMetrics.densityDpi;
 
-        Button enter = (Button)findViewById(R.id.asynctest);
-        enter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), AsyncTest.class);
-                startActivity(i);
-            }
-        });
-
-        if (pokemonHelper.getRows("Settings") == 0) { //it's the first app launch ever
+        if (pokemonHelper.getOwner().equals("")) { //it's the first app launch ever
             TextView textView = (TextView)findViewById(R.id.welcome);
             textView.setText(getResources().getString(getResources().getIdentifier("welcome", "string", getPackageName())));
             textView = (TextView)findViewById(R.id.owner);
@@ -53,7 +44,7 @@ public class Welcome extends Activity {
             pkmnGO.setText(getResources().getString(getResources().getIdentifier("playpokego", "string", getPackageName())));
 
             Button button = (Button)findViewById(R.id.enter);
-            button.setText(getResources().getString(getResources().getIdentifier("confirm_enter", "string", getPackageName())));
+            button.setText(getResources().getString(getResources().getIdentifier("confirmRegistration", "string", getPackageName())));
 
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
