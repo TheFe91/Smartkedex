@@ -36,6 +36,20 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         db.close();
     }
 
+    String registration (String email, String username, String password, int appversion) {
+        backgroundWorker = new BackgroundWorker("registration", email, username, password, appversion);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        String result = "";
+        try {
+            result = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     void insertCatches (int pokeID, String owner) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("INSERT INTO Catches (ID, Owner) VALUES ("+pokeID+", '"+owner+"')");
@@ -399,7 +413,7 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 12;
+        private static final int DATABASE_VERSION = 13;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";

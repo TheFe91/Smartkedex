@@ -2,8 +2,17 @@
 <resources>
     <string name="contact">Contact Us</string>
     <string name="caught">"Caught  "</string>
-    <string name="confirmRegistration">Confirm and Enter</string>
+    <string name="confirmLogin">Confirm and Enter</string>
+    <string name="register">Register</string>
     <string name="details">Details</string>
+    <string name="registerUsername">Register your Username</string>
+    <string name="registerPassword">Register your Password</string>
+    <string name="registerMail">Register your E-Mail</string>
+    <string name="acceptCondition1">By checking this flag you accept our </string>
+    <string name="acceptCondition2">Terms and Conditions</string>
+    <string name="FieldsNotNullTitle">Fatal Error</string>
+    <string name="FieldsNotNullText">Username, Password and Email fields\nMUST NOT be empty!</string>
+    <string name="confirmRegistration">Confirm Registration</string>
     <string name="OK" translatable="false">OK</string>
     <string name="enterapp">Enter the App</string>
     <string name="insertname">Insert your name*</string>
@@ -257,6 +266,11 @@
     <string name='Tuonoshock'>Thundershock</string>
     <string name='Velenospina'>Poison Sting</string>
     <string name='Velenpuntura'>Poison Jab</string>
-
+    <string name="regSuccessTitle">Registration Success!!!</string>
+    <string name="regSuccessText">Your registration has been approved!\nYou may now Log-In</string>
+    <string name="regFailTitle">Registration Failed</string>
+    <string name="regFailText">There was a problem with your registration\nPlease write to us at <i>rollercodersteam@gmail.com</i> for support on your problem</string>
+    <string name="regFailDupUNTitle">Existing Username!</string>
+    <string name="regFailDupUNText">The username you entered is already registered in our system\nTry a different one!</string>
 
 </resources>

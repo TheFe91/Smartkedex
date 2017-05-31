@@ -243,4 +243,19 @@
     <string name="yes">Sì</string>
     <string name="insertPassword">Inserisci la tua Password</string>
     <string name="rememberME">Ricordami</string>
+    <string name="register">Registrati</string>
+    <string name="confirmLogin">Conferma ed Entra</string>
+    <string name="registerPassword">Registra la tua Password</string>
+    <string name="registerUsername">Registra il tuo Username</string>
+    <string name="registerMail">Registra la tua E-Mail</string>
+    <string name="regFailText">Si è verificato un problema durante la registrazione.\nPer favore scrivere a <i>rollercodersteam@gmail.com</i> per ottenere supporto</string>
+    <string name="regFailTitle">Registrazione Fallita</string>
+    <string name="regSuccessText">La registrazione è andata a buon fine!\nOra puoi fare Log-In</string>
+    <string name="regSuccessTitle">Registrazione Avvenuta!!!</string>
+    <string name="regFailDupUNTitle">Username già esistente!</string>
+    <string name="regFailDupUNText">Lo username che hai inserito esiste già nei nostri sistemi.\nProva con uno diverso!</string>
+    <string name="acceptCondition1">"Accetto i "</string>
+    <string name="acceptCondition2">Termini e Condizioni del Servizio</string>
+    <string name="FieldsNotNullText">I campi Username, Password e Email NON DEVONO essere vuoti!</string>
+    <string name="FieldsNotNullTitle">Errore Critico</string>
 </resources>

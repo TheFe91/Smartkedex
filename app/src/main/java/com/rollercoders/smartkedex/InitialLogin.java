@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,7 +38,7 @@ public class InitialLogin extends Activity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle(getResources().getString(getResources().getIdentifier("loginFail", "string", getPackageName())))
                        .setMessage(getResources().getString(getResources().getIdentifier("loginFailMessage", "string", getPackageName())))
-                       .setPositiveButton(getResources().getString(getResources().getIdentifier("yes", "string", getPackageName())), new DialogInterface.OnClickListener() {
+                       .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -56,9 +57,11 @@ public class InitialLogin extends Activity {
             textView.setText(getResources().getString(getResources().getIdentifier("insertPassword", "string", getPackageName())));
             final CheckBox checkBox = (CheckBox)findViewById(R.id.remeberMe);
             checkBox.setText(getResources().getString(getResources().getIdentifier("rememberME", "string", getPackageName())));
-            Button button = (Button)findViewById(R.id.confirmRegistration);
-            button.setText(getResources().getString(getResources().getIdentifier("confirmRegistration", "string", getPackageName())));
-            button.setOnClickListener(new View.OnClickListener() {
+            Button enter = (Button)findViewById(R.id.confirmRegistration);
+            final Button registration = (Button)findViewById(R.id.register);
+            registration.setText(getResources().getString(getResources().getIdentifier("register", "string", getPackageName())));
+            enter.setText(getResources().getString(getResources().getIdentifier("confirmLogin", "string", getPackageName())));
+            enter.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     EditText editText = (EditText)findViewById(R.id.setusername);
@@ -74,7 +77,11 @@ public class InitialLogin extends Activity {
                         finish();
                     }
                     else {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        AlertDialog.Builder builder;
+                        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                            builder = new AlertDialog.Builder(context, android.R.style.Theme_Dialog);
+                        else
+                            builder = new AlertDialog.Builder(context);
                         builder.setTitle(getResources().getString(getResources().getIdentifier("loginFail", "string", getPackageName())))
                                 .setMessage(getResources().getString(getResources().getIdentifier("loginFailMessage", "string", getPackageName())))
                                 .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
@@ -87,6 +94,14 @@ public class InitialLogin extends Activity {
                                 .show();
 
                     }
+                }
+            });
+            registration.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(), Registration.class);
+                    startActivity(i);
+                    finish();
                 }
             });
         }

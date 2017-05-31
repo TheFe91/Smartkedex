@@ -29,6 +29,26 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.rollercoders.smartkedex.InitialLogin"
+            android:parentActivityName="com.rollercoders.smartkedex.SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.InitialLogin"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.rollercoders.smartkedex.Registration"
+            android:parentActivityName="com.rollercoders.smartkedex.InitialLogin"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.Registration"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <activity android:name="com.rollercoders.smartkedex.Welcome"
                   android:parentActivityName="com.rollercoders.smartkedex.InitialLogin"
                   android:screenOrientation="portrait">
@@ -93,16 +113,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.Settings"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <activity android:name="com.rollercoders.smartkedex.InitialLogin"
-            android:parentActivityName="com.rollercoders.smartkedex.SplashActivity"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.Disclaimer"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>

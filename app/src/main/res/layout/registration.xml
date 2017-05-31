@@ -24,14 +24,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/insertusername"
+        android:id="@+id/registerusername"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/splashwrite"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/insertusername"
+        android:layout_below="@+id/registerusername"
         android:inputType="text"
         android:width="150dp"
         android:textAlignment="center"
@@ -47,14 +47,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/insertpassword"
+        android:id="@+id/registerpassword"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/break1"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/insertpassword"
+        android:layout_below="@+id/registerpassword"
         android:inputType="textPassword"
         android:width="150dp"
         android:textAlignment="center"
@@ -67,20 +67,53 @@
         android:id="@+id/break2"
         android:layout_below="@+id/setpassword"/>
 
-    <CheckBox
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/registermail"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/break2"
-        android:id="@+id/remeberMe"
-        android:layout_marginTop="50dp"/>
+        android:layout_below="@+id/break2"/>
 
-    <Button
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/register"
-        android:layout_above="@+id/confirmRegistration"
+        android:layout_below="@+id/registermail"
+        android:inputType="textEmailAddress"
+        android:width="150dp"
+        android:textAlignment="center"
+        android:id="@+id/setmail"
         android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/break3"
+        android:layout_below="@+id/setmail"/>
+
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/conditions"
+        android:layout_below="@+id/break3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp">
+        <TableRow>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/acceptCondition"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/acceptConditionText1"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/acceptConditionText2"/>
+        </TableRow>
+    </TableLayout>
 
     <Button
         android:layout_width="wrap_content"
