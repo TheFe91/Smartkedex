@@ -49,8 +49,9 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
                     case "getSmartkedex":
                     case "getPokemonGO":
                     case "getAppVersion":
+                    case "erase":
+                    case "getTotalCopies":
                         try {
-                            System.err.println(page + " " + table);
                             post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
@@ -80,6 +81,14 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
                         try {
                             post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+"&"+
                                         URLEncoder.encode("password", "UTF-8")+"="+URLEncoder.encode(type, "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "getConditionedRows":
+                        try {
+                            post_data = URLEncoder.encode("table", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+"&"+
+                                        URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(type, "UTF-8");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }

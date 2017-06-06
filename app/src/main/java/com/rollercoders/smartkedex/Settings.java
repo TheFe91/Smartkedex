@@ -82,7 +82,8 @@ public class Settings extends AppCompatActivity {
                 reset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        pokemonHelper.erase();
+                        pokemonHelper.erase(pokemonHelper.getLocalUsername());
+                        pokemonHelper.localErase();
                         Intent i = new Intent(getApplicationContext(), InitialLogin.class);
                         startActivity(i);
                         finish();

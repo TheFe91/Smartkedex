@@ -25,6 +25,7 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     private BackgroundWorker backgroundWorker;
 
     PokemonDatabaseAdapter(Context context) {
+        //context.deleteDatabase("PokemonDatabase.db"); //PERICOLOSISSIMA!!! USARE CON CAUTELA ESTREMA
         helper = new PokemonHelper(context);
     }
 
@@ -69,20 +70,58 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     void setRememberME (String username, String password) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("INSERT INTO Settings (Username, Password, RememberME) VALUES ('"+username+"', '"+password+"', 1)");
-        db.close();
+        if (getLocalRows("Settings") == 0) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            db.execSQL("INSERT INTO Settings (Username, Password, RememberME) VALUES ('" + username + "', '" + password + "', 1)");
+            db.close();
+        }
+        else if (!getLocalUsername().equals(username)) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            db.execSQL("UPDATE Settings SET Username = '"+username+"', Password = '"+password+"', RememberME = 1 WHERE Username = '"+getLocalUsername()+"'");
+            db.close();
+        }
     }
 
-    void erase () {
+    void setNotRememberME (String username, String password) {
+        if (getLocalRows("Settings") == 0) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            db.execSQL("INSERT INTO Settings (Username, Password, RememberME) VALUES ('" + username + "', '" + password + "', 0)");
+            db.close();
+        }
+        else if (!getLocalUsername().equals(username)) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            db.execSQL("UPDATE Settings SET Username = '" + username + "', Password = '" + password + "', RememberME = 0 WHERE Username = '" + getLocalUsername() + "'");
+            db.close();
+        }
+    }
+
+    void erase (String username) {
+        backgroundWorker = new BackgroundWorker("erase", username);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+    }
+
+    void localErase () {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("DELETE FROM Copy");
-        db.execSQL("DELETE FROM Catches");
         db.execSQL("DELETE FROM Settings");
         db.close();
     }
 
     ////////////////////////////////////////////////////////////////////GETTERS////////////////////////////////////////////////////////////////////////////////////
+
+    String getLocalUsername () {
+        String username = "";
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String[] columns = {"Username"};
+        Cursor cursor = db.query(PokemonHelper.SETTINGS, columns, null, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            username = cursor.getString(0); //va bene 0 perchè io seleziono SEMPRE una colonna alla volta, quindi ha per forza indice 0
+        }
+
+        db.close();
+        return username;
+    }
 
     int getRememberME () {
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -125,7 +164,7 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return result;
     }
 
-    int getRows (String tableName) {
+    private int getLocalRows (String tableName) {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.query(tableName, null, null, null, null, null, null);
         int rows = 0;
@@ -134,6 +173,19 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         }
 
         db.close();
+        return rows;
+    }
+
+    int getRows (String tableName) {
+        int rows = 0;
+        backgroundWorker = new BackgroundWorker("getRows", tableName);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        try {
+            rows = Integer.parseInt(backgroundWorker.get());
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         return rows;
     }
 
@@ -325,6 +377,7 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         String temp = "";
         try {
             temp = backgroundWorker.get();
+            System.err.println(temp);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
@@ -349,17 +402,36 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return strengths;
     }
 
-    int getDisclaimer () {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        int disclaimer = 0;
-        String[] columns = {PokemonHelper.DISCLAIMER_OK};
-
-        Cursor cursor = db.query(PokemonHelper.DISCLAIMER_OK, columns, null, null, null, null, null);
-        while (cursor.moveToNext()) {
-            disclaimer = cursor.getInt(0);
+    int getTotalCatches () {
+        int totalCatches;
+        String temp = "";
+        backgroundWorker = new BackgroundWorker("getConditionedRows", "Catches", getLocalUsername());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        try {
+            temp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
-        db.close();
-        return disclaimer;
+        String[] cleaner = temp.split("\n");
+        totalCatches = Integer.parseInt(cleaner[0]);
+        return totalCatches;
+    }
+
+    int getTotalCopies () {
+        int totalCopies;
+        String temp = "";
+        backgroundWorker = new BackgroundWorker("getTotalCopies", getLocalUsername());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        try {
+            temp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        String[] cleaner = temp.split("\n");
+        totalCopies = Integer.parseInt(cleaner[0]);
+        return totalCopies;
     }
 
     ////////////////////////////////////////////////////////////////////UPDATERS////////////////////////////////////////////////////////////////////////////////////
@@ -413,7 +485,7 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 
     private static class PokemonHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "PokemonDatabase.db";
-        private static final int DATABASE_VERSION = 13;
+        private static final int DATABASE_VERSION = 14;
 
         //Types Declaration
         private static final String VARCHAR = " VARCHAR(";
@@ -543,7 +615,7 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(CREATE_SETTINGS);
-            db.execSQL(CREATE_TYPE);
+            /*db.execSQL(CREATE_TYPE);
             db.execSQL(CREATE_ATTACK);
             db.execSQL(CREATE_ULTI);
             db.execSQL(CREATE_POKEMON);
@@ -2532,7 +2604,7 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
             db.execSQL("INSERT INTO HasWeakness VALUES (151, 'Buio')");
             db.execSQL("INSERT INTO HasWeakness VALUES (151, 'Spettro')");
 
-            db.execSQL("INSERT INTO "+DISCLAIMER_OK+" VALUES (\"0\")");
+            db.execSQL("INSERT INTO "+DISCLAIMER_OK+" VALUES (\"0\")");*/
 
             Toast.makeText(context, "Creazione del Database\neseguita correttamente", Toast.LENGTH_SHORT).show();
         }

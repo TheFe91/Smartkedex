@@ -29,7 +29,15 @@ public class Welcome extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int dpi = displayMetrics.densityDpi;
 
-        if (pokemonHelper.getOwner().equals("")) { //it's the first app launch ever
+        String owner = null;
+
+        try {
+            owner = pokemonHelper.getOwner();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        if (owner == null || owner.equals("")) { //it's the first app launch ever
             TextView textView = (TextView)findViewById(R.id.welcome);
             textView.setText(getResources().getString(getResources().getIdentifier("welcome", "string", getPackageName())));
             textView = (TextView)findViewById(R.id.owner);
@@ -69,12 +77,11 @@ public class Welcome extends Activity {
             });
         }
         else {
-            String owner = pokemonHelper.getOwner();
             TextView textView = (TextView)findViewById(R.id.welcome);
             textView.setText(getResources().getString(getResources().getIdentifier("welcome_back", "string", getPackageName()), owner));
             if (pokemonHelper.getPokemonGO() == 1) {
-                int total = pokemonHelper.getRows("Catches");
-                int copies = pokemonHelper.getRows("Copy");
+                int total = pokemonHelper.getTotalCatches();
+                int copies = pokemonHelper.getTotalCopies();
                 textView.append(getResources().getString(getResources().getIdentifier("pokemongo_recap", "string", getPackageName()), total, copies));
             }
 

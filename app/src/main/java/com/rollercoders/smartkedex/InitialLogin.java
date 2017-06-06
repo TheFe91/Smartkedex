@@ -72,6 +72,9 @@ public class InitialLogin extends Activity {
                         if (checkBox.isChecked()) {
                             pokemonDatabaseAdapter.setRememberME(username, password);
                         }
+                        else {
+                            pokemonDatabaseAdapter.setNotRememberME(username, password);
+                        }
                         Intent i = new Intent(getApplicationContext(), Welcome.class);
                         startActivity(i);
                         finish();
