@@ -3,6 +3,7 @@ package com.rollercoders.smartkedex;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -31,6 +32,7 @@ public class PokemonDetails extends AppCompatActivity {
     private TextToSpeech t1;
     private String toSpeech = "";
     private int pokeID;
+    private HashMap<String, String> parameters;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -222,11 +224,26 @@ public class PokemonDetails extends AppCompatActivity {
         leggi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                leggi.setEnabled(false);
                 t1 = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
                     public void onInit(int status) {
                         if(status != TextToSpeech.ERROR) {
-                            HashMap<String, String> parameters = new HashMap<String, String>();
+                            t1.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                                @Override
+                                public void onStart(String utteranceId) {
+                                    leggi.setEnabled(false);
+                                }
+
+                                @Override
+                                public void onDone(String utteranceId) {
+                                    leggi.setEnabled(true);
+                                }
+
+                                @Override
+                                public void onError(String utteranceId) {
+
+                                }
+                            });
+                            parameters = new HashMap<>();
                             parameters.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "fine");
                             t1.speak(toSpeech, TextToSpeech.QUEUE_FLUSH, parameters);
                         }
@@ -235,15 +252,6 @@ public class PokemonDetails extends AppCompatActivity {
             }
         });
     }
-
-//    @Override
-//    public void onUtteranceCompleted(String uttId) {
-//        System.err.println("ciao");
-//        Button leggi = (Button)findViewById(R.id.leggidescrizione);
-//        if (uttId.equals("fine")) {
-//            leggi.setEnabled(true);
-//        }
-//    }
 
     private void fadeOutAndHideSwitch (final Switch aSwitch) {
         Animation fadeOut = new AlphaAnimation(1, 0);
