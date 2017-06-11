@@ -272,5 +272,7 @@
     <string name="regFailText">There was a problem with your registration\nPlease write to us at <i>rollercodersteam@gmail.com</i> for support on your problem</string>
     <string name="regFailDupUNTitle">Existing Username!</string>
     <string name="regFailDupUNText">The username you entered is already registered in our system\nTry a different one!</string>
+    <string name="versionFail">Out-Of-Date Version</string>
+    <string name="versionFailMessage">Your version of Smartkédex is outdated!\nPlease update now your app to continue using it.\nThank You\n\nRollerCoders Team</string>
 
 </resources>

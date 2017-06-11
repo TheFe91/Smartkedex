@@ -258,4 +258,6 @@
     <string name="acceptCondition2">Termini e Condizioni del Servizio</string>
     <string name="FieldsNotNullText">I campi Username, Password e Email NON DEVONO essere vuoti!</string>
     <string name="FieldsNotNullTitle">Errore Critico</string>
+    <string name="versionFail">Versione Obsoleta</string>
+    <string name="versionFailMessage">La tua versione di Smartkédex è obsoleta!\nAggiornala ora per continuare ad utilizzare l\'app.\nGrazie!\n\nIl Team RollerCoders</string>
 </resources>

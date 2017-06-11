@@ -169,7 +169,7 @@ public class PokemonDetails extends AppCompatActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (pokeSwitch.isChecked()) {
                             pokeDetails.setEnabled(true);
-                            pokemonHelper.insertCatches(pokeID, pokemonHelper.getOwner()); //storing into Catches that my user caught that Pokémon
+                            pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
                             fadeOutAndHideSwitch(pokeSwitch);
                         } else
                             pokeDetails.setEnabled(false);

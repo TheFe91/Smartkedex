@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutionException;
  * Created by TheFe on 19/10/2016.
  */
 
-public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
+class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 
     private PokemonHelper helper;
     private BackgroundWorker backgroundWorker;
@@ -33,7 +33,7 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 
     void insertSettingsData(String owner, String smartkedex, int pokemonGO) {
         SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("INSERT INTO Settings (Owner, SmartkedexName, PokemonGO) VALUES ('"+owner+"', '"+smartkedex+"', '"+pokemonGO+"')");
+        db.execSQL("UPDATE Settings SET Owner = '"+owner+"', SmartkedexName = '"+smartkedex+"', PokemonGO = '"+pokemonGO+"'");
         db.close();
     }
 
@@ -51,10 +51,16 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return result;
     }
 
-    void insertCatches (int pokeID, String owner) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("INSERT INTO Catches (ID, Owner) VALUES ("+pokeID+", '"+owner+"')");
-        db.close();
+    void insertCatches (int pokeID) {
+        backgroundWorker = new BackgroundWorker("insertCatches", pokeID, getLocalUsername());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+//        try {
+//            String error = backgroundWorker.get();
+//            System.err.println(error);
+//        } catch (InterruptedException | ExecutionException e) {
+//            e.printStackTrace();
+//        }
     }
 
     void insertCopy (String attackName, String ultiName, String pokeName, int pokeID) {
@@ -70,27 +76,37 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     void setRememberME (String username, String password) {
+        if (getLocalRows("Settings") > 1) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            db.execSQL("DELETE FROM Settings");
+            db.close();
+        }
         if (getLocalRows("Settings") == 0) {
             SQLiteDatabase db = helper.getWritableDatabase();
             db.execSQL("INSERT INTO Settings (Username, Password, RememberME) VALUES ('" + username + "', '" + password + "', 1)");
             db.close();
         }
-        else if (!getLocalUsername().equals(username)) {
+        else if (getLocalRows("Settings") == 1) {
             SQLiteDatabase db = helper.getWritableDatabase();
-            db.execSQL("UPDATE Settings SET Username = '"+username+"', Password = '"+password+"', RememberME = 1 WHERE Username = '"+getLocalUsername()+"'");
+            db.execSQL("UPDATE Settings SET Username = '" + username + "', Password = '" + password + "', RememberME = 1");
             db.close();
         }
     }
 
     void setNotRememberME (String username, String password) {
+        if (getLocalRows("Settings") > 1) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+            db.execSQL("DELETE FROM Settings");
+            db.close();
+        }
         if (getLocalRows("Settings") == 0) {
             SQLiteDatabase db = helper.getWritableDatabase();
             db.execSQL("INSERT INTO Settings (Username, Password, RememberME) VALUES ('" + username + "', '" + password + "', 0)");
             db.close();
         }
-        else if (!getLocalUsername().equals(username)) {
+        else if (getLocalRows("Settings") == 1) {
             SQLiteDatabase db = helper.getWritableDatabase();
-            db.execSQL("UPDATE Settings SET Username = '" + username + "', Password = '" + password + "', RememberME = 0 WHERE Username = '" + getLocalUsername() + "'");
+            db.execSQL("UPDATE Settings SET Username = '" + username + "', Password = '" + password + "', RememberME = 0");
             db.close();
         }
     }
@@ -108,6 +124,20 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     ////////////////////////////////////////////////////////////////////GETTERS////////////////////////////////////////////////////////////////////////////////////
+
+    boolean getAppVersion () {
+        backgroundWorker = new BackgroundWorker("getAppVersion", getLocalUsername());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        String result = "";
+        try {
+            result = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        String[] cleaner = result.split("\n");
+        return cleaner[0].equals("1");
+    }
 
     String getLocalUsername () {
         String username = "";
@@ -262,19 +292,18 @@ public class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     int getCatched (int pokeID) {
-        /*int rows = 0;
-        backgroundWorker = new BackgroundWorker("getCatched", pokeID);
+        String temp = "";
+        backgroundWorker = new BackgroundWorker("getCatched", pokeID, getLocalUsername());
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         try {
-            String temp = backgroundWorker.get();
-            System.err.println(temp);
-            rows = Integer.parseInt(temp);
+            temp = backgroundWorker.get();
         } catch (InterruptedException | ExecutionException | NullPointerException e) {
             e.printStackTrace();
         }
-        return rows;*/
-        return 1;
+        String[] cleaner = temp.split("\n");
+        int rows = Integer.parseInt(cleaner[0]);
+        return rows;
     }
 
     List<Integer> getIdsFromPokeID (int pokeID) {

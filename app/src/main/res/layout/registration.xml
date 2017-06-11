@@ -79,7 +79,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/registermail"
         android:inputType="textEmailAddress"
-        android:width="150dp"
         android:textAlignment="center"
         android:id="@+id/setmail"
         android:layout_centerHorizontal="true"/>

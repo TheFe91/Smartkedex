@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,32 @@ public class InitialLogin extends Activity {
         super.onCreate(savedInstanceState);
 
         final PokemonDatabaseAdapter pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
+
+        if (!pokemonDatabaseAdapter.getAppVersion()) {
+            final AlertDialog.Builder builder;
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                builder = new AlertDialog.Builder(context, android.R.style.Theme_Dialog);
+            else
+                builder = new AlertDialog.Builder(context);
+                builder.setTitle(getResources().getString(getResources().getIdentifier("versionFail", "string", getPackageName())))
+                    .setMessage(getResources().getString(getResources().getIdentifier("versionFailMessage", "string", getPackageName())))
+                    .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            final String appPackageName = getPackageName();
+                            try {
+                                dialogInterface.dismiss();
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id="+appPackageName)));
+                            } catch (android.content.ActivityNotFoundException e) {
+                                dialogInterface.dismiss();
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id="+appPackageName)));
+                            }
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+            finish();
+        }
 
         if (pokemonDatabaseAdapter.getRememberME() == 1) {
             String[] loginData = pokemonDatabaseAdapter.getLoginData();
@@ -71,9 +98,11 @@ public class InitialLogin extends Activity {
                     if (pokemonDatabaseAdapter.tryLogin(username, password) == 1) {
                         if (checkBox.isChecked()) {
                             pokemonDatabaseAdapter.setRememberME(username, password);
+                            System.err.println("sono if");
                         }
                         else {
                             pokemonDatabaseAdapter.setNotRememberME(username, password);
+                            System.err.println("sono else");
                         }
                         Intent i = new Intent(getApplicationContext(), Welcome.class);
                         startActivity(i);

@@ -100,26 +100,20 @@ public class Settings extends AppCompatActivity {
 
                 if (owner.equals("")) {
                     Toast.makeText(getApplicationContext(), getResources().getString(getResources().getIdentifier("editname_error", "string", getPackageName())), Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-
-                int rows = pokemonHelper.getRows("Settings");
-                String dbSmartkedex = pokemonHelper.getSmartkedex();
-                String dbOwner = pokemonHelper.getOwner();
-
-                if (rows == 0) {
-                    pokemonHelper.insertSettingsData(owner, smartkedex, setpokeGO);
                 }
                 else {
+                    String dbSmartkedex = pokemonHelper.getSmartkedex();
+                    String dbOwner = pokemonHelper.getOwner();
+
                     if (!owner.equals("") && !dbOwner.equals(owner))
                         pokemonHelper.updateOwner(owner, dbOwner);
                     if (!smartkedex.equals("") && !dbSmartkedex.equals(smartkedex))
                         pokemonHelper.updateSmartkedex(smartkedex, dbSmartkedex);
                     if (dbPokemonGO != setpokeGO)
                         pokemonHelper.updatePokemonGO(setpokeGO, dbPokemonGO);
-                }
 
-                finish();
+                    finish();
+                }
             }
         });
     }
