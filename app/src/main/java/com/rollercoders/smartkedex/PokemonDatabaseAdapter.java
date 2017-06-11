@@ -125,8 +125,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 
     ////////////////////////////////////////////////////////////////////GETTERS////////////////////////////////////////////////////////////////////////////////////
 
-    boolean getAppVersion () {
-        backgroundWorker = new BackgroundWorker("getAppVersion", getLocalUsername());
+    boolean getAppVersion (int appVersion) {
+        backgroundWorker = new BackgroundWorker("getAppVersion", appVersion);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String result = "";

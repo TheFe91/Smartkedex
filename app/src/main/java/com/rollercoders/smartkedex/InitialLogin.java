@@ -7,6 +7,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,7 +35,16 @@ public class InitialLogin extends Activity {
 
         final PokemonDatabaseAdapter pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
 
-        if (!pokemonDatabaseAdapter.getAppVersion()) {
+        PackageInfo packageInfo;
+        int appversion = 0;
+        try {
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            appversion = packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (!pokemonDatabaseAdapter.getAppVersion(appversion)) {
             Toast.makeText(this, getResources().getString(getResources().getIdentifier("versionFailMessage", "string", getPackageName())), Toast.LENGTH_LONG).show();
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
