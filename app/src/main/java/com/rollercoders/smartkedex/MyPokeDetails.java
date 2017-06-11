@@ -41,7 +41,7 @@ public class MyPokeDetails extends AppCompatActivity {
         pokeID = i.getExtras().getInt("id");
         final PokemonDetails pokemonDetails = new PokemonDetails();
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
-        final String pokeName = pokemonDetails.getName(pokeID);
+        final String pokeName = pokemonHelper.getPokeName(pokeID);
         String owner = pokemonHelper.getOwner();
 
         TextView textView = (TextView)findViewById(R.id.pkmnName);
@@ -133,7 +133,7 @@ public class MyPokeDetails extends AppCompatActivity {
                 name.setText(copyName);
             }
             else
-                name.setText(pokemonDetails.getName(pokeID));
+                name.setText(pokemonHelper.getPokeName(pokeID));
 
             trparams.gravity = Gravity.CENTER_VERTICAL;
             attacchi.setLayoutParams(trparams);

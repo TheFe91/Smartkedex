@@ -47,7 +47,7 @@ public class EditPokeDetails extends AppCompatActivity {
         pokeID = i.getExtras().getInt("id");
         final PokemonDetails pokemonDetails = new PokemonDetails();
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
-        final String pokeName = pokemonDetails.getName(pokeID);
+        final String pokeName = pokemonHelper.getPokeName(pokeID);
 
         getActionBar();
 

@@ -123,6 +123,12 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         db.close();
     }
 
+    void delete (int pokeID) {
+        backgroundWorker = new BackgroundWorker("remove", pokeID, getLocalUsername());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+    }
+
     ////////////////////////////////////////////////////////////////////GETTERS////////////////////////////////////////////////////////////////////////////////////
 
     boolean getAppVersion (int appVersion) {
@@ -137,6 +143,20 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         }
         String[] cleaner = result.split("\n");
         return cleaner[0].equals("1");
+    }
+
+    String getPokeName(int pokeID) {
+        String pokeName = "";
+        backgroundWorker = new BackgroundWorker("getPokeName", pokeID);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        try {
+            pokeName = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return pokeName;
     }
 
     String getLocalUsername () {
