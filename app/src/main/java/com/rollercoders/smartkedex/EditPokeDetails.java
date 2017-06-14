@@ -301,6 +301,7 @@ public class EditPokeDetails extends AppCompatActivity {
         Intent i = new Intent (getApplicationContext(), MyPokeDetails.class);
         i.putExtra("id", pokeID);
         startActivity(i);
+        finish();
         return true;
     }
 }

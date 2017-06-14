@@ -64,9 +64,12 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     void insertCopy (String attackName, String ultiName, String pokeName, int pokeID) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("INSERT INTO Copy (AttackName, UltiName, PokemonName, PokemonID) VALUES ('"+attackName+"', '"+ultiName+"', '"+pokeName+"', '"+pokeID+"')");
-        db.close();
+        backgroundWorker = new BackgroundWorker("insertCopy", pokeID, attackName, ultiName, pokeName, getLocalUsername());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+//        SQLiteDatabase db = helper.getWritableDatabase();
+//        db.execSQL("INSERT INTO Copy (AttackName, UltiName, PokemonName, PokemonID) VALUES ('"+attackName+"', '"+ultiName+"', '"+pokeName+"', '"+pokeID+"')");
+//        db.close();
     }
 
     void deleteCopy (int pokeId) {
@@ -428,8 +431,7 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
             e.printStackTrace();
         }
         String[] cleaner = tmp.split("\n");
-        for (String move:cleaner)
-            moves.add(tmp);
+        Collections.addAll(moves, cleaner);
 
         return moves;
 

@@ -22,14 +22,15 @@ import java.net.URLEncoder;
 class BackgroundWorker extends AsyncTask<Void, Void, String> {
 
     WebServicesAsyncResponse delegate = null;
-    private String page, table, name, type, post_data, username, password, email, owner, smartkedex;
-    private int flag = 0, id, appversion, pokego;
+    private String page, table, name, type, post_data, username, password, email, attack, ulti;
+    private int flag = 0, id, appversion;
 
-    public BackgroundWorker (String page, String table) {this.page=page; this.table=table; flag=1;} //getRows, getOwner, getSmartkedex, getPokemonGO
-    public BackgroundWorker (String page, String name, String type) {this.page=page; this.name=name; this.type=type; flag=2;} //getMovesType, getAttacksStuff and setInitialData
-    public BackgroundWorker (String page, int id) {this.page=page; this.id=id; flag=3;} //getPokeTypes, getStrengths, getWeakness, getCopyName, getIdsFromPokeID , getPokeAttacks, getAppVersion and getPokeName
-    public BackgroundWorker (String page, int id, String table) {this.page=page; this.id=id; this.table=table; flag=5;} //getMoves, insertCatched, getCatched, getIdsFromPokeID and all the updaters
-    public BackgroundWorker (String page, String email, String username, String password, int appversion) {this.page=page; this.username=username; this.password=password; this.email=email; this.appversion=appversion; flag=6;}
+    BackgroundWorker (String page, String table) {this.page=page; this.table=table; flag=1;} //getRows, getOwner, getSmartkedex, getPokemonGO
+    BackgroundWorker (String page, String name, String type) {this.page=page; this.name=name; this.type=type; flag=2;} //getMovesType, getAttacksStuff and setInitialData
+    BackgroundWorker (String page, int id) {this.page=page; this.id=id; flag=3;} //getPokeTypes, getStrengths, getWeakness, getCopyName, getIdsFromPokeID , getPokeAttacks, getAppVersion and getPokeName
+    BackgroundWorker (String page, int id, String attack, String ulti, String name, String username) {this.page=page; this.id=id; this.attack=attack; this.ulti=ulti; this.name=name; this.username=username; flag=4;}
+    BackgroundWorker (String page, int id, String table) {this.page=page; this.id=id; this.table=table; flag=5;} //getMoves, insertCatched, getCatched, getIdsFromPokeID and all the updaters
+    BackgroundWorker (String page, String email, String username, String password, int appversion) {this.page=page; this.username=username; this.password=password; this.email=email; this.appversion=appversion; flag=6;}
 
 
     @Override
@@ -126,7 +127,21 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
                         break;
                 }
 
-            case 4: break;
+            case 4:
+                switch (page) {
+                    case "insertCopy":
+                        try {
+                            post_data = URLEncoder.encode("attack", "UTF-8")+"="+URLEncoder.encode(attack, "UTF-8")+"&"+
+                                        URLEncoder.encode("ulti", "UTF-8")+"="+URLEncoder.encode(ulti, "UTF-8")+"&"+
+                                        URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+"&"+
+                                        URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(username, "UTF-8")+"&"+
+                                        URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+                break;
 
             case 5:
                 switch (page) {
