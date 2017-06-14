@@ -103,8 +103,6 @@ public class Registration extends AppCompatActivity {
                                 .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        Intent intent = new Intent(getApplicationContext(), InitialLogin.class);
-                                        startActivity(intent);
                                         finish();
                                     }
                                 })

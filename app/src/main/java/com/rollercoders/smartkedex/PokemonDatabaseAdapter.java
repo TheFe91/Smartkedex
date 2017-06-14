@@ -70,9 +70,12 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     void deleteCopy (int pokeId) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("DELETE FROM Copy WHERE ID = '"+pokeId+"'");
-        db.close();
+        backgroundWorker = new BackgroundWorker("deleteCopy", pokeId);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+//        SQLiteDatabase db = helper.getWritableDatabase();
+//        db.execSQL("DELETE FROM Copy WHERE ID = '"+pokeId+"'");
+//        db.close();
     }
 
     void setRememberME (String username, String password) {
@@ -146,17 +149,17 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     String getPokeName(int pokeID) {
-        String pokeName = "";
         backgroundWorker = new BackgroundWorker("getPokeName", pokeID);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
+        String tmp = "";
         try {
-            pokeName = backgroundWorker.get();
+            tmp = backgroundWorker.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-
-        return pokeName;
+        String[] cleaner = tmp.split("\n");
+        return cleaner[0];
     }
 
     String getLocalUsername () {
@@ -327,30 +330,48 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     List<Integer> getIdsFromPokeID (int pokeID) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String[] columns = {PokemonHelper.ID};
-        List<Integer> list = new ArrayList<>();
-        Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.POKEMONID+"='"+pokeID+"'", null, null, null, null);
-        while (cursor.moveToNext()) {
-            list.add(cursor.getInt(cursor.getColumnIndex(PokemonHelper.ID)));
+        backgroundWorker = new BackgroundWorker("getIdsFromPokeID", pokeID, getLocalUsername());
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        String tmp = "";
+        try {
+            tmp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
+        String[] stringIds = tmp.split("\n");
+        List<Integer> ids = new ArrayList<>();
+        if (!stringIds[0].equals("0"))
+            for (String stringId : stringIds) {
+                ids.add(Integer.parseInt(stringId));
+            }
 
-        db.close();
-        return list;
+        return ids;
     }
 
     String[] getPokeAttacks (int pokeCopy) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String[] attack = {"", ""};
-        String[] columns = {PokemonHelper.ATTACK_NAME, PokemonHelper.ULTI_NAME};
-        Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.ID+"="+pokeCopy, null, null, null, null);
-        while (cursor.moveToNext()) {
-            attack[0] = cursor.getString(cursor.getColumnIndex(PokemonHelper.ATTACK_NAME));
-            attack[1] = cursor.getString(cursor.getColumnIndex(PokemonHelper.ULTI_NAME));
+        backgroundWorker = new BackgroundWorker("getPokeAttacks", pokeCopy);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        String tmp = "";
+        try {
+            tmp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
+        return tmp.split("\n");
 
-        db.close();
-        return attack;
+//        SQLiteDatabase db = helper.getReadableDatabase();
+//        String[] attack = {"", ""};
+//        String[] columns = {PokemonHelper.ATTACK_NAME, PokemonHelper.ULTI_NAME};
+//        Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.ID+"="+pokeCopy, null, null, null, null);
+//        while (cursor.moveToNext()) {
+//            attack[0] = cursor.getString(cursor.getColumnIndex(PokemonHelper.ATTACK_NAME));
+//            attack[1] = cursor.getString(cursor.getColumnIndex(PokemonHelper.ULTI_NAME));
+//        }
+//
+//        db.close();
+//        return attack;
     }
 
     String getOwner () {
@@ -396,26 +417,42 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     List<String> getMoves (int pokeID, String table) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String[] columns = {""};
-        if (table.equals("HasAttack"))
-            columns[0] = PokemonHelper.ATTACK_NAME;
-        else
-            columns[0] = PokemonHelper.ULTI_NAME;
-
-        Cursor cursor = db.query(table, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
-
-        List<String> attacks = new ArrayList<>();
-
-        while (cursor.moveToNext()) {
-            if (table.equals("HasAttack"))
-                attacks.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.ATTACK_NAME))); //putting the content at the i position of the attacks array, taking the column index of ATTACK_NAME
-            else
-                attacks.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.ULTI_NAME)));
+        backgroundWorker = new BackgroundWorker("getMoves", pokeID, table);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        List<String> moves = new ArrayList<>();
+        String tmp = "";
+        try {
+            tmp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
+        String[] cleaner = tmp.split("\n");
+        for (String move:cleaner)
+            moves.add(tmp);
 
-        db.close();
-        return attacks;
+        return moves;
+
+//        SQLiteDatabase db = helper.getReadableDatabase();
+//        String[] columns = {""};
+//        if (table.equals("HasAttack"))
+//            columns[0] = PokemonHelper.ATTACK_NAME;
+//        else
+//            columns[0] = PokemonHelper.ULTI_NAME;
+//
+//        Cursor cursor = db.query(table, columns, PokemonHelper.ID + "=" + pokeID, null, null, null, null);
+//
+//        List<String> attacks = new ArrayList<>();
+//
+//        while (cursor.moveToNext()) {
+//            if (table.equals("HasAttack"))
+//                attacks.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.ATTACK_NAME))); //putting the content at the i position of the attacks array, taking the column index of ATTACK_NAME
+//            else
+//                attacks.add(cursor.getString(cursor.getColumnIndex(PokemonHelper.ULTI_NAME)));
+//        }
+//
+//        db.close();
+//        return attacks;
     }
 
     List<String> getWeaknesses (int pokeID) {
@@ -504,27 +541,30 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     void updatePokeAttack (String attack, int pokeID) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE Copy SET AttackName = '"+attack+"' WHERE ID = "+pokeID);
-        db.close();
+        backgroundWorker = new BackgroundWorker("updatePokeAttack", pokeID, attack);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+//        SQLiteDatabase db = helper.getWritableDatabase();
+//        db.execSQL("UPDATE Copy SET AttackName = '"+attack+"' WHERE ID = "+pokeID);
+//        db.close();
     }
 
     void updatePokeUlti (String ulti, int pokeID) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE Copy SET UltiName = '"+ulti+"' WHERE ID = "+pokeID);
-        db.close();
+        backgroundWorker = new BackgroundWorker("updatePokeUlti", pokeID, ulti);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+//        SQLiteDatabase db = helper.getWritableDatabase();
+//        db.execSQL("UPDATE Copy SET UltiName = '"+ulti+"' WHERE ID = "+pokeID);
+//        db.close();
     }
 
     void updatePokeName (String name, int pokeID) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE Copy SET PokemonName = '"+name+"' WHERE ID = "+pokeID);
-        db.close();
-    }
-
-    void updateDisclaimer () {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        db.execSQL("UPDATE Disclaimer_OK SET Disclaimer_OK = 1");
-        db.close();
+        backgroundWorker = new BackgroundWorker("updatePokeName", pokeID, name);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+//        SQLiteDatabase db = helper.getWritableDatabase();
+//        db.execSQL("UPDATE Copy SET PokemonName = '"+name+"' WHERE ID = "+pokeID);
+//        db.close();
     }
 
     @Override

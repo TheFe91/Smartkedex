@@ -33,6 +33,7 @@ public class PokemonDetails extends AppCompatActivity {
     private String toSpeech = "";
     private int pokeID;
     private HashMap<String, String> parameters;
+    private Button showhide;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class PokemonDetails extends AppCompatActivity {
         else if (dpi == 480) { //Nexus 5 et simila
             setContentView(R.layout.pokedetails);
         }
+
+        showhide = (Button) findViewById(R.id.showhidedescr);
 
         tv = (TextView) findViewById(R.id.descriptiontext);
 
@@ -74,28 +77,7 @@ public class PokemonDetails extends AppCompatActivity {
                     //so after having called the big Image from the GridView, everything else needs the ID incremented by 1
 
         //setting the Pokémon's name under its image
-        TextView pkmnName = (TextView)findViewById(R.id.pkmnName);
-        if (pokeID < 10)
-            pkmnName.setText("#00"+pokeID+" - "+pokeName);
-        else if (pokeID > 9 && pokeID < 100) {
-            switch (pokeName) {
-                case "Nidoran_femmina":
-                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_female_adjust", "string", getPackageName())));
-                    break;
-                case "Nidoran_maschio":
-                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_male_adjust", "string", getPackageName())));
-                    break;
-                default:
-                    pkmnName.setText("#0" + pokeID + " - " + pokeName);
-                    break;
-            }
-        }
-        else
-            if (pokeID == 122) {
-                pkmnName.setText(getResources().getString(getResources().getIdentifier("mrmime_adjust", "string", getPackageName())));
-            }
-            else
-                pkmnName.setText("#"+pokeID+" - "+pokeName);
+        final TextView pkmnName = (TextView)findViewById(R.id.pkmnName);
 
         final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
@@ -106,105 +88,220 @@ public class PokemonDetails extends AppCompatActivity {
             int catched = pokemonHelper.getCatched(pokeID);
             if (catched == 0) {
                 pokeDetails.setEnabled(false);
+                imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                imageView[0].setAlpha((float) 0.1);
+
+                if (pokeID < 10)
+                    pkmnName.setText("#00"+pokeID+" - ???");
+                else if (pokeID > 9 && pokeID < 100) {
+                    pkmnName.setText("#0"+pokeID+" - ???");
+                }
+                else
+                    pkmnName.setText("#"+pokeID+" - ???");
+
+                TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+
+                List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+
+                if (numberOfTypes == 1)
+                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
+                else
+                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
+
+                imageView[0] = (ImageView) findViewById(R.id.tipo1);
+                imageView[0].setImageResource(R.drawable.unknown);
+                if (numberOfTypes == 2) {
+                    imageView[0] = (ImageView) findViewById(R.id.tipo2);
+                    imageView[0].setImageResource(R.drawable.unknown);
+                }
+
+                for (int k = 1; k <= 4; k++) {
+                    imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsf" + k, "id", getPackageName()));
+                    imageView[0].setImageResource(R.drawable.unknown);
+                }
+
+                for (int k = 1; k <= 4; k++) {
+                    imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsd" + k, "id", getPackageName()));
+                    imageView[0].setImageResource(R.drawable.unknown);
+                }
+
+                showhide.setAlpha((float)0.0);
+
                 pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (pokeSwitch.isChecked()) {
-                            pokeDetails.setEnabled(true);
-                            pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
+                    if (pokeSwitch.isChecked()) {
+                        pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
+                        pokeDetails.setEnabled(true);
 
-                            imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
-                            imageView[0].setAlpha((float)1.0);
+                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                        imageView[0].setAlpha((float)1.0);
 
-                            //getting Pokémon's type(s)
-                            List<String> types = pokemonHelper.getPokeTypes(pokeID);
-                            int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-                            TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+                        if (pokeID < 10)
+                            pkmnName.setText("#00"+pokeID+" - "+pokeName);
+                        else if (pokeID > 9 && pokeID < 100) {
+                            switch (pokeName) {
+                                case "Nidoran_femmina":
+                                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_female_adjust", "string", getPackageName())));
+                                    break;
+                                case "Nidoran_maschio":
+                                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_male_adjust", "string", getPackageName())));
+                                    break;
+                                default:
+                                    pkmnName.setText("#0" + pokeID + " - " + pokeName);
+                                    break;
+                            }
+                        }
+                        else
+                        if (pokeID == 122) {
+                            pkmnName.setText(getResources().getString(getResources().getIdentifier("mrmime_adjust", "string", getPackageName())));
+                        }
+                        else
+                            pkmnName.setText("#"+pokeID+" - "+pokeName);
 
-                            if (numberOfTypes == 1) { //it can be 1 or 2
-                                tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
-                                for (String element:types) {
-                                    element = element.toLowerCase();
-                                    imageView[0] = (ImageView) findViewById(R.id.tipo1);
-                                    imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+                        //getting Pokémon's type(s)
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+                        TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
+                        if (numberOfTypes == 1) { //it can be 1 or 2
+                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
+                            for (String element:types) {
+                                element = element.toLowerCase();
+                                imageView[0] = (ImageView) findViewById(R.id.tipo1);
+                                imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+
+                                if (findViewById(R.id.tipo2) != null) {
                                     //removing the second type
                                     imageView[0] = (ImageView) findViewById(R.id.tipo2);
                                     ViewGroup type2 = (ViewGroup) imageView[0].getParent();
                                     type2.removeView(imageView[0]);
                                 }
                             }
-                            else {
-                                tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
-                                int j = 1;
-                                for (String element:types) {
-                                    element = element.toLowerCase();
-                                    String id = "tipo"+j; //creating a variable to set my imageview resource: it will be "tipo1" at the first iteration and "tipo2" at the second iteration
-                                    imageView[0] = (ImageView) findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                                    imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
-                                    j++;
-                                }
+                        }
+                        else {
+                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
+                            int j = 1;
+                            for (String element:types) {
+                                element = element.toLowerCase();
+                                String id = "tipo"+j; //creating a variable to set my imageview resource: it will be "tipo1" at the first iteration and "tipo2" at the second iteration
+                                imageView[0] = (ImageView) findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                                imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+                                j++;
                             }
+                        }
 
-                            //setting the Pokémon's strenghts
-                            List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
-                            if (strenghts.size() == 0) {
-                                TextView tv = (TextView)findViewById(R.id.forteContro);
-                                tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
-                            }
-                            else {
-                                int counter = 1;
-                                for (String strenght:strenghts) {
-                                    String id = "tsf"+counter;
-                                    strenght = strenght.toLowerCase();
-                                    imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                                    imageView[0].setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
-                                    counter++;
-                                }
-                            }
-
-                            //setting the Pokémon's weaknesses
-                            List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                        //setting the Pokémon's strenghts
+                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                        if (strenghts.size() == 0) {
+                            TextView tv = (TextView)findViewById(R.id.forteContro);
+                            tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
+                        }
+                        else {
                             int counter = 1;
-                            for (String weakness:weaknesses) {
-                                String id = "tsd"+counter;
-                                weakness = weakness.toLowerCase();
+                            for (String strenght:strenghts) {
+                                String id = "tsf"+counter;
+                                strenght = strenght.toLowerCase();
                                 imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                                imageView[0].setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
+                                imageView[0].setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
                                 counter++;
                             }
+                            while (counter <= 4) {
+                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsf"+counter, "id", getPackageName()));
+                                imageView[0].setAlpha((float)0.0);
+                                counter++;
+                            }
+                        }
 
+                        //setting the Pokémon's weaknesses
+                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                        int counter = 1;
+                        for (String weakness:weaknesses) {
+                            String id = "tsd"+counter;
+                            weakness = weakness.toLowerCase();
+                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                            imageView[0].setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
+                            counter++;
+                        }
+                        while (counter <= 4) {
+                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsd"+counter, "id", getPackageName()));
+                            imageView[0].setAlpha((float)0.0);
+                            counter++;
+                        }
+
+                        showhide.setAlpha((float)1.0);
+
+                    }
+                    else {
+                        pokemonHelper.delete(pokeID);
+
+                        pokeDetails.setEnabled(false);
+
+                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                        imageView[0].setAlpha((float) 0.1);
+
+                        if (pokeID < 10)
+                            pkmnName.setText("#00"+pokeID+" - ???");
+                        else if (pokeID > 9 && pokeID < 100) {
+                            pkmnName.setText("#0"+pokeID+" - ???");
                         }
                         else
-                            pokeDetails.setEnabled(false);
+                            pkmnName.setText("#"+pokeID+" - ???");
 
-                            pokemonHelper.delete(pokeID);
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
 
-                            imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
-                            imageView[0].setAlpha((float)0.1);
-
-                            imageView[0] = (ImageView) findViewById(R.id.tipo1);
-                            imageView[0].setImageResource(R.drawable.unknown);
+                        imageView[0] = (ImageView) findViewById(R.id.tipo1);
+                        imageView[0].setImageResource(R.drawable.unknown);
+                        if (numberOfTypes == 2) {
                             imageView[0] = (ImageView) findViewById(R.id.tipo2);
                             imageView[0].setImageResource(R.drawable.unknown);
+                        }
 
-                            for (int i=1; i<=4; i++) {
-                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsf"+i, "id", getPackageName()));
-                                imageView[0].setImageResource(R.drawable.unknown);
-                            }
+                        for (int i = 1; i <= 4; i++) {
+                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsf" + i, "id", getPackageName()));
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
 
-                            for (int i=1; i<=4; i++) {
-                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsd"+i, "id", getPackageName()));
-                                imageView[0].setImageResource(R.drawable.unknown);
-                            }
+                        for (int i = 1; i <= 4; i++) {
+                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsd" + i, "id", getPackageName()));
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
+
+                        showhide.setAlpha((float)0.0);
+                    }
                     }
                 });
             }
             else {
+                pokeSwitch.setChecked(true);
                 pokeDetails.setEnabled(true);
 
                 imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
                 imageView[0].setAlpha((float)1.0);
+
+                if (pokeID < 10)
+                    pkmnName.setText("#00"+pokeID+" - "+pokeName);
+                else if (pokeID > 9 && pokeID < 100) {
+                    switch (pokeName) {
+                        case "Nidoran_femmina":
+                            pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_female_adjust", "string", getPackageName())));
+                            break;
+                        case "Nidoran_maschio":
+                            pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_male_adjust", "string", getPackageName())));
+                            break;
+                        default:
+                            pkmnName.setText("#0" + pokeID + " - " + pokeName);
+                            break;
+                    }
+                }
+                else
+                if (pokeID == 122) {
+                    pkmnName.setText(getResources().getString(getResources().getIdentifier("mrmime_adjust", "string", getPackageName())));
+                }
+                else
+                    pkmnName.setText("#"+pokeID+" - "+pokeName);
 
                 //getting Pokémon's type(s)
                 List<String> types = pokemonHelper.getPokeTypes(pokeID);
@@ -218,10 +315,12 @@ public class PokemonDetails extends AppCompatActivity {
                         imageView[0] = (ImageView) findViewById(R.id.tipo1);
                         imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
 
-                        //removing the second type
-                        imageView[0] = (ImageView) findViewById(R.id.tipo2);
-                        ViewGroup type2 = (ViewGroup) imageView[0].getParent();
-                        type2.removeView(imageView[0]);
+                        if (findViewById(R.id.tipo2) != null) {
+                            //removing the second type
+                            imageView[0] = (ImageView) findViewById(R.id.tipo2);
+                            ViewGroup type2 = (ViewGroup) imageView[0].getParent();
+                            type2.removeView(imageView[0]);
+                        }
                     }
                 }
                 else {
@@ -264,17 +363,151 @@ public class PokemonDetails extends AppCompatActivity {
                     counter++;
                 }
 
-            }
+                showhide.setAlpha((float)1.0);
 
-            //listening if the Details button is pressed
-            pokeDetails.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(getApplicationContext(), MyPokeDetails.class);
-                    i.putExtra("id", pokeID);
-                    startActivity(i);
-                }
-            });
+                pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (pokeSwitch.isChecked()) {
+                        pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
+
+                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                        imageView[0].setAlpha((float)1.0);
+
+                        if (pokeID < 10)
+                            pkmnName.setText("#00"+pokeID+" - "+pokeName);
+                        else if (pokeID > 9 && pokeID < 100) {
+                            switch (pokeName) {
+                                case "Nidoran_femmina":
+                                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_female_adjust", "string", getPackageName())));
+                                    break;
+                                case "Nidoran_maschio":
+                                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_male_adjust", "string", getPackageName())));
+                                    break;
+                                default:
+                                    pkmnName.setText("#0" + pokeID + " - " + pokeName);
+                                    break;
+                            }
+                        }
+                        else
+                        if (pokeID == 122) {
+                            pkmnName.setText(getResources().getString(getResources().getIdentifier("mrmime_adjust", "string", getPackageName())));
+                        }
+                        else
+                            pkmnName.setText("#"+pokeID+" - "+pokeName);
+
+                        //getting Pokémon's type(s)
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+                        TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+
+                        if (numberOfTypes == 1) { //it can be 1 or 2
+                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
+                            for (String element:types) {
+                                element = element.toLowerCase();
+                                imageView[0] = (ImageView) findViewById(R.id.tipo1);
+                                imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+
+                                if (findViewById(R.id.tipo2) != null) {
+                                    //removing the second type
+                                    imageView[0] = (ImageView) findViewById(R.id.tipo2);
+                                    ViewGroup type2 = (ViewGroup) imageView[0].getParent();
+                                    type2.removeView(imageView[0]);
+                                }
+                            }
+                        }
+                        else {
+                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
+                            int j = 1;
+                            for (String element:types) {
+                                element = element.toLowerCase();
+                                String id = "tipo"+j; //creating a variable to set my imageview resource: it will be "tipo1" at the first iteration and "tipo2" at the second iteration
+                                imageView[0] = (ImageView) findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                                imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+                                j++;
+                            }
+                        }
+
+                        //setting the Pokémon's strenghts
+                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                        if (strenghts.size() == 0) {
+                            TextView tv = (TextView)findViewById(R.id.forteContro);
+                            tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
+                        }
+                        else {
+                            int counter = 1;
+                            for (String strenght:strenghts) {
+                                String id = "tsf"+counter;
+                                strenght = strenght.toLowerCase();
+                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                                imageView[0].setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
+                                counter++;
+                            }
+                            while (counter <= 4) {
+                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsf"+counter, "id", getPackageName()));
+                                imageView[0].setAlpha((float)0.0);
+                                counter++;
+                            }
+                        }
+
+                        //setting the Pokémon's weaknesses
+                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                        int counter = 1;
+                        for (String weakness:weaknesses) {
+                            String id = "tsd"+counter;
+                            weakness = weakness.toLowerCase();
+                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                            imageView[0].setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
+                            counter++;
+                        }
+                        while (counter <= 4) {
+                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsd"+counter, "id", getPackageName()));
+                            imageView[0].setAlpha((float)0.0);
+                            counter++;
+                        }
+
+                        showhide.setAlpha((float)1.0);
+
+                    }
+                    else {
+                        pokemonHelper.delete(pokeID);
+
+                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                        imageView[0].setAlpha((float) 0.1);
+
+                        if (pokeID < 10)
+                            pkmnName.setText("#00"+pokeID+" - ???");
+                        else if (pokeID > 9 && pokeID < 100) {
+                            pkmnName.setText("#0"+pokeID+" - ???");
+                        }
+                        else
+                            pkmnName.setText("#"+pokeID+" - ???");
+
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+
+                        imageView[0] = (ImageView) findViewById(R.id.tipo1);
+                        imageView[0].setImageResource(R.drawable.unknown);
+                        if (numberOfTypes == 2) {
+                            imageView[0] = (ImageView) findViewById(R.id.tipo2);
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
+
+                        for (int i = 1; i <= 4; i++) {
+                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsf" + i, "id", getPackageName()));
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
+
+                        for (int i = 1; i <= 4; i++) {
+                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsd" + i, "id", getPackageName()));
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
+
+                        showhide.setAlpha((float)0.0);
+                    }
+                    }
+                });
+            }
         }
         else { //my user doesn't play PokémonGO
             pokeDetails.setAlpha(0);
@@ -282,6 +515,14 @@ public class PokemonDetails extends AppCompatActivity {
             if (catched == 0) {
                 imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
                 imageView[0].setAlpha((float) 0.1);
+
+                if (pokeID < 10)
+                    pkmnName.setText("#00"+pokeID+" - ???");
+                else if (pokeID > 9 && pokeID < 100) {
+                    pkmnName.setText("#0"+pokeID+" - ???");
+                }
+                else
+                    pkmnName.setText("#"+pokeID+" - ???");
 
                 TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
@@ -310,103 +551,381 @@ public class PokemonDetails extends AppCompatActivity {
                     imageView[0].setImageResource(R.drawable.unknown);
                 }
 
+                showhide.setAlpha((float)0.0);
+
                 pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (pokeSwitch.isChecked()) {
-                            pokeDetails.setEnabled(true);
-                            pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
+                    if (pokeSwitch.isChecked()) {
+                        pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
 
-                            imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
-                            imageView[0].setAlpha((float)1.0);
+                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                        imageView[0].setAlpha((float)1.0);
 
-                            //getting Pokémon's type(s)
-                            List<String> types = pokemonHelper.getPokeTypes(pokeID);
-                            int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-                            TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+                        if (pokeID < 10)
+                            pkmnName.setText("#00"+pokeID+" - "+pokeName);
+                        else if (pokeID > 9 && pokeID < 100) {
+                            switch (pokeName) {
+                                case "Nidoran_femmina":
+                                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_female_adjust", "string", getPackageName())));
+                                    break;
+                                case "Nidoran_maschio":
+                                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_male_adjust", "string", getPackageName())));
+                                    break;
+                                default:
+                                    pkmnName.setText("#0" + pokeID + " - " + pokeName);
+                                    break;
+                            }
+                        }
+                        else
+                        if (pokeID == 122) {
+                            pkmnName.setText(getResources().getString(getResources().getIdentifier("mrmime_adjust", "string", getPackageName())));
+                        }
+                        else
+                            pkmnName.setText("#"+pokeID+" - "+pokeName);
 
-                            if (numberOfTypes == 1) { //it can be 1 or 2
-                                tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
-                                for (String element:types) {
-                                    element = element.toLowerCase();
-                                    imageView[0] = (ImageView) findViewById(R.id.tipo1);
-                                    imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+                        //getting Pokémon's type(s)
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+                        TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
-                                    if (findViewById(R.id.tipo2) != null) {
-                                        //removing the second type
-                                        imageView[0] = (ImageView) findViewById(R.id.tipo2);
-                                        ViewGroup type2 = (ViewGroup) imageView[0].getParent();
-                                        type2.removeView(imageView[0]);
-                                    }
+                        if (numberOfTypes == 1) { //it can be 1 or 2
+                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
+                            for (String element:types) {
+                                element = element.toLowerCase();
+                                imageView[0] = (ImageView) findViewById(R.id.tipo1);
+                                imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+
+                                if (findViewById(R.id.tipo2) != null) {
+                                    //removing the second type
+                                    imageView[0] = (ImageView) findViewById(R.id.tipo2);
+                                    ViewGroup type2 = (ViewGroup) imageView[0].getParent();
+                                    type2.removeView(imageView[0]);
                                 }
                             }
-                            else {
-                                tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
-                                int j = 1;
-                                for (String element:types) {
-                                    element = element.toLowerCase();
-                                    String id = "tipo"+j; //creating a variable to set my imageview resource: it will be "tipo1" at the first iteration and "tipo2" at the second iteration
-                                    imageView[0] = (ImageView) findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                                    imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
-                                    j++;
-                                }
-                            }
-
-                            //setting the Pokémon's strenghts
-                            List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
-                            if (strenghts.size() == 0) {
-                                TextView tv = (TextView)findViewById(R.id.forteContro);
-                                tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
-                            }
-                            else {
-                                int counter = 1;
-                                for (String strenght:strenghts) {
-                                    String id = "tsf"+counter;
-                                    strenght = strenght.toLowerCase();
-                                    imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                                    imageView[0].setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
-                                    counter++;
-                                }
-                            }
-
-                            //setting the Pokémon's weaknesses
-                            List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
-                            int counter = 1;
-                            for (String weakness:weaknesses) {
-                                String id = "tsd"+counter;
-                                weakness = weakness.toLowerCase();
-                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                                imageView[0].setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
-                                counter++;
-                            }
-
                         }
                         else {
-                            pokemonHelper.delete(pokeID);
-
-                            imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
-                            imageView[0].setAlpha((float) 0.1);
-
-                            List<String> types = pokemonHelper.getPokeTypes(pokeID);
-                            int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-
-                            imageView[0] = (ImageView) findViewById(R.id.tipo1);
-                            imageView[0].setImageResource(R.drawable.unknown);
-                            if (numberOfTypes == 2) {
-                                imageView[0] = (ImageView) findViewById(R.id.tipo2);
-                                imageView[0].setImageResource(R.drawable.unknown);
-                            }
-
-                            for (int i = 1; i <= 4; i++) {
-                                imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsf" + i, "id", getPackageName()));
-                                imageView[0].setImageResource(R.drawable.unknown);
-                            }
-
-                            for (int i = 1; i <= 4; i++) {
-                                imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsd" + i, "id", getPackageName()));
-                                imageView[0].setImageResource(R.drawable.unknown);
+                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
+                            int j = 1;
+                            for (String element:types) {
+                                element = element.toLowerCase();
+                                String id = "tipo"+j; //creating a variable to set my imageview resource: it will be "tipo1" at the first iteration and "tipo2" at the second iteration
+                                imageView[0] = (ImageView) findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                                imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+                                j++;
                             }
                         }
+
+                        //setting the Pokémon's strenghts
+                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                        if (strenghts.size() == 0) {
+                            TextView tv = (TextView)findViewById(R.id.forteContro);
+                            tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
+                        }
+                        else {
+                            int counter = 1;
+                            for (String strenght:strenghts) {
+                                String id = "tsf"+counter;
+                                strenght = strenght.toLowerCase();
+                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                                imageView[0].setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
+                                counter++;
+                            }
+                            while (counter <= 4) {
+                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsf"+counter, "id", getPackageName()));
+                                imageView[0].setAlpha((float)0.0);
+                                counter++;
+                            }
+                        }
+
+                        //setting the Pokémon's weaknesses
+                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                        int counter = 1;
+                        for (String weakness:weaknesses) {
+                            String id = "tsd"+counter;
+                            weakness = weakness.toLowerCase();
+                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                            imageView[0].setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
+                            counter++;
+                        }
+                        while (counter <= 4) {
+                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsd"+counter, "id", getPackageName()));
+                            imageView[0].setAlpha((float)0.0);
+                            counter++;
+                        }
+
+                        showhide.setAlpha((float)1.0);
+
+                    }
+                    else {
+                        pokemonHelper.delete(pokeID);
+
+                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                        imageView[0].setAlpha((float) 0.1);
+
+                        if (pokeID < 10)
+                            pkmnName.setText("#00"+pokeID+" - ???");
+                        else if (pokeID > 9 && pokeID < 100) {
+                            pkmnName.setText("#0"+pokeID+" - ???");
+                        }
+                        else
+                            pkmnName.setText("#"+pokeID+" - ???");
+
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+
+                        imageView[0] = (ImageView) findViewById(R.id.tipo1);
+                        imageView[0].setImageResource(R.drawable.unknown);
+                        if (numberOfTypes == 2) {
+                            imageView[0] = (ImageView) findViewById(R.id.tipo2);
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
+
+                        for (int i = 1; i <= 4; i++) {
+                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsf" + i, "id", getPackageName()));
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
+
+                        for (int i = 1; i <= 4; i++) {
+                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsd" + i, "id", getPackageName()));
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
+
+                        showhide.setAlpha((float)0.0);
+                    }
+                    }
+                });
+            }
+            else {
+                pokeSwitch.setChecked(true);
+
+                imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                imageView[0].setAlpha((float)1.0);
+
+                if (pokeID < 10)
+                    pkmnName.setText("#00"+pokeID+" - "+pokeName);
+                else if (pokeID > 9 && pokeID < 100) {
+                    switch (pokeName) {
+                        case "Nidoran_femmina":
+                            pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_female_adjust", "string", getPackageName())));
+                            break;
+                        case "Nidoran_maschio":
+                            pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_male_adjust", "string", getPackageName())));
+                            break;
+                        default:
+                            pkmnName.setText("#0" + pokeID + " - " + pokeName);
+                            break;
+                    }
+                }
+                else
+                if (pokeID == 122) {
+                    pkmnName.setText(getResources().getString(getResources().getIdentifier("mrmime_adjust", "string", getPackageName())));
+                }
+                else
+                    pkmnName.setText("#"+pokeID+" - "+pokeName);
+
+                //getting Pokémon's type(s)
+                List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+                TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+
+                if (numberOfTypes == 1) { //it can be 1 or 2
+                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
+                    for (String element:types) {
+                        element = element.toLowerCase();
+                        imageView[0] = (ImageView) findViewById(R.id.tipo1);
+                        imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+
+                        if (findViewById(R.id.tipo2) != null) {
+                            //removing the second type
+                            imageView[0] = (ImageView) findViewById(R.id.tipo2);
+                            ViewGroup type2 = (ViewGroup) imageView[0].getParent();
+                            type2.removeView(imageView[0]);
+                        }
+                    }
+                }
+                else {
+                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
+                    int j = 1;
+                    for (String element:types) {
+                        element = element.toLowerCase();
+                        String id = "tipo"+j; //creating a variable to set my imageview resource: it will be "tipo1" at the first iteration and "tipo2" at the second iteration
+                        imageView[0] = (ImageView) findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                        imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+                        j++;
+                    }
+                }
+
+                //setting the Pokémon's strenghts
+                List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                if (strenghts.size() == 0) {
+                    TextView tv = (TextView)findViewById(R.id.forteContro);
+                    tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
+                }
+                else {
+                    int counter = 1;
+                    for (String strenght:strenghts) {
+                        String id = "tsf"+counter;
+                        strenght = strenght.toLowerCase();
+                        imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                        imageView[0].setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
+                        counter++;
+                    }
+                }
+
+                //setting the Pokémon's weaknesses
+                List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                int counter = 1;
+                for (String weakness:weaknesses) {
+                    String id = "tsd"+counter;
+                    weakness = weakness.toLowerCase();
+                    imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                    imageView[0].setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
+                    counter++;
+                }
+
+                showhide.setAlpha((float)1.0);
+
+                pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (pokeSwitch.isChecked()) {
+                        pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
+
+                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                        imageView[0].setAlpha((float)1.0);
+
+                        if (pokeID < 10)
+                            pkmnName.setText("#00"+pokeID+" - "+pokeName);
+                        else if (pokeID > 9 && pokeID < 100) {
+                            switch (pokeName) {
+                                case "Nidoran_femmina":
+                                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_female_adjust", "string", getPackageName())));
+                                    break;
+                                case "Nidoran_maschio":
+                                    pkmnName.setText(getResources().getString(getResources().getIdentifier("nidoran_male_adjust", "string", getPackageName())));
+                                    break;
+                                default:
+                                    pkmnName.setText("#0" + pokeID + " - " + pokeName);
+                                    break;
+                            }
+                        }
+                        else
+                        if (pokeID == 122) {
+                            pkmnName.setText(getResources().getString(getResources().getIdentifier("mrmime_adjust", "string", getPackageName())));
+                        }
+                        else
+                            pkmnName.setText("#"+pokeID+" - "+pokeName);
+
+                        //getting Pokémon's type(s)
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+                        TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+
+                        if (numberOfTypes == 1) { //it can be 1 or 2
+                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
+                            for (String element:types) {
+                                element = element.toLowerCase();
+                                imageView[0] = (ImageView) findViewById(R.id.tipo1);
+                                imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+
+                                if (findViewById(R.id.tipo2) != null) {
+                                    //removing the second type
+                                    imageView[0] = (ImageView) findViewById(R.id.tipo2);
+                                    ViewGroup type2 = (ViewGroup) imageView[0].getParent();
+                                    type2.removeView(imageView[0]);
+                                }
+                            }
+                        }
+                        else {
+                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
+                            int j = 1;
+                            for (String element:types) {
+                                element = element.toLowerCase();
+                                String id = "tipo"+j; //creating a variable to set my imageview resource: it will be "tipo1" at the first iteration and "tipo2" at the second iteration
+                                imageView[0] = (ImageView) findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                                imageView[0].setImageResource(getResources().getIdentifier(element, "drawable", getPackageName()));
+                                j++;
+                            }
+                        }
+
+                        //setting the Pokémon's strenghts
+                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                        if (strenghts.size() == 0) {
+                            TextView tv = (TextView)findViewById(R.id.forteContro);
+                            tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
+                        }
+                        else {
+                            int counter = 1;
+                            for (String strenght:strenghts) {
+                                String id = "tsf"+counter;
+                                strenght = strenght.toLowerCase();
+                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                                imageView[0].setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
+                                counter++;
+                            }
+                            while (counter <= 4) {
+                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsf"+counter, "id", getPackageName()));
+                                imageView[0].setAlpha((float)0.0);
+                                counter++;
+                            }
+                        }
+
+                        //setting the Pokémon's weaknesses
+                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                        int counter = 1;
+                        for (String weakness:weaknesses) {
+                            String id = "tsd"+counter;
+                            weakness = weakness.toLowerCase();
+                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
+                            imageView[0].setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
+                            counter++;
+                        }
+                        while (counter <= 4) {
+                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsd"+counter, "id", getPackageName()));
+                            imageView[0].setAlpha((float)0.0);
+                            counter++;
+                        }
+
+                        showhide.setAlpha((float)1.0);
+
+                    }
+                    else {
+                        pokemonHelper.delete(pokeID);
+
+                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                        imageView[0].setAlpha((float) 0.1);
+
+                        if (pokeID < 10)
+                            pkmnName.setText("#00"+pokeID+" - ???");
+                        else if (pokeID > 9 && pokeID < 100) {
+                            pkmnName.setText("#0"+pokeID+" - ???");
+                        }
+                        else
+                            pkmnName.setText("#"+pokeID+" - ???");
+
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+
+                        imageView[0] = (ImageView) findViewById(R.id.tipo1);
+                        imageView[0].setImageResource(R.drawable.unknown);
+                        if (numberOfTypes == 2) {
+                            imageView[0] = (ImageView) findViewById(R.id.tipo2);
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
+
+                        for (int i = 1; i <= 4; i++) {
+                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsf" + i, "id", getPackageName()));
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
+
+                        for (int i = 1; i <= 4; i++) {
+                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsd" + i, "id", getPackageName()));
+                            imageView[0].setImageResource(R.drawable.unknown);
+                        }
+
+                        showhide.setAlpha((float)0.0);
+                    }
                     }
                 });
             }
@@ -415,7 +934,6 @@ public class PokemonDetails extends AppCompatActivity {
         getActionBar();
 
         //this button controls the text and the "read" button next to it, making it appear and disappear
-        Button showhide = (Button) findViewById(R.id.showhidedescr);
         final Button leggi = (Button)findViewById(R.id.leggidescrizione);
         tv.setText(getResources().getString(getResources().getIdentifier("pkmn"+pokeID, "string", getPackageName())));
         toSpeech = getResources().getString(getResources().getIdentifier("pkmn"+pokeID, "string", getPackageName()));
@@ -465,6 +983,15 @@ public class PokemonDetails extends AppCompatActivity {
                         }
                     }
                 });
+            }
+        });
+
+        pokeDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), MyPokeDetails.class);
+                i.putExtra("id", pokeID);
+                startActivity(i);
             }
         });
     }

@@ -145,7 +145,6 @@ public class InitialLogin extends Activity {
                 public void onClick(View view) {
                     Intent i = new Intent(getApplicationContext(), Registration.class);
                     startActivity(i);
-                    finish();
                 }
             });
         }

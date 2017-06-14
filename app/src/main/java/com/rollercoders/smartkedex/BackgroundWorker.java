@@ -28,8 +28,7 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
     public BackgroundWorker (String page, String table) {this.page=page; this.table=table; flag=1;} //getRows, getOwner, getSmartkedex, getPokemonGO
     public BackgroundWorker (String page, String name, String type) {this.page=page; this.name=name; this.type=type; flag=2;} //getMovesType, getAttacksStuff and setInitialData
     public BackgroundWorker (String page, int id) {this.page=page; this.id=id; flag=3;} //getPokeTypes, getStrengths, getWeakness, getCopyName, getIdsFromPokeID , getPokeAttacks, getAppVersion and getPokeName
-    //public BackgroundWorker (String page, String username, boolean settings) {this.page=page; this.username=username; flag=4;} //
-    public BackgroundWorker (String page, int id, String table) {this.page=page; this.id=id; this.table=table; flag=5;} //getMoves, insertCatched and getCatched
+    public BackgroundWorker (String page, int id, String table) {this.page=page; this.id=id; this.table=table; flag=5;} //getMoves, insertCatched, getCatched, getIdsFromPokeID and all the updaters
     public BackgroundWorker (String page, String email, String username, String password, int appversion) {this.page=page; this.username=username; this.password=password; this.email=email; this.appversion=appversion; flag=6;}
 
 
@@ -141,10 +140,42 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
                             e.printStackTrace();
                         }
                         break;
+                    case "getIdsFromPokeID":
+                        try {
+                            post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8")+"&"+
+                                        URLEncoder.encode("pokemonID", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "updatePokeAttack":
+                        try {
+                            post_data = URLEncoder.encode("attack", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8")+"&"+
+                                        URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "updatePokeUlti":
+                        try {
+                            post_data = URLEncoder.encode("ulti", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8")+"&"+
+                                        URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "updatePokeName":
+                        try {
+                            post_data = URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8")+"&"+
+                                        URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        break;
                     default:
                         try {
                             post_data = URLEncoder.encode("table", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8")+"&"+
-                                    URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
+                                        URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                         }

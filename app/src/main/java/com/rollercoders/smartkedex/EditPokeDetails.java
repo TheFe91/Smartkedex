@@ -2,6 +2,7 @@ package com.rollercoders.smartkedex;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -45,7 +46,6 @@ public class EditPokeDetails extends AppCompatActivity {
 
         Intent i = getIntent();
         pokeID = i.getExtras().getInt("id");
-        final PokemonDetails pokemonDetails = new PokemonDetails();
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
         final String pokeName = pokemonHelper.getPokeName(pokeID);
 
@@ -190,8 +190,8 @@ public class EditPokeDetails extends AppCompatActivity {
 
                     attackSpinner = new Spinner(getApplicationContext());
                     ultiSpinner = new Spinner(getApplicationContext());
-                    attackSpinner.setBackgroundColor(getResources().getColor(R.color.erba));
-                    ultiSpinner.setBackgroundColor(getResources().getColor(R.color.erba));
+                    attackSpinner.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                    ultiSpinner.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
                     params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     attackSpinner.setLayoutParams(params);
                     ultiSpinner.setLayoutParams(params);
@@ -206,8 +206,8 @@ public class EditPokeDetails extends AppCompatActivity {
                     else if (dpi == 420)
                         editText.setWidth(300);
                     editText.setHint(getResources().getString(getResources().getIdentifier("hint_name", "string", getPackageName())));
-                    editText.setHintTextColor(getResources().getColor(R.color.acciaio));
-                    editText.setTextColor(getResources().getColor(android.R.color.black));
+                    editText.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.acciaio));
+                    editText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
                     editText.setId(j*11);
 
                     List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");

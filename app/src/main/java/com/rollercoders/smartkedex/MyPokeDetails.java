@@ -39,7 +39,6 @@ public class MyPokeDetails extends AppCompatActivity {
 
         Intent i = getIntent();
         pokeID = i.getExtras().getInt("id");
-        final PokemonDetails pokemonDetails = new PokemonDetails();
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
         final String pokeName = pokemonHelper.getPokeName(pokeID);
         String owner = pokemonHelper.getOwner();
