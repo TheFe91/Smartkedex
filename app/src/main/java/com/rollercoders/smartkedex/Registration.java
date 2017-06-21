@@ -84,7 +84,7 @@ public class Registration extends AppCompatActivity {
                     } catch (PackageManager.NameNotFoundException e) {
                         e.printStackTrace();
                     }
-                    result = pokemonDatabaseAdapter.registration(mail, username, password, appversion);
+                    result = pokemonDatabaseAdapter.registration(mail, username, password, appversion, getApplicationContext());
                     String[] cleaner = result.split("\n");
                     result = cleaner[0];
                 }

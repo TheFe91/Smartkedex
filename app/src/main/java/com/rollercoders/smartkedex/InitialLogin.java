@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 public class InitialLogin extends Activity {
 
     private Context context = this;
+    private int appoggio = 0;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -44,7 +46,7 @@ public class InitialLogin extends Activity {
             e.printStackTrace();
         }
 
-        if (!pokemonDatabaseAdapter.getAppVersion(appversion)) {
+        if (!pokemonDatabaseAdapter.getAppVersion(appversion, context)) {
             Toast.makeText(this, getResources().getString(getResources().getIdentifier("versionFailMessage", "string", getPackageName())), Toast.LENGTH_LONG).show();
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -66,9 +68,31 @@ public class InitialLogin extends Activity {
             startActivity(homeIntent);
         }
 
-        if (pokemonDatabaseAdapter.getRememberME() == 1) {
+//        final ProgressDialog progressDialog = ProgressDialog.show(this,"Please Wait","Retreiving data from the DataBase...",true);
+//        progressDialog.setCancelable(false);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(10000);
+//                    appoggio = pokemonDatabaseAdapter.getRememberME();
+//                } catch(Exception e) {e.printStackTrace();}
+//                progressDialog.dismiss();
+//            }
+//        }).start();
+//        try {
+//            Thread.sleep(5000);
+//            appoggio = pokemonDatabaseAdapter.getRememberME();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        progressDialog.dismiss();
+
+        appoggio = pokemonDatabaseAdapter.getRememberME();
+
+        if (appoggio == 1) {
             String[] loginData = pokemonDatabaseAdapter.getLoginData();
-            if (pokemonDatabaseAdapter.tryLogin(loginData[0], loginData[1]) == 1) {
+            if (pokemonDatabaseAdapter.tryLogin(loginData[0], loginData[1], context) == 1) {
                 Intent i = new Intent(getApplicationContext(), Welcome.class);
                 startActivity(i);
                 finish();
@@ -107,7 +131,7 @@ public class InitialLogin extends Activity {
                     String username = editText.getText().toString();
                     editText = (EditText)findViewById(R.id.setpassword);
                     String password = editText.getText().toString();
-                    if (pokemonDatabaseAdapter.tryLogin(username, password) == 1) {
+                    if (pokemonDatabaseAdapter.tryLogin(username, password, getApplicationContext()) == 1) {
                         if (checkBox.isChecked()) {
                             pokemonDatabaseAdapter.setRememberME(username, password);
                             System.err.println("sono if");

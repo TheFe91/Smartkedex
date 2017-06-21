@@ -1,5 +1,6 @@
 package com.rollercoders.smartkedex;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class MyPokeDetails extends AppCompatActivity {
 
     int pokeID;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class MyPokeDetails extends AppCompatActivity {
 
         getActionBar();
 
+        context = this;
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int dpi = displayMetrics.densityDpi;
@@ -40,7 +44,7 @@ public class MyPokeDetails extends AppCompatActivity {
         Intent i = getIntent();
         pokeID = i.getExtras().getInt("id");
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
-        final String pokeName = pokemonHelper.getPokeName(pokeID);
+        final String pokeName = pokemonHelper.getPokeName(pokeID, getApplicationContext());
         String owner = pokemonHelper.getOwner();
 
         TextView textView = (TextView)findViewById(R.id.pkmnName);
@@ -60,7 +64,7 @@ public class MyPokeDetails extends AppCompatActivity {
 
         ImageAdapter imageAdapter = new ImageAdapter(this);
 
-        List<Integer> ids = pokemonHelper.getIdsFromPokeID(pokeID);
+        List<Integer> ids = pokemonHelper.getIdsFromPokeID(pokeID, getApplicationContext());
 
         for (int element:ids) {
             TableLayout tableLayout = (TableLayout)findViewById(R.id.tableNumber);
@@ -79,14 +83,14 @@ public class MyPokeDetails extends AppCompatActivity {
 
             imageView.setLayoutParams(trparams);
             imageView.setId(element);
-            String[] attacks = pokemonHelper.getPokeAttacks(element); //0 is attack, 1 is ulti
+            String[] attacks = pokemonHelper.getPokeAttacks(element, getApplicationContext()); //0 is attack, 1 is ulti
 
-            Map<String, String> attackStuff = pokemonHelper.getAttacksStuff(attacks[0], "Attack"); //keys are "duration", "type" and "damage"
+            Map<String, String> attackStuff = pokemonHelper.getAttacksStuff(attacks[0], "Attack", context); //keys are "duration", "type" and "damage"
             attack.setTypeface(null, Typeface.BOLD);
             if (dpi == 480)
                 attack.setTextSize(13);
             attack.setText(attacks[0] + " - " + attackStuff.get("damage") + " ");
-            List<String> pokeTypes = pokemonHelper.getPokeTypes(pokeID);
+            List<String> pokeTypes = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
             for (String type:pokeTypes)
                 if (type.equals(attackStuff.get("type"))) {
                     int stab = Integer.parseInt(attackStuff.get("damage"));
@@ -98,7 +102,7 @@ public class MyPokeDetails extends AppCompatActivity {
 
             if (pokeID != 132) {
                 try {
-                    Map<String, String> ultiStuff = pokemonHelper.getAttacksStuff(attacks[1], "Ulti"); //keys are "duration", "critical", type" and "damage"
+                    Map<String, String> ultiStuff = pokemonHelper.getAttacksStuff(attacks[1], "Ulti", context); //keys are "duration", "critical", type" and "damage"
                     ulti.setTypeface(null, Typeface.BOLD);
                     if (dpi == 480)
                         ulti.setTextSize(13);
@@ -126,13 +130,13 @@ public class MyPokeDetails extends AppCompatActivity {
                 System.err.println(e);
             }
 
-            String copyName = pokemonHelper.getCopyName(element);
+            String copyName = pokemonHelper.getCopyName(element, context);
 
             if (!copyName.equals("")) {
                 name.setText(copyName);
             }
             else
-                name.setText(pokemonHelper.getPokeName(pokeID));
+                name.setText(pokemonHelper.getPokeName(pokeID, getApplicationContext()));
 
             trparams.gravity = Gravity.CENTER_VERTICAL;
             attacchi.setLayoutParams(trparams);

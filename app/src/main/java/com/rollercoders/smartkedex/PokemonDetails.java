@@ -64,7 +64,7 @@ public class PokemonDetails extends AppCompatActivity {
 
         //selecting Pokémon's ID
         pokeID = i.getExtras().getInt("id");
-        final String pokeName = pokemonHelper.getPokeName(pokeID+1);
+        final String pokeName = pokemonHelper.getPokeName(pokeID+1, getApplicationContext());
 
         final ImageAdapter imageAdapter = new ImageAdapter(this);
 
@@ -85,7 +85,7 @@ public class PokemonDetails extends AppCompatActivity {
 
         if (pokemonHelper.getPokemonGO() == 1) { //if my user plays PokémonGO
             pokeDetails.setText(getResources().getString(getResources().getIdentifier("details", "string", getPackageName())));
-            int catched = pokemonHelper.getCatched(pokeID);
+            int catched = pokemonHelper.getCatched(pokeID, getApplicationContext());
             if (catched == 0) {
                 pokeDetails.setEnabled(false);
                 imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
@@ -101,7 +101,7 @@ public class PokemonDetails extends AppCompatActivity {
 
                 TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
-                List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                 int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
 
                 if (numberOfTypes == 1)
@@ -132,7 +132,7 @@ public class PokemonDetails extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (pokeSwitch.isChecked()) {
-                        pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
+                        pokemonHelper.insertCatches(pokeID, getApplicationContext()); //storing into Catches that my user caught that Pokémon
                         pokeDetails.setEnabled(true);
 
                         imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
@@ -161,7 +161,7 @@ public class PokemonDetails extends AppCompatActivity {
                             pkmnName.setText("#"+pokeID+" - "+pokeName);
 
                         //getting Pokémon's type(s)
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                         int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
                         TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
@@ -193,7 +193,7 @@ public class PokemonDetails extends AppCompatActivity {
                         }
 
                         //setting the Pokémon's strenghts
-                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
                         if (strenghts.size() == 0) {
                             TextView tv = (TextView)findViewById(R.id.forteContro);
                             tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
@@ -215,7 +215,7 @@ public class PokemonDetails extends AppCompatActivity {
                         }
 
                         //setting the Pokémon's weaknesses
-                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
                         int counter = 1;
                         for (String weakness:weaknesses) {
                             String id = "tsd"+counter;
@@ -234,7 +234,7 @@ public class PokemonDetails extends AppCompatActivity {
 
                     }
                     else {
-                        pokemonHelper.delete(pokeID);
+                        pokemonHelper.delete(pokeID, getApplicationContext());
 
                         pokeDetails.setEnabled(false);
 
@@ -249,7 +249,7 @@ public class PokemonDetails extends AppCompatActivity {
                         else
                             pkmnName.setText("#"+pokeID+" - ???");
 
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                         int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
 
                         imageView[0] = (ImageView) findViewById(R.id.tipo1);
@@ -304,7 +304,7 @@ public class PokemonDetails extends AppCompatActivity {
                     pkmnName.setText("#"+pokeID+" - "+pokeName);
 
                 //getting Pokémon's type(s)
-                List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                 int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
                 TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
@@ -336,7 +336,7 @@ public class PokemonDetails extends AppCompatActivity {
                 }
 
                 //setting the Pokémon's strenghts
-                List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
                 if (strenghts.size() == 0) {
                     TextView tv = (TextView)findViewById(R.id.forteContro);
                     tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
@@ -353,7 +353,7 @@ public class PokemonDetails extends AppCompatActivity {
                 }
 
                 //setting the Pokémon's weaknesses
-                List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
                 int counter = 1;
                 for (String weakness:weaknesses) {
                     String id = "tsd"+counter;
@@ -369,7 +369,7 @@ public class PokemonDetails extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (pokeSwitch.isChecked()) {
-                        pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
+                        pokemonHelper.insertCatches(pokeID, getApplicationContext()); //storing into Catches that my user caught that Pokémon
 
                         imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
                         imageView[0].setAlpha((float)1.0);
@@ -397,7 +397,7 @@ public class PokemonDetails extends AppCompatActivity {
                             pkmnName.setText("#"+pokeID+" - "+pokeName);
 
                         //getting Pokémon's type(s)
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                         int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
                         TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
@@ -429,7 +429,7 @@ public class PokemonDetails extends AppCompatActivity {
                         }
 
                         //setting the Pokémon's strenghts
-                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
                         if (strenghts.size() == 0) {
                             TextView tv = (TextView)findViewById(R.id.forteContro);
                             tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
@@ -451,7 +451,7 @@ public class PokemonDetails extends AppCompatActivity {
                         }
 
                         //setting the Pokémon's weaknesses
-                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
                         int counter = 1;
                         for (String weakness:weaknesses) {
                             String id = "tsd"+counter;
@@ -470,7 +470,7 @@ public class PokemonDetails extends AppCompatActivity {
 
                     }
                     else {
-                        pokemonHelper.delete(pokeID);
+                        pokemonHelper.delete(pokeID, getApplicationContext());
 
                         imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
                         imageView[0].setAlpha((float) 0.1);
@@ -483,7 +483,7 @@ public class PokemonDetails extends AppCompatActivity {
                         else
                             pkmnName.setText("#"+pokeID+" - ???");
 
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                         int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
 
                         imageView[0] = (ImageView) findViewById(R.id.tipo1);
@@ -511,7 +511,7 @@ public class PokemonDetails extends AppCompatActivity {
         }
         else { //my user doesn't play PokémonGO
             pokeDetails.setAlpha(0);
-            int catched = pokemonHelper.getCatched(pokeID);
+            int catched = pokemonHelper.getCatched(pokeID, getApplicationContext());
             if (catched == 0) {
                 imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
                 imageView[0].setAlpha((float) 0.1);
@@ -526,7 +526,7 @@ public class PokemonDetails extends AppCompatActivity {
 
                 TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
-                List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                 int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
 
                 if (numberOfTypes == 1)
@@ -557,7 +557,7 @@ public class PokemonDetails extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (pokeSwitch.isChecked()) {
-                        pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
+                        pokemonHelper.insertCatches(pokeID, getApplicationContext()); //storing into Catches that my user caught that Pokémon
 
                         imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
                         imageView[0].setAlpha((float)1.0);
@@ -585,7 +585,7 @@ public class PokemonDetails extends AppCompatActivity {
                             pkmnName.setText("#"+pokeID+" - "+pokeName);
 
                         //getting Pokémon's type(s)
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                         int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
                         TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
@@ -617,7 +617,7 @@ public class PokemonDetails extends AppCompatActivity {
                         }
 
                         //setting the Pokémon's strenghts
-                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
                         if (strenghts.size() == 0) {
                             TextView tv = (TextView)findViewById(R.id.forteContro);
                             tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
@@ -639,7 +639,7 @@ public class PokemonDetails extends AppCompatActivity {
                         }
 
                         //setting the Pokémon's weaknesses
-                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
                         int counter = 1;
                         for (String weakness:weaknesses) {
                             String id = "tsd"+counter;
@@ -658,7 +658,7 @@ public class PokemonDetails extends AppCompatActivity {
 
                     }
                     else {
-                        pokemonHelper.delete(pokeID);
+                        pokemonHelper.delete(pokeID, getApplicationContext());
 
                         imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
                         imageView[0].setAlpha((float) 0.1);
@@ -671,7 +671,7 @@ public class PokemonDetails extends AppCompatActivity {
                         else
                             pkmnName.setText("#"+pokeID+" - ???");
 
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                         int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
 
                         imageView[0] = (ImageView) findViewById(R.id.tipo1);
@@ -725,7 +725,7 @@ public class PokemonDetails extends AppCompatActivity {
                     pkmnName.setText("#"+pokeID+" - "+pokeName);
 
                 //getting Pokémon's type(s)
-                List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                 int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
                 TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
@@ -757,7 +757,7 @@ public class PokemonDetails extends AppCompatActivity {
                 }
 
                 //setting the Pokémon's strenghts
-                List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
                 if (strenghts.size() == 0) {
                     TextView tv = (TextView)findViewById(R.id.forteContro);
                     tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
@@ -774,7 +774,7 @@ public class PokemonDetails extends AppCompatActivity {
                 }
 
                 //setting the Pokémon's weaknesses
-                List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
                 int counter = 1;
                 for (String weakness:weaknesses) {
                     String id = "tsd"+counter;
@@ -790,7 +790,7 @@ public class PokemonDetails extends AppCompatActivity {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (pokeSwitch.isChecked()) {
-                        pokemonHelper.insertCatches(pokeID); //storing into Catches that my user caught that Pokémon
+                        pokemonHelper.insertCatches(pokeID, getApplicationContext()); //storing into Catches that my user caught that Pokémon
 
                         imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
                         imageView[0].setAlpha((float)1.0);
@@ -818,7 +818,7 @@ public class PokemonDetails extends AppCompatActivity {
                             pkmnName.setText("#"+pokeID+" - "+pokeName);
 
                         //getting Pokémon's type(s)
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                         int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
                         TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
 
@@ -850,7 +850,7 @@ public class PokemonDetails extends AppCompatActivity {
                         }
 
                         //setting the Pokémon's strenghts
-                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID);
+                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
                         if (strenghts.size() == 0) {
                             TextView tv = (TextView)findViewById(R.id.forteContro);
                             tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
@@ -872,7 +872,7 @@ public class PokemonDetails extends AppCompatActivity {
                         }
 
                         //setting the Pokémon's weaknesses
-                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID);
+                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
                         int counter = 1;
                         for (String weakness:weaknesses) {
                             String id = "tsd"+counter;
@@ -891,7 +891,7 @@ public class PokemonDetails extends AppCompatActivity {
 
                     }
                     else {
-                        pokemonHelper.delete(pokeID);
+                        pokemonHelper.delete(pokeID, getApplicationContext());
 
                         imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
                         imageView[0].setAlpha((float) 0.1);
@@ -904,7 +904,7 @@ public class PokemonDetails extends AppCompatActivity {
                         else
                             pkmnName.setText("#"+pokeID+" - ???");
 
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID);
+                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
                         int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
 
                         imageView[0] = (ImageView) findViewById(R.id.tipo1);

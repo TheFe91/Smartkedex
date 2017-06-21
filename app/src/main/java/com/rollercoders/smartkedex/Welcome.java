@@ -1,6 +1,8 @@
 package com.rollercoders.smartkedex;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 public class Welcome extends Activity {
 
     private final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
+    private Context context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,8 +83,8 @@ public class Welcome extends Activity {
             TextView textView = (TextView)findViewById(R.id.welcome);
             textView.setText(getResources().getString(getResources().getIdentifier("welcome_back", "string", getPackageName()), owner));
             if (pokemonHelper.getPokemonGO() == 1) {
-                int total = pokemonHelper.getTotalCatches();
-                int copies = pokemonHelper.getTotalCopies();
+                int total = pokemonHelper.getTotalCatches(context);
+                int copies = pokemonHelper.getTotalCopies(context);
                 textView.append(getResources().getString(getResources().getIdentifier("pokemongo_recap", "string", getPackageName()), total, copies));
             }
 

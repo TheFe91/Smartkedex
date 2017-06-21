@@ -1,10 +1,12 @@
 package com.rollercoders.smartkedex;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -37,8 +39,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         db.close();
     }
 
-    String registration (String email, String username, String password, int appversion) {
-        backgroundWorker = new BackgroundWorker("registration", email, username, password, appversion);
+    String registration (String email, String username, String password, int appversion, Context context) {
+        backgroundWorker = new BackgroundWorker("registration", email, username, password, appversion, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String result = "";
@@ -51,8 +53,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return result;
     }
 
-    void insertCatches (int pokeID) {
-        backgroundWorker = new BackgroundWorker("insertCatches", pokeID, getLocalUsername());
+    void insertCatches (int pokeID, Context context) {
+        backgroundWorker = new BackgroundWorker("insertCatches", pokeID, getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
 //        try {
@@ -63,8 +65,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 //        }
     }
 
-    void insertCopy (String attackName, String ultiName, String pokeName, int pokeID) {
-        backgroundWorker = new BackgroundWorker("insertCopy", pokeID, attackName, ultiName, pokeName, getLocalUsername());
+    void insertCopy (String attackName, String ultiName, String pokeName, int pokeID, Context context) {
+        backgroundWorker = new BackgroundWorker("insertCopy", pokeID, attackName, ultiName, pokeName, getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
 //        SQLiteDatabase db = helper.getWritableDatabase();
@@ -72,8 +74,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 //        db.close();
     }
 
-    void deleteCopy (int pokeId) {
-        backgroundWorker = new BackgroundWorker("deleteCopy", pokeId);
+    void deleteCopy (int pokeId, Context context) {
+        backgroundWorker = new BackgroundWorker("deleteCopy", pokeId, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
 //        SQLiteDatabase db = helper.getWritableDatabase();
@@ -117,8 +119,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         }
     }
 
-    void erase (String username) {
-        backgroundWorker = new BackgroundWorker("erase", username);
+    void erase (String username, Context context) {
+        backgroundWorker = new BackgroundWorker("erase", username, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
     }
@@ -129,16 +131,16 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         db.close();
     }
 
-    void delete (int pokeID) {
-        backgroundWorker = new BackgroundWorker("remove", pokeID, getLocalUsername());
+    void delete (int pokeID, Context context) {
+        backgroundWorker = new BackgroundWorker("remove", pokeID, getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
     }
 
     ////////////////////////////////////////////////////////////////////GETTERS////////////////////////////////////////////////////////////////////////////////////
 
-    boolean getAppVersion (int appVersion) {
-        backgroundWorker = new BackgroundWorker("getAppVersion", appVersion);
+    boolean getAppVersion (int appVersion, Context context) {
+        backgroundWorker = new BackgroundWorker("getAppVersion", appVersion, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String result = "";
@@ -151,8 +153,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return cleaner[0].equals("1");
     }
 
-    String getPokeName(int pokeID) {
-        backgroundWorker = new BackgroundWorker("getPokeName", pokeID);
+    String getPokeName(int pokeID, Context context) {
+        backgroundWorker = new BackgroundWorker("getPokeName", pokeID, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String tmp = "";
@@ -204,9 +206,9 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return data;
     }
 
-    int tryLogin (String username, String password) {
+    int tryLogin (String username, String password, Context context) {
         int result;
-        backgroundWorker = new BackgroundWorker("login", username, password);
+        backgroundWorker = new BackgroundWorker("login", username, password, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String temp = "";
@@ -232,30 +234,23 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return rows;
     }
 
-    int getRows (String tableName) {
-        int rows = 0;
-        backgroundWorker = new BackgroundWorker("getRows", tableName);
+    String getCopyName (int copyID, Context context) {
+        backgroundWorker = new BackgroundWorker("getCopyName", copyID, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
+        String result = "";
         try {
-            rows = Integer.parseInt(backgroundWorker.get());
+            result = backgroundWorker.get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        return rows;
-    }
-
-    String getCopyName (int copyID) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String[] columns = {PokemonHelper.POKEMONNAME};
-        String name = "";
-        Cursor cursor = db.query(PokemonHelper.COPY, columns, PokemonHelper.ID+"='"+copyID+"'", null, null, null, null);
-        while (cursor.moveToNext()) {
-            name = cursor.getString(cursor.getColumnIndex(PokemonHelper.POKEMONNAME));
+        String[] cleaner;
+        if (!result.equals("\n")) {
+            cleaner = result.split("\n");
+            return cleaner[0];
         }
-
-        db.close();
-        return name;
+        else
+            return "";
     }
 
     String getMovesType (String name, String type) {
@@ -277,9 +272,9 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return moveType;
     }
 
-    List<String> getPokeTypes(int pokeID) {
+    List<String> getPokeTypes(int pokeID, Context context) {
         List<String> types = new ArrayList<>();
-        backgroundWorker = new BackgroundWorker("getPokeTypes", pokeID);
+        backgroundWorker = new BackgroundWorker("getPokeTypes", pokeID, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String temp = "";
@@ -293,33 +288,30 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return types;
     }
 
-    Map<String, String> getAttacksStuff(String name, String table) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        String columnName;
-
+    Map<String, String> getAttacksStuff(String name, String table, Context context) {
+        backgroundWorker = new BackgroundWorker("getAttacksStuff", name, table, context);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
         Map<String, String> map = new HashMap<>();
-
-        if (table.equals("Ulti"))
-            columnName = "UltiName";
-        else
-            columnName = "AttackName";
-
-        Cursor cursor = db.query(table, null, columnName+"='"+name+"'", null, null, null, null);
-        while (cursor.moveToNext()) {
-            map.put("type", cursor.getString(cursor.getColumnIndex(PokemonHelper.TYPE_NAME)));
-            map.put("duration", cursor.getString(cursor.getColumnIndex(PokemonHelper.DURATION)));
-            map.put("damage", cursor.getString(cursor.getColumnIndex(PokemonHelper.DAMAGE_DEALT)));
-            if (table.equals("Ulti"))
-                map.put("critical", cursor.getString(cursor.getColumnIndex(PokemonHelper.CRITICAL_CHANCE)));
+        String result = "";
+        try {
+            result = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
+        String[] cleaner = result.split("\n");
+        map.put("damage", cleaner[0]);
+        map.put("duration", cleaner[1]);
+        map.put("type", cleaner[2]);
+        if (table.equals("Ulti"))
+            map.put("critical", cleaner[3]);
 
-        db.close();
         return map;
     }
 
-    int getCatched (int pokeID) {
+    int getCatched (int pokeID, Context context) {
         String temp = "";
-        backgroundWorker = new BackgroundWorker("getCatched", pokeID, getLocalUsername());
+        backgroundWorker = new BackgroundWorker("getCatched", pokeID, getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         try {
@@ -332,8 +324,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return rows;
     }
 
-    List<Integer> getIdsFromPokeID (int pokeID) {
-        backgroundWorker = new BackgroundWorker("getIdsFromPokeID", pokeID, getLocalUsername());
+    List<Integer> getIdsFromPokeID (int pokeID, Context context) {
+        backgroundWorker = new BackgroundWorker("getIdsFromPokeID", pokeID, getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String tmp = "";
@@ -352,8 +344,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return ids;
     }
 
-    String[] getPokeAttacks (int pokeCopy) {
-        backgroundWorker = new BackgroundWorker("getPokeAttacks", pokeCopy);
+    String[] getPokeAttacks (int pokeCopy, Context context) {
+        backgroundWorker = new BackgroundWorker("getPokeAttacks", pokeCopy, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String tmp = "";
@@ -419,8 +411,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return pokemonGO;
     }
 
-    List<String> getMoves (int pokeID, String table) {
-        backgroundWorker = new BackgroundWorker("getMoves", pokeID, table);
+    List<String> getMoves (int pokeID, String table, Context context) {
+        backgroundWorker = new BackgroundWorker("getMoves", pokeID, table, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         List<String> moves = new ArrayList<>();
@@ -457,9 +449,9 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 //        return attacks;
     }
 
-    List<String> getWeaknesses (int pokeID) {
+    List<String> getWeaknesses (int pokeID, Context context) {
         List<String> weaknesses = new ArrayList<>();
-        backgroundWorker = new BackgroundWorker("getWeakness", pokeID);
+        backgroundWorker = new BackgroundWorker("getWeakness", pokeID, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String temp = "";
@@ -474,9 +466,9 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return weaknesses;
     }
 
-    List<String> getStrenghts (int pokeID) {
+    List<String> getStrenghts (int pokeID, Context context) {
         List<String> strengths = new ArrayList<>();
-        backgroundWorker = new BackgroundWorker("getStrenghts", pokeID);
+        backgroundWorker = new BackgroundWorker("getStrenghts", pokeID, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String temp = "";
@@ -490,10 +482,10 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return strengths;
     }
 
-    int getTotalCatches () {
+    int getTotalCatches (Context context) {
         int totalCatches;
         String temp = "";
-        backgroundWorker = new BackgroundWorker("getConditionedRows", "Catches", getLocalUsername());
+        backgroundWorker = new BackgroundWorker("getConditionedRows", "Catches", getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         try {
@@ -506,10 +498,10 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return totalCatches;
     }
 
-    int getTotalCopies () {
+    int getTotalCopies (Context context) {
         int totalCopies;
         String temp = "";
-        backgroundWorker = new BackgroundWorker("getTotalCopies", getLocalUsername());
+        backgroundWorker = new BackgroundWorker("getTotalCopies", getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         try {
@@ -542,8 +534,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         db.close();
     }
 
-    void updatePokeAttack (String attack, int pokeID) {
-        backgroundWorker = new BackgroundWorker("updatePokeAttack", pokeID, attack);
+    void updatePokeAttack (String attack, int pokeID, Context context) {
+        backgroundWorker = new BackgroundWorker("updatePokeAttack", pokeID, attack, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
 //        SQLiteDatabase db = helper.getWritableDatabase();
@@ -551,8 +543,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 //        db.close();
     }
 
-    void updatePokeUlti (String ulti, int pokeID) {
-        backgroundWorker = new BackgroundWorker("updatePokeUlti", pokeID, ulti);
+    void updatePokeUlti (String ulti, int pokeID, Context context) {
+        backgroundWorker = new BackgroundWorker("updatePokeUlti", pokeID, ulti, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
 //        SQLiteDatabase db = helper.getWritableDatabase();
@@ -560,8 +552,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 //        db.close();
     }
 
-    void updatePokeName (String name, int pokeID) {
-        backgroundWorker = new BackgroundWorker("updatePokeName", pokeID, name);
+    void updatePokeName (String name, int pokeID, Context context) {
+        backgroundWorker = new BackgroundWorker("updatePokeName", pokeID, name, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
 //        SQLiteDatabase db = helper.getWritableDatabase();

@@ -1,5 +1,6 @@
 package com.rollercoders.smartkedex;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -34,11 +35,14 @@ public class EditPokeDetails extends AppCompatActivity {
     Spinner ultiSpinner;
     EditText editText;
     CheckBox checkBox;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_poke_details);
+
+        context = this;
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -47,7 +51,7 @@ public class EditPokeDetails extends AppCompatActivity {
         Intent i = getIntent();
         pokeID = i.getExtras().getInt("id");
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
-        final String pokeName = pokemonHelper.getPokeName(pokeID);
+        final String pokeName = pokemonHelper.getPokeName(pokeID, getApplicationContext());
 
         getActionBar();
 
@@ -72,7 +76,7 @@ public class EditPokeDetails extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(dataAdapter);
 
-        final List<Integer> pokeIds = pokemonHelper.getIdsFromPokeID(pokeID);
+        final List<Integer> pokeIds = pokemonHelper.getIdsFromPokeID(pokeID, getApplicationContext());
 
         final ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext());
 
@@ -104,9 +108,9 @@ public class EditPokeDetails extends AppCompatActivity {
                 ultiSpinner.setId(pokeId*11);
             }
 
-            String[] moves = pokemonHelper.getPokeAttacks(pokeId); //0 is attack, 1 is ulti
+            String[] moves = pokemonHelper.getPokeAttacks(pokeId, getApplicationContext()); //0 is attack, 1 is ulti
 
-            List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");
+            List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack", getApplicationContext());
 
             ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacks);
             attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -116,7 +120,7 @@ public class EditPokeDetails extends AppCompatActivity {
 
             //this is necessary because there can be Pokémons like Ditto who don't have a ulti, otherwise the app crashes
             if (pokeID != 132) {
-                List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
+                List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti", getApplicationContext());
 
                 ArrayAdapter<String> ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
                 attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -137,7 +141,7 @@ public class EditPokeDetails extends AppCompatActivity {
             editText.setHintTextColor(getResources().getColor(R.color.acciaio));
             editText.setTextColor(getResources().getColor(android.R.color.black));
             editText.setId(pokeId*13);
-            editText.setText(pokemonHelper.getCopyName(pokeId));
+            editText.setText(pokemonHelper.getCopyName(pokeId, context));
 
             checkBox = new CheckBox(getApplicationContext());
             checkBox.setButtonDrawable(R.drawable.checkbox_selector);
@@ -210,13 +214,13 @@ public class EditPokeDetails extends AppCompatActivity {
                     editText.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
                     editText.setId(j*11);
 
-                    List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack");
+                    List<String> attacks = pokemonHelper.getMoves(pokeID, "HasAttack", getApplicationContext());
 
                     ArrayAdapter<String>attacksAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, attacks);
                     attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     attackSpinner.setAdapter(attacksAdapter);
 
-                    List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti");
+                    List<String> ultis = pokemonHelper.getMoves(pokeID, "HasUlti", getApplicationContext());
 
                     ArrayAdapter<String>ultiAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, ultis);
                     attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -260,19 +264,19 @@ public class EditPokeDetails extends AppCompatActivity {
                     }
                     editText = (EditText)findViewById(pokeId*13);
                     String copyName = editText.getText().toString();
-                    String[] attacks = pokemonHelper.getPokeAttacks(pokeId); //attacks[0] contains the attack, attack[1] contains the ulti
+                    String[] attacks = pokemonHelper.getPokeAttacks(pokeId, getApplicationContext()); //attacks[0] contains the attack, attack[1] contains the ulti
                     if (!attack.equals(attacks[0])) {
-                        pokemonHelper.updatePokeAttack(attack, pokeId);
+                        pokemonHelper.updatePokeAttack(attack, pokeId, getApplicationContext());
                     }
                     if (!ulti.equals(attacks[1])) {
-                        pokemonHelper.updatePokeUlti(ulti, pokeId);
+                        pokemonHelper.updatePokeUlti(ulti, pokeId, getApplicationContext());
                     }
-                    if (!copyName.equals(pokemonHelper.getCopyName(pokeId))) {
-                        pokemonHelper.updatePokeName(copyName, pokeId);
+                    if (!copyName.equals(pokemonHelper.getCopyName(pokeId, context))) {
+                        pokemonHelper.updatePokeName(copyName, pokeId, getApplicationContext());
                     }
                     checkBox = (CheckBox)findViewById(pokeId*17);
                     if (checkBox.isChecked()) {
-                        pokemonHelper.deleteCopy(pokeId);
+                        pokemonHelper.deleteCopy(pokeId, getApplicationContext());
                     }
                 }
 
@@ -284,7 +288,7 @@ public class EditPokeDetails extends AppCompatActivity {
                     String ulti = (String) ultiSpinner.getSelectedItem();
                     editText = (EditText)findViewById(j*11);
                     String copyName = editText.getText().toString();
-                    pokemonHelper.insertCopy(attack, ulti, copyName, pokeID);
+                    pokemonHelper.insertCopy(attack, ulti, copyName, pokeID, getApplicationContext());
                 }
 
                 Intent i = new Intent (getApplicationContext(), MyPokeDetails.class);
