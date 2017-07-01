@@ -35,19 +35,20 @@ import java.util.List;
 
 public class PokemonDetails extends AppCompatActivity {
 
-    private TextView tv;
+    private TextView tv, pkmnName, tipiScritta;
     private TextToSpeech t1;
     private String toSpeech = "", pokeName;
-    private int pokeID;
+    private int pokeID, effectiveWidth;
     private HashMap<String, String> parameters;
-    private Button showhide;
-    private TextView pkmnName;
+    private Button showhide, leggi;
+    private PokemonDatabaseAdapter pokemonHelper;
+    private Typeface typeface;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/cmss12.otf");
+        typeface = Typeface.createFromAsset(getAssets(), "fonts/cmss12.otf");
 
         //setters for the correct display configuration
         //saving the device's dpi on an int and assigning the proper layout based on this int
@@ -56,7 +57,7 @@ public class PokemonDetails extends AppCompatActivity {
         int dpi = displayMetrics.densityDpi;
 
         int totalWidth = displayMetrics.widthPixels;
-        final int effectiveWidth = totalWidth - 128; //128 is because I have 2 64dp margins on the Right and on the Left
+        effectiveWidth = totalWidth - 128; //128 is because I have 2 64dp margins on the Right and on the Left
 
         if (dpi <= 420) { //Nexus 5X et simila
             setContentView(R.layout.pokedetailsbig);
@@ -73,7 +74,7 @@ public class PokemonDetails extends AppCompatActivity {
         Intent i = getIntent();
 
         //Setting up server and database calls
-        final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(this);
+        pokemonHelper = new PokemonDatabaseAdapter(this);
 
         //selecting Pokémon's ID
         pokeID = i.getExtras().getInt("id");
@@ -105,240 +106,58 @@ public class PokemonDetails extends AppCompatActivity {
                 imageView[0].setAlpha((float) 0.1);
 
                 unsetPokeName();
+                unsetTipiScritta();
+                unsetStrenght();
+                unsetWeakness();
 
-                TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+                descrButton();
 
-                List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-
-                if (numberOfTypes == 1)
-                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
-                else
-                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
-
-                for (int k = 1; k <= numberOfTypes; k++) {
-                    tv = (TextView) findViewById(getResources().getIdentifier("tipo" + k, "id", getPackageName()));
-                    TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                    params.width = effectiveWidth / 4;
-                    tv.setLayoutParams(params);
-                    tv.setText("???");
-                    tv.setBackgroundResource(R.drawable.rounded_corners);
-                    tv.setTypeface(typeface);
-                    tv.setTextColor(getResources().getColor(R.color.white));
-                    GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                    gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                }
-
-                for (int k = 1; k <= 4; k++) {
-                    tv = (TextView) findViewById(getResources().getIdentifier("tsf" + k, "id", getPackageName()));
-                    RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                    rlParams.width = effectiveWidth/4;
-                    tv.setLayoutParams(rlParams);
-                    tv.setText("???");
-                    tv.setBackgroundResource(R.drawable.rounded_corners);
-                    tv.setTypeface(typeface);
-                    tv.setTextColor(getResources().getColor(R.color.white));
-                    GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                    gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                }
-
-                for (int k = 1; k <= 4; k++) {
-                    tv = (TextView) findViewById(getResources().getIdentifier("tsd" + k, "id", getPackageName()));
-                    RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                    rlParams.width = effectiveWidth/4;
-                    tv.setLayoutParams(rlParams);
-                    tv.setText("???");
-                    tv.setBackgroundResource(R.drawable.rounded_corners);
-                    tv.setTypeface(typeface);
-                    tv.setTextColor(getResources().getColor(R.color.white));
-                    GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                    gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                }
-
+                showhide.setEnabled(false);
                 showhide.setAlpha((float)0.0);
 
                 pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (pokeSwitch.isChecked()) {
-                        pokemonHelper.insertCatches(pokeID, getApplicationContext()); //storing into Catches that my user caught that Pokémon
-                        pokeDetails.setEnabled(true);
+                        if (pokeSwitch.isChecked()) {
+                            pokemonHelper.insertCatches(pokeID, getApplicationContext()); //storing into Catches that my user caught that Pokémon
+                            pokeDetails.setEnabled(true);
 
-                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
-                        imageView[0].setAlpha((float)1.0);
+                            imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                            imageView[0].setAlpha((float)1.0);
 
-                        setPokeName();
+                            setPokeName();
+                            setTipiScritta();
+                            setStrenght();
+                            setWeakness();
 
-                        //getting Pokémon's type(s)
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-                        TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+                            descrButton();
 
-                        if (numberOfTypes == 1) { //it can be 1 or 2
-                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
-                            for (String element:types) {
-                                element = element.toLowerCase();
-                                tv = (TextView) findViewById(R.id.tipo1);
-                                TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                                params.width = effectiveWidth / 4;
-                                tv.setLayoutParams(params);
-                                tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                                tv.setBackgroundResource(R.drawable.rounded_corners);
-                                tv.setTypeface(typeface);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
+                            showhide.setEnabled(true);
+                            showhide.setAlpha((float)1.0);
 
-                                if (findViewById(R.id.tipo2) != null) {
-                                    //removing the second type
-                                    tv = (TextView) findViewById(R.id.tipo2);
-                                    tv.setAlpha((float)0.0);
-                                }
-                            }
                         }
                         else {
-                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
-                            int j = 1;
-                            for (String element:types) {
-                                element = element.toLowerCase();
-                                tv = (TextView) findViewById(getResources().getIdentifier("tipo" + j, "id", getPackageName()));
-                                TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                                params.width = effectiveWidth / 4;
-                                tv.setLayoutParams(params);
-                                System.err.println(element);
-                                tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                                tv.setBackgroundResource(R.drawable.rounded_corners);
-                                tv.setTypeface(typeface);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
-                                j++;
-                            }
-                        }
+                            pokemonHelper.delete(pokeID, getApplicationContext());
 
-                        //setting the Pokémon's strenghts
-                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
-                        if (strenghts.size() == 0) {
+                            pokeDetails.setEnabled(false);
+
+                            imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                            imageView[0].setAlpha((float) 0.1);
+
+                            unsetPokeName();
+                            unsetTipiScritta();
+
                             TextView tv = (TextView)findViewById(R.id.forteContro);
-                            tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
-                            for (int j=1; j<=4; j++) {
-                                tv = (TextView) findViewById(getResources().getIdentifier("tsf" + j, "id", getPackageName()));
-                                tv.setAlpha((float)0.0);
-                            }
+                            tv.setText(getResources().getString(getResources().getIdentifier("strong", "string", getPackageName())));
+
+                            unsetStrenght();
+                            unsetWeakness();
+
+                            descrButton();
+
+                            showhide.setEnabled(false);
+                            showhide.setAlpha((float)0.0);
                         }
-                        else {
-                            int counter = 1;
-                            for (String strenght:strenghts) {
-                                strenght = strenght.toLowerCase();
-                                tv = (TextView) findViewById(getResources().getIdentifier("tsf" + counter, "id", getPackageName()));
-                                RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                                rlParams.width = effectiveWidth/4;
-                                tv.setLayoutParams(rlParams);
-                                tv.setText(getResources().getString(getResources().getIdentifier(strenght, "string", getPackageName())));
-                                tv.setBackgroundResource(R.drawable.rounded_corners);
-                                tv.setTypeface(typeface);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(strenght, "color", getPackageName())));
-                                counter++;
-                            }
-                            while (counter <= 4) {
-                                tv = (TextView) findViewById(getResources().getIdentifier("tsf" + counter, "id", getPackageName()));
-                                tv.setAlpha((float)0.0);
-                                counter++;
-                            }
-                        }
-
-                        //setting the Pokémon's weaknesses
-                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
-                        int counter = 1;
-                        for (String weakness:weaknesses) {
-                            weakness = weakness.toLowerCase();
-                            tv = (TextView) findViewById(getResources().getIdentifier("tsd" + counter, "id", getPackageName()));
-                            RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                            rlParams.width = effectiveWidth/4;
-                            tv.setLayoutParams(rlParams);
-                            tv.setText(getResources().getString(getResources().getIdentifier(weakness, "string", getPackageName())));
-                            tv.setBackgroundResource(R.drawable.rounded_corners);
-                            tv.setTypeface(typeface);
-                            tv.setTextColor(getResources().getColor(R.color.white));
-                            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                            gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(weakness, "color", getPackageName())));
-                            counter++;
-                        }
-                        while (counter <= 4) {
-                            tv = (TextView) findViewById(getResources().getIdentifier("tsd" + counter, "id", getPackageName()));
-                            tv.setAlpha((float)0.0);
-                            counter++;
-                        }
-
-                        showhide.setAlpha((float)1.0);
-
-                    }
-                    else {
-                        pokemonHelper.delete(pokeID, getApplicationContext());
-
-                        pokeDetails.setEnabled(false);
-
-                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
-                        imageView[0].setAlpha((float) 0.1);
-
-                        unsetPokeName();
-
-                        //List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                        //int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-
-                        for (int k = 1; k <= 2; k++) {
-                            tv = (TextView) findViewById(getResources().getIdentifier("tipo" + k, "id", getPackageName()));
-                            TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                            params.width = effectiveWidth / 4;
-                            tv.setLayoutParams(params);
-                            tv.setText("???");
-                            tv.setBackgroundResource(R.drawable.rounded_corners);
-                            tv.setTypeface(typeface);
-                            tv.setTextColor(getResources().getColor(R.color.white));
-                            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                        }
-
-                        /*imageView[0] = (ImageView) findViewById(R.id.tipo1);
-                        imageView[0].setImageResource(R.drawable.unknown);
-                        if (numberOfTypes == 2) {
-                            imageView[0] = (ImageView) findViewById(R.id.tipo2);
-                            imageView[0].setImageResource(R.drawable.unknown);
-                        }*/
-
-                        TextView tv = (TextView)findViewById(R.id.forteContro);
-                        tv.setText(getResources().getString(getResources().getIdentifier("strong", "string", getPackageName())));
-
-                        for (int k = 1; k <= 4; k++) {
-                            tv = (TextView) findViewById(getResources().getIdentifier("tsf" + k, "id", getPackageName()));
-                            RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                            rlParams.width = effectiveWidth/4;
-                            tv.setLayoutParams(rlParams);
-                            tv.setText("???");
-                            tv.setBackgroundResource(R.drawable.rounded_corners);
-                            tv.setTypeface(typeface);
-                            tv.setTextColor(getResources().getColor(R.color.white));
-                            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                        }
-
-                        for (int k = 1; k <= 4; k++) {
-                            tv = (TextView) findViewById(getResources().getIdentifier("tsd" + k, "id", getPackageName()));
-                            RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                            rlParams.width = effectiveWidth/4;
-                            tv.setLayoutParams(rlParams);
-                            tv.setText("???");
-                            tv.setBackgroundResource(R.drawable.rounded_corners);
-                            tv.setTypeface(typeface);
-                            tv.setTextColor(getResources().getColor(R.color.white));
-                            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                        }
-
-                        showhide.setAlpha((float)0.0);
-                    }
                     }
                 });
             }
@@ -350,105 +169,14 @@ public class PokemonDetails extends AppCompatActivity {
                 imageView[0].setAlpha((float)1.0);
 
                 setPokeName();
+                setTipiScritta();
 
-                //getting Pokémon's type(s)
-                List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-                TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+                setStrenght();
+                setWeakness();
 
-                if (numberOfTypes == 1) { //it can be 1 or 2
-                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
-                    for (String element:types) {
-                        element = element.toLowerCase();
-                        tv = (TextView) findViewById(R.id.tipo1);
-                        TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                        params.width = effectiveWidth / 4;
-                        tv.setLayoutParams(params);
-                        tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                        tv.setBackgroundResource(R.drawable.rounded_corners);
-                        tv.setTypeface(typeface);
-                        tv.setTextColor(getResources().getColor(R.color.white));
-                        GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                        gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
+                descrButton();
 
-                        if (findViewById(R.id.tipo2) != null) {
-                            //removing the second type
-                            tv = (TextView) findViewById(R.id.tipo2);
-                            tv.setAlpha((float)0.0);
-                        }
-                    }
-                }
-                else {
-                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
-                    int j = 1;
-                    for (String element:types) {
-                        element = element.toLowerCase();
-                        tv = (TextView) findViewById(getResources().getIdentifier("tipo" + j, "id", getPackageName()));
-                        TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                        params.width = effectiveWidth / 4;
-                        tv.setLayoutParams(params);
-                        tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                        tv.setBackgroundResource(R.drawable.rounded_corners);
-                        tv.setTypeface(typeface);
-                        tv.setTextColor(getResources().getColor(R.color.white));
-                        GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                        gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
-                        j++;
-                    }
-                }
-
-                //setting the Pokémon's strenghts
-                List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
-                if (strenghts.size() == 0) {
-                    TextView tv = (TextView)findViewById(R.id.forteContro);
-                    tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
-                }
-                else {
-                    int counter = 1;
-                    for (String strenght:strenghts) {
-                        strenght = strenght.toLowerCase();
-                        tv = (TextView) findViewById(getResources().getIdentifier("tsf" + counter, "id", getPackageName()));
-                        RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                        rlParams.width = effectiveWidth/4;
-                        tv.setLayoutParams(rlParams);
-                        tv.setText(getResources().getString(getResources().getIdentifier(strenght, "string", getPackageName())));
-                        tv.setBackgroundResource(R.drawable.rounded_corners);
-                        tv.setTypeface(typeface);
-                        tv.setTextColor(getResources().getColor(R.color.white));
-                        GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                        gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(strenght, "color", getPackageName())));
-                        counter++;
-                    }
-                    while (counter <= 4) {
-                        tv = (TextView) findViewById(getResources().getIdentifier("tsf" + counter, "id", getPackageName()));
-                        tv.setAlpha((float)0.0);
-                        counter++;
-                    }
-                }
-
-                //setting the Pokémon's weaknesses
-                List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
-                int counter = 1;
-                for (String weakness:weaknesses) {
-                    weakness = weakness.toLowerCase();
-                    tv = (TextView) findViewById(getResources().getIdentifier("tsd" + counter, "id", getPackageName()));
-                    RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                    rlParams.width = effectiveWidth/4;
-                    tv.setLayoutParams(rlParams);
-                    tv.setText(getResources().getString(getResources().getIdentifier(weakness, "string", getPackageName())));
-                    tv.setBackgroundResource(R.drawable.rounded_corners);
-                    tv.setTypeface(typeface);
-                    tv.setTextColor(getResources().getColor(R.color.white));
-                    GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                    gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(weakness, "color", getPackageName())));
-                    counter++;
-                }
-                while (counter <= 4) {
-                    tv = (TextView) findViewById(getResources().getIdentifier("tsd" + counter, "id", getPackageName()));
-                    tv.setAlpha((float)0.0);
-                    counter++;
-                }
-
+                showhide.setEnabled(true);
                 showhide.setAlpha((float)1.0);
 
                 pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -461,109 +189,14 @@ public class PokemonDetails extends AppCompatActivity {
                         imageView[0].setAlpha((float)1.0);
 
                         setPokeName();
+                        setTipiScritta();
 
-                        //getting Pokémon's type(s)
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-                        TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+                        setStrenght();
+                        setWeakness();
 
-                        if (numberOfTypes == 1) { //it can be 1 or 2
-                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
-                            for (String element:types) {
-                                element = element.toLowerCase();
-                                tv = (TextView) findViewById(R.id.tipo1);
-                                TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                                params.width = effectiveWidth / 4;
-                                tv.setLayoutParams(params);
-                                tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                                tv.setBackgroundResource(R.drawable.rounded_corners);
-                                tv.setTypeface(typeface);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
+                        descrButton();
 
-                                if (findViewById(R.id.tipo2) != null) {
-                                    //removing the second type
-                                    tv = (TextView) findViewById(R.id.tipo2);
-                                    tv.setAlpha((float)0.0);
-                                }
-                            }
-                        }
-                        else {
-                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
-                            int j = 1;
-                            for (String element:types) {
-                                element = element.toLowerCase();
-                                tv = (TextView) findViewById(getResources().getIdentifier("tipo" + j, "id", getPackageName()));
-                                TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                                params.width = effectiveWidth / 4;
-                                tv.setLayoutParams(params);
-                                tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                                tv.setBackgroundResource(R.drawable.rounded_corners);
-                                tv.setTypeface(typeface);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
-                                j++;
-                            }
-                        }
-
-                        //setting the Pokémon's strenghts
-                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
-                        if (strenghts.size() == 0) {
-                            TextView tv = (TextView)findViewById(R.id.forteContro);
-                            tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
-                            for (int j=1; j<=4; j++) {
-                                tv = (TextView) findViewById(getResources().getIdentifier("tsf" + j, "id", getPackageName()));
-                                tv.setAlpha((float)0.0);
-                            }
-                        }
-                        else {
-                            int counter = 1;
-                            for (String strenght:strenghts) {
-                                strenght = strenght.toLowerCase();
-                                tv = (TextView) findViewById(getResources().getIdentifier("tsd" + counter, "id", getPackageName()));
-                                RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                                rlParams.width = effectiveWidth/4;
-                                tv.setLayoutParams(rlParams);
-                                tv.setText(getResources().getString(getResources().getIdentifier(strenght, "string", getPackageName())));
-                                tv.setBackgroundResource(R.drawable.rounded_corners);
-                                tv.setTypeface(typeface);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(strenght, "color", getPackageName())));
-                                counter++;
-                            }
-                            while (counter <= 4) {
-                                tv = (TextView) findViewById(getResources().getIdentifier("tsd" + counter, "id", getPackageName()));
-                                tv.setAlpha((float)0.0);
-                                counter++;
-                            }
-                        }
-
-                        //setting the Pokémon's weaknesses
-                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
-                        int counter = 1;
-                        for (String weakness:weaknesses) {
-                            weakness = weakness.toLowerCase();
-                            tv = (TextView) findViewById(getResources().getIdentifier("tsd" + counter, "id", getPackageName()));
-                            RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                            rlParams.width = effectiveWidth/4;
-                            tv.setLayoutParams(rlParams);
-                            tv.setText(getResources().getString(getResources().getIdentifier(weakness, "string", getPackageName())));
-                            tv.setBackgroundResource(R.drawable.rounded_corners);
-                            tv.setTypeface(typeface);
-                            tv.setTextColor(getResources().getColor(R.color.white));
-                            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                            gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(weakness, "color", getPackageName())));
-                            counter++;
-                        }
-                        while (counter <= 4) {
-                            tv = (TextView) findViewById(getResources().getIdentifier("tsd" + counter, "id", getPackageName()));
-                            tv.setAlpha((float)0.0);
-                            counter++;
-                        }
-
+                        showhide.setEnabled(true);
                         showhide.setAlpha((float)1.0);
 
                     }
@@ -574,59 +207,17 @@ public class PokemonDetails extends AppCompatActivity {
                         imageView[0].setAlpha((float) 0.1);
 
                         unsetPokeName();
-
-                        //List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                        //int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-
-                        for (int k = 1; k <= 2; k++) {
-                            tv = (TextView) findViewById(getResources().getIdentifier("tipo" + k, "id", getPackageName()));
-                            TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                            params.width = effectiveWidth / 4;
-                            tv.setLayoutParams(params);
-                            tv.setText("???");
-                            tv.setBackgroundResource(R.drawable.rounded_corners);
-                            tv.setTypeface(typeface);
-                            tv.setTextColor(getResources().getColor(R.color.white));
-                            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                        }
-
-                        /*imageView[0] = (ImageView) findViewById(R.id.tipo1);
-                        imageView[0].setImageResource(R.drawable.unknown);
-                        if (numberOfTypes == 2) {
-                            imageView[0] = (ImageView) findViewById(R.id.tipo2);
-                            imageView[0].setImageResource(R.drawable.unknown);
-                        }*/
+                        unsetTipiScritta();
 
                         tv = (TextView)findViewById(R.id.forteContro);
                         tv.setText(getResources().getString(getResources().getIdentifier("strong", "string", getPackageName())));
 
-                        for (int k = 1; k <= 4; k++) {
-                            tv = (TextView) findViewById(getResources().getIdentifier("tsf" + k, "id", getPackageName()));
-                            RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                            rlParams.width = effectiveWidth/4;
-                            tv.setLayoutParams(rlParams);
-                            tv.setText("???");
-                            tv.setBackgroundResource(R.drawable.rounded_corners);
-                            tv.setTypeface(typeface);
-                            tv.setTextColor(getResources().getColor(R.color.white));
-                            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                        }
+                        unsetStrenght();
+                        unsetWeakness();
 
-                        for (int k = 1; k <= 4; k++) {
-                            tv = (TextView) findViewById(getResources().getIdentifier("tsd" + k, "id", getPackageName()));
-                            RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
-                            rlParams.width = effectiveWidth/4;
-                            tv.setLayoutParams(rlParams);
-                            tv.setText("???");
-                            tv.setBackgroundResource(R.drawable.rounded_corners);
-                            tv.setTypeface(typeface);
-                            tv.setTextColor(getResources().getColor(R.color.white));
-                            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                        }
+                        descrButton();
 
+                        showhide.setEnabled(false);
                         showhide.setAlpha((float)0.0);
                     }
                     }
@@ -641,191 +232,54 @@ public class PokemonDetails extends AppCompatActivity {
                 imageView[0].setAlpha((float) 0.1);
 
                 unsetPokeName();
+                unsetTipiScritta();
 
-                TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+                unsetStrenght();
+                unsetWeakness();
 
-                List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+                descrButton();
 
-                if (numberOfTypes == 1)
-                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
-                else
-                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
-
-                for (int k = 1; k <= 2; k++) {
-                    tv = (TextView) findViewById(getResources().getIdentifier("tipo" + k, "id", getPackageName()));
-                    TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                    params.width = effectiveWidth / 4;
-                    tv.setLayoutParams(params);
-                    tv.setText("???");
-                    tv.setBackgroundResource(R.drawable.rounded_corners);
-                    tv.setTypeface(typeface);
-                    tv.setTextColor(getResources().getColor(R.color.white));
-                    GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                    gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                }
-
-                /*imageView[0] = (ImageView) findViewById(R.id.tipo1);
-                imageView[0].setImageResource(R.drawable.unknown);
-                if (numberOfTypes == 2) {
-                    imageView[0] = (ImageView) findViewById(R.id.tipo2);
-                    imageView[0].setImageResource(R.drawable.unknown);
-                }*/
-
-                for (int k = 1; k <= 4; k++) {
-                    imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsf" + k, "id", getPackageName()));
-                    imageView[0].setImageResource(R.drawable.unknown);
-                }
-
-                for (int k = 1; k <= 4; k++) {
-                    imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsd" + k, "id", getPackageName()));
-                    imageView[0].setImageResource(R.drawable.unknown);
-                }
-
+                showhide.setEnabled(false);
                 showhide.setAlpha((float)0.0);
 
                 pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (pokeSwitch.isChecked()) {
-                        pokemonHelper.insertCatches(pokeID, getApplicationContext()); //storing into Catches that my user caught that Pokémon
+                        if (pokeSwitch.isChecked()) {
+                            pokemonHelper.insertCatches(pokeID, getApplicationContext()); //storing into Catches that my user caught that Pokémon
 
-                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
-                        imageView[0].setAlpha((float)1.0);
+                            imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                            imageView[0].setAlpha((float)1.0);
 
-                        setPokeName();
+                            setPokeName();
+                            setTipiScritta();
 
-                        //getting Pokémon's type(s)
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-                        TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+                            setStrenght();
+                            setWeakness();
 
-                        if (numberOfTypes == 1) { //it can be 1 or 2
-                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
-                            for (String element:types) {
-                                element = element.toLowerCase();
-                                tv = (TextView) findViewById(R.id.tipo1);
-                                TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                                params.width = effectiveWidth / 4;
-                                tv.setLayoutParams(params);
-                                tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                                tv.setBackgroundResource(R.drawable.rounded_corners);
-                                tv.setTypeface(typeface);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
+                            descrButton();
 
-                                if (findViewById(R.id.tipo2) != null) {
-                                    //removing the second type
-                                    tv = (TextView) findViewById(R.id.tipo2);
-                                    ViewGroup type2 = (ViewGroup) tv.getParent();
-                                    type2.removeView(tv);
-                                }
-                            }
+                            showhide.setEnabled(true);
+                            showhide.setAlpha((float)1.0);
+
                         }
                         else {
-                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
-                            int j = 1;
-                            for (String element:types) {
-                                element = element.toLowerCase();
-                                tv = (TextView) findViewById(getResources().getIdentifier("tipo" + j, "id", getPackageName()));
-                                TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                                params.width = effectiveWidth / 4;
-                                tv.setLayoutParams(params);
-                                tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                                tv.setBackgroundResource(R.drawable.rounded_corners);
-                                tv.setTypeface(typeface);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
-                                j++;
-                            }
+                            pokemonHelper.delete(pokeID, getApplicationContext());
+
+                            imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
+                            imageView[0].setAlpha((float) 0.1);
+
+                            unsetPokeName();
+                            unsetTipiScritta();
+
+                            unsetStrenght();
+                            unsetWeakness();
+
+                            descrButton();
+
+                            showhide.setEnabled(false);
+                            showhide.setAlpha((float)0.0);
                         }
-
-                        //setting the Pokémon's strenghts
-                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
-                        if (strenghts.size() == 0) {
-                            TextView tv = (TextView)findViewById(R.id.forteContro);
-                            tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
-                        }
-                        else {
-                            int counter = 1;
-                            for (String strenght:strenghts) {
-                                String id = "tsf"+counter;
-                                strenght = strenght.toLowerCase();
-                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                                imageView[0].setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
-                                counter++;
-                            }
-                            while (counter <= 4) {
-                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsf"+counter, "id", getPackageName()));
-                                imageView[0].setAlpha((float)0.0);
-                                counter++;
-                            }
-                        }
-
-                        //setting the Pokémon's weaknesses
-                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
-                        int counter = 1;
-                        for (String weakness:weaknesses) {
-                            String id = "tsd"+counter;
-                            weakness = weakness.toLowerCase();
-                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                            imageView[0].setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
-                            counter++;
-                        }
-                        while (counter <= 4) {
-                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsd"+counter, "id", getPackageName()));
-                            imageView[0].setAlpha((float)0.0);
-                            counter++;
-                        }
-
-                        showhide.setAlpha((float)1.0);
-
-                    }
-                    else {
-                        pokemonHelper.delete(pokeID, getApplicationContext());
-
-                        imageView[0] = (ImageView) findViewById(R.id.tmppkmn);
-                        imageView[0].setAlpha((float) 0.1);
-
-                        unsetPokeName();
-
-                        //List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                        //int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-
-                        for (int k = 1; k <= 2; k++) {
-                            tv = (TextView) findViewById(getResources().getIdentifier("tipo" + k, "id", getPackageName()));
-                            TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                            params.width = effectiveWidth / 4;
-                            tv.setLayoutParams(params);
-                            tv.setText("???");
-                            tv.setBackgroundResource(R.drawable.rounded_corners);
-                            tv.setTypeface(typeface);
-                            tv.setTextColor(getResources().getColor(R.color.white));
-                            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                        }
-
-                        /*imageView[0] = (ImageView) findViewById(R.id.tipo1);
-                        imageView[0].setImageResource(R.drawable.unknown);
-                        if (numberOfTypes == 2) {
-                            imageView[0] = (ImageView) findViewById(R.id.tipo2);
-                            imageView[0].setImageResource(R.drawable.unknown);
-                        }*/
-
-                        for (int i = 1; i <= 4; i++) {
-                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsf" + i, "id", getPackageName()));
-                            imageView[0].setImageResource(R.drawable.unknown);
-                        }
-
-                        for (int i = 1; i <= 4; i++) {
-                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsd" + i, "id", getPackageName()));
-                            imageView[0].setImageResource(R.drawable.unknown);
-                        }
-
-                        showhide.setAlpha((float)0.0);
-                    }
                     }
                 });
             }
@@ -836,81 +290,10 @@ public class PokemonDetails extends AppCompatActivity {
                 imageView[0].setAlpha((float)1.0);
 
                 setPokeName();
+                setTipiScritta();
 
-                //getting Pokémon's type(s)
-                List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-                TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
-
-                if (numberOfTypes == 1) { //it can be 1 or 2
-                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
-                    for (String element:types) {
-                        element = element.toLowerCase();
-                        tv = (TextView) findViewById(R.id.tipo1);
-                        TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                        params.width = effectiveWidth / 4;
-                        tv.setLayoutParams(params);
-                        tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                        tv.setBackgroundResource(R.drawable.rounded_corners);
-                        tv.setTypeface(typeface);
-                        tv.setTextColor(getResources().getColor(R.color.white));
-                        GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                        gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
-
-                        if (findViewById(R.id.tipo2) != null) {
-                            //removing the second type
-                            tv = (TextView) findViewById(R.id.tipo2);
-                            ViewGroup type2 = (ViewGroup) tv.getParent();
-                            type2.removeView(tv);
-                        }
-                    }
-                }
-                else {
-                    tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
-                    int j = 1;
-                    for (String element:types) {
-                        element = element.toLowerCase();
-                        tv = (TextView) findViewById(getResources().getIdentifier("tipo" + j, "id", getPackageName()));
-                        TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                        params.width = effectiveWidth / 4;
-                        tv.setLayoutParams(params);
-                        tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                        tv.setBackgroundResource(R.drawable.rounded_corners);
-                        tv.setTypeface(typeface);
-                        tv.setTextColor(getResources().getColor(R.color.white));
-                        GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                        gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
-                        j++;
-                    }
-                }
-
-                //setting the Pokémon's strenghts
-                List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
-                if (strenghts.size() == 0) {
-                    TextView tv = (TextView)findViewById(R.id.forteContro);
-                    tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
-                }
-                else {
-                    int counter = 1;
-                    for (String strenght:strenghts) {
-                        String id = "tsf"+counter;
-                        strenght = strenght.toLowerCase();
-                        imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                        imageView[0].setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
-                        counter++;
-                    }
-                }
-
-                //setting the Pokémon's weaknesses
-                List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
-                int counter = 1;
-                for (String weakness:weaknesses) {
-                    String id = "tsd"+counter;
-                    weakness = weakness.toLowerCase();
-                    imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                    imageView[0].setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
-                    counter++;
-                }
+                setStrenght();
+                setWeakness();
 
                 showhide.setAlpha((float)1.0);
 
@@ -924,92 +307,12 @@ public class PokemonDetails extends AppCompatActivity {
                         imageView[0].setAlpha((float)1.0);
 
                         setPokeName();
+                        setTipiScritta();
 
-                        //getting Pokémon's type(s)
-                        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
-                        TextView tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+                        setStrenght();
+                        setWeakness();
 
-                        if (numberOfTypes == 1) { //it can be 1 or 2
-                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
-                            for (String element:types) {
-                                element = element.toLowerCase();
-                                tv = (TextView) findViewById(R.id.tipo1);
-                                TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                                params.width = effectiveWidth / 4;
-                                tv.setLayoutParams(params);
-                                tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                                tv.setBackgroundResource(R.drawable.rounded_corners);
-                                tv.setTypeface(typeface);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
-
-                                if (findViewById(R.id.tipo2) != null) {
-                                    //removing the second type
-                                    tv = (TextView) findViewById(R.id.tipo2);
-                                    ViewGroup type2 = (ViewGroup) tv.getParent();
-                                    type2.removeView(tv);
-                                }
-                            }
-                        }
-                        else {
-                            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
-                            int j = 1;
-                            for (String element:types) {
-                                element = element.toLowerCase();
-                                tv = (TextView) findViewById(getResources().getIdentifier("tipo" + j, "id", getPackageName()));
-                                TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                                params.width = effectiveWidth / 4;
-                                tv.setLayoutParams(params);
-                                tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
-                                tv.setBackgroundResource(R.drawable.rounded_corners);
-                                tv.setTypeface(typeface);
-                                tv.setTextColor(getResources().getColor(R.color.white));
-                                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
-                                j++;
-                            }
-                        }
-
-                        //setting the Pokémon's strenghts
-                        List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
-                        if (strenghts.size() == 0) {
-                            TextView tv = (TextView)findViewById(R.id.forteContro);
-                            tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
-                        }
-                        else {
-                            int counter = 1;
-                            for (String strenght:strenghts) {
-                                String id = "tsf"+counter;
-                                strenght = strenght.toLowerCase();
-                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                                imageView[0].setImageResource(getResources().getIdentifier(strenght, "drawable", getPackageName()));
-                                counter++;
-                            }
-                            while (counter <= 4) {
-                                imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsf"+counter, "id", getPackageName()));
-                                imageView[0].setAlpha((float)0.0);
-                                counter++;
-                            }
-                        }
-
-                        //setting the Pokémon's weaknesses
-                        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
-                        int counter = 1;
-                        for (String weakness:weaknesses) {
-                            String id = "tsd"+counter;
-                            weakness = weakness.toLowerCase();
-                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier(id, "id", getPackageName()));
-                            imageView[0].setImageResource(getResources().getIdentifier(weakness, "drawable", getPackageName()));
-                            counter++;
-                        }
-                        while (counter <= 4) {
-                            imageView[0] = (ImageView)findViewById(getResources().getIdentifier("tsd"+counter, "id", getPackageName()));
-                            imageView[0].setAlpha((float)0.0);
-                            counter++;
-                        }
-
+                        showhide.setEnabled(true);
                         showhide.setAlpha((float)1.0);
 
                     }
@@ -1020,40 +323,12 @@ public class PokemonDetails extends AppCompatActivity {
                         imageView[0].setAlpha((float) 0.1);
 
                         unsetPokeName();
+                        unsetTipiScritta();
 
-                        //List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
-                        //int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+                        unsetStrenght();
+                        unsetWeakness();
 
-                        for (int k = 1; k <= 2; k++) {
-                            tv = (TextView) findViewById(getResources().getIdentifier("tipo" + k, "id", getPackageName()));
-                            TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
-                            params.width = effectiveWidth / 4;
-                            tv.setLayoutParams(params);
-                            tv.setText("???");
-                            tv.setBackgroundResource(R.drawable.rounded_corners);
-                            tv.setTypeface(typeface);
-                            tv.setTextColor(getResources().getColor(R.color.white));
-                            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
-                            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
-                        }
-
-                        /*imageView[0] = (ImageView) findViewById(R.id.tipo1);
-                        imageView[0].setImageResource(R.drawable.unknown);
-                        if (numberOfTypes == 2) {
-                            imageView[0] = (ImageView) findViewById(R.id.tipo2);
-                            imageView[0].setImageResource(R.drawable.unknown);
-                        }*/
-
-                        for (int i = 1; i <= 4; i++) {
-                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsf" + i, "id", getPackageName()));
-                            imageView[0].setImageResource(R.drawable.unknown);
-                        }
-
-                        for (int i = 1; i <= 4; i++) {
-                            imageView[0] = (ImageView) findViewById(getResources().getIdentifier("tsd" + i, "id", getPackageName()));
-                            imageView[0].setImageResource(R.drawable.unknown);
-                        }
-
+                        showhide.setEnabled(false);
                         showhide.setAlpha((float)0.0);
                     }
                     }
@@ -1064,11 +339,8 @@ public class PokemonDetails extends AppCompatActivity {
         getActionBar();
 
         //this button controls the text and the "read" button next to it, making it appear and disappear
-        final Button leggi = (Button)findViewById(R.id.leggidescrizione);
-        tv.setText(getResources().getString(getResources().getIdentifier("pkmn"+pokeID, "string", getPackageName())));
         toSpeech = getResources().getString(getResources().getIdentifier("pkmn"+pokeID, "string", getPackageName()));
-        tv.setVisibility(View.GONE);
-        leggi.setVisibility(View.GONE);
+
         showhide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1126,10 +398,6 @@ public class PokemonDetails extends AppCompatActivity {
         });
     }
 
-    private void checkedSwitch () {
-
-    }
-
     private void setPokeName () {
         if (pokeID < 10)
             pkmnName.setText("#00"+pokeID+" - "+pokeName);
@@ -1164,4 +432,166 @@ public class PokemonDetails extends AppCompatActivity {
             pkmnName.setText("#"+pokeID+" - ???");
     }
 
+    private void setTipiScritta () {
+        tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+
+        List<String> types = pokemonHelper.getPokeTypes(pokeID, getApplicationContext());
+        int numberOfTypes = types.size(); //checking if it has 1 or 2 types, as written above
+
+        if (numberOfTypes == 1) { //it can be 1 or 2
+            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipo", "string", getPackageName())));
+            for (String element:types) {
+                element = element.toLowerCase();
+                tv = (TextView) findViewById(R.id.tipo1);
+                TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
+                params.width = effectiveWidth / 4;
+                tv.setLayoutParams(params);
+                tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
+                tv.setBackgroundResource(R.drawable.rounded_corners);
+                tv.setTypeface(typeface);
+                tv.setTextColor(getResources().getColor(R.color.white));
+                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
+                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
+
+                if (findViewById(R.id.tipo2) != null) {
+                    //removing the second type
+                    tv = (TextView) findViewById(R.id.tipo2);
+                    tv.setAlpha((float)0.0);
+                }
+            }
+        }
+        else {
+            tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
+            int j = 1;
+            for (String element:types) {
+                element = element.toLowerCase();
+                tv = (TextView) findViewById(getResources().getIdentifier("tipo" + j, "id", getPackageName()));
+                TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
+                params.width = effectiveWidth / 4;
+                tv.setLayoutParams(params);
+                System.err.println(element);
+                tv.setText(getResources().getString(getResources().getIdentifier(element, "string", getPackageName())));
+                tv.setBackgroundResource(R.drawable.rounded_corners);
+                tv.setTypeface(typeface);
+                tv.setTextColor(getResources().getColor(R.color.white));
+                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
+                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(element, "color", getPackageName())));
+                j++;
+            }
+        }
+    }
+
+    private void unsetTipiScritta () {
+        tipiScritta = (TextView)findViewById(R.id.tipiScritta);
+        tipiScritta.setText(getResources().getString(getResources().getIdentifier("tipi", "string", getPackageName())));
+
+        for (int k = 1; k <= 2; k++) {
+            tv = (TextView) findViewById(getResources().getIdentifier("tipo" + k, "id", getPackageName()));
+            TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
+            params.width = effectiveWidth / 4;
+            tv.setLayoutParams(params);
+            tv.setText("???");
+            tv.setBackgroundResource(R.drawable.rounded_corners);
+            tv.setTypeface(typeface);
+            tv.setTextColor(getResources().getColor(R.color.white));
+            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
+            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
+        }
+    }
+
+    private void setStrenght () {
+        List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
+        if (strenghts.size() == 0) {
+            TextView tv = (TextView)findViewById(R.id.forteContro);
+            tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
+            for (int j=1; j<=4; j++) {
+                tv = (TextView) findViewById(getResources().getIdentifier("tsf" + j, "id", getPackageName()));
+                tv.setAlpha((float)0.0);
+            }
+        }
+        else {
+            int counter = 1;
+            for (String strenght:strenghts) {
+                strenght = strenght.toLowerCase();
+                tv = (TextView) findViewById(getResources().getIdentifier("tsf" + counter, "id", getPackageName()));
+                RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
+                rlParams.width = effectiveWidth/4;
+                tv.setLayoutParams(rlParams);
+                tv.setText(getResources().getString(getResources().getIdentifier(strenght, "string", getPackageName())));
+                tv.setBackgroundResource(R.drawable.rounded_corners);
+                tv.setTypeface(typeface);
+                tv.setTextColor(getResources().getColor(R.color.white));
+                GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
+                gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(strenght, "color", getPackageName())));
+                counter++;
+            }
+            while (counter <= 4) {
+                tv = (TextView) findViewById(getResources().getIdentifier("tsf" + counter, "id", getPackageName()));
+                tv.setAlpha((float)0.0);
+                counter++;
+            }
+        }
+    }
+
+    private void unsetStrenght () {
+        for (int k = 1; k <= 4; k++) {
+            tv = (TextView) findViewById(getResources().getIdentifier("tsf" + k, "id", getPackageName()));
+            RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
+            rlParams.width = effectiveWidth/4;
+            tv.setLayoutParams(rlParams);
+            tv.setText("???");
+            tv.setBackgroundResource(R.drawable.rounded_corners);
+            tv.setTypeface(typeface);
+            tv.setTextColor(getResources().getColor(R.color.white));
+            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
+            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
+        }
+    }
+
+    private void setWeakness () {
+        List<String> weaknesses = pokemonHelper.getWeaknesses(pokeID, getApplicationContext());
+        int counter = 1;
+        for (String weakness:weaknesses) {
+            weakness = weakness.toLowerCase();
+            tv = (TextView) findViewById(getResources().getIdentifier("tsd" + counter, "id", getPackageName()));
+            RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
+            rlParams.width = effectiveWidth/4;
+            tv.setLayoutParams(rlParams);
+            tv.setText(getResources().getString(getResources().getIdentifier(weakness, "string", getPackageName())));
+            tv.setBackgroundResource(R.drawable.rounded_corners);
+            tv.setTypeface(typeface);
+            tv.setTextColor(getResources().getColor(R.color.white));
+            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
+            gradientDrawable.setColor(getResources().getColor(getResources().getIdentifier(weakness, "color", getPackageName())));
+            counter++;
+        }
+        while (counter <= 4) {
+            tv = (TextView) findViewById(getResources().getIdentifier("tsd" + counter, "id", getPackageName()));
+            tv.setAlpha((float)0.0);
+            counter++;
+        }
+    }
+
+    private void unsetWeakness () {
+        for (int k = 1; k <= 4; k++) {
+            tv = (TextView) findViewById(getResources().getIdentifier("tsd" + k, "id", getPackageName()));
+            RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
+            rlParams.width = effectiveWidth/4;
+            tv.setLayoutParams(rlParams);
+            tv.setText("???");
+            tv.setBackgroundResource(R.drawable.rounded_corners);
+            tv.setTypeface(typeface);
+            tv.setTextColor(getResources().getColor(R.color.white));
+            GradientDrawable gradientDrawable = (GradientDrawable) tv.getBackground();
+            gradientDrawable.setColor(getResources().getColor(R.color.unknown));
+        }
+    }
+
+    private void descrButton () {
+        leggi = (Button)findViewById(R.id.leggidescrizione);
+        tv = (TextView)findViewById(R.id.descriptiontext);
+        tv.setText(getResources().getString(getResources().getIdentifier("pkmn"+pokeID, "string", getPackageName())));
+        tv.setVisibility(View.GONE);
+        leggi.setVisibility(View.GONE);
+    }
 }
