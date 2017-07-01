@@ -16,6 +16,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.List;
 import java.util.Map;
 
@@ -26,16 +29,21 @@ import java.util.Map;
 public class MyPokeDetails extends AppCompatActivity {
 
     int pokeID;
-    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_poke_details);
 
+        AdView mAdView = (AdView) findViewById(R.id.AdView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("01658E55E3FE332C522AEF747FD402FF")
+                .build();
+        mAdView.loadAd(adRequest);
+
         getActionBar();
 
-        context = this;
+        Context context = this;
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);

@@ -32,19 +32,11 @@ public class Welcome extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int dpi = displayMetrics.densityDpi;
 
-        String owner = null;
+        String dbSmartkedex = pokemonHelper.getSmartkedex();
 
-        try {
-            owner = pokemonHelper.getOwner();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-
-        if (owner == null || owner.equals("")) { //it's the first app launch ever
+        if (dbSmartkedex == null || dbSmartkedex.equals("")) { //it's the first app launch ever
             TextView textView = (TextView)findViewById(R.id.welcome);
             textView.setText(getResources().getString(getResources().getIdentifier("welcome", "string", getPackageName())));
-            textView = (TextView)findViewById(R.id.owner);
-            textView.setText(getResources().getString(getResources().getIdentifier("insertname", "string", getPackageName())));
             textView = (TextView)findViewById(R.id.smartkedex);
             textView.setText(getResources().getString(getResources().getIdentifier("smartkedexname", "string", getPackageName())));
             textView = (TextView)findViewById(R.id.tips);
@@ -60,40 +52,30 @@ public class Welcome extends Activity {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EditText editText = (EditText)findViewById(R.id.setOwner);
-                    String owner = editText.getText().toString();
-                    editText = (EditText)findViewById(R.id.setSmartkedex);
+                    EditText editText = (EditText)findViewById(R.id.setSmartkedex);
                     String smartkedex = editText.getText().toString();
-                    if (owner.equals("")) {
-                        Toast.makeText(getApplicationContext(), getResources().getString(getResources().getIdentifier("insertname_error", "string", getPackageName())), Toast.LENGTH_LONG).show();
-                    }
-                    else {
                         if (pkmnGO.isChecked())
-                            pokemonHelper.insertSettingsData(owner, smartkedex, 1);
+                            pokemonHelper.insertSettingsData(pokemonHelper.getLocalUsername(), smartkedex, 1);
                         else
-                            pokemonHelper.insertSettingsData(owner, smartkedex, 0);
+                            pokemonHelper.insertSettingsData(pokemonHelper.getLocalUsername(), smartkedex, 0);
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(i);
                         finish();
-                    }
                 }
             });
         }
         else {
             TextView textView = (TextView)findViewById(R.id.welcome);
-            textView.setText(getResources().getString(getResources().getIdentifier("welcome_back", "string", getPackageName()), owner));
+            textView.setText(getResources().getString(getResources().getIdentifier("welcome_back", "string", getPackageName()), pokemonHelper.getLocalUsername()));
             if (pokemonHelper.getPokemonGO() == 1) {
                 int total = pokemonHelper.getTotalCatches(context);
                 int copies = pokemonHelper.getTotalCopies(context);
                 textView.append(getResources().getString(getResources().getIdentifier("pokemongo_recap", "string", getPackageName()), total, copies));
             }
 
-            View remove = findViewById(R.id.owner);
-            ViewGroup parent = (ViewGroup)remove.getParent();
-            parent.removeView(remove);
-            remove = findViewById(R.id.setOwner);
-            parent = (ViewGroup)remove.getParent();
-            parent.removeView(remove);
+            View remove;
+            ViewGroup parent;
+
             remove = findViewById(R.id.setSmartkedex);
             parent = (ViewGroup)remove.getParent();
             parent.removeView(remove);

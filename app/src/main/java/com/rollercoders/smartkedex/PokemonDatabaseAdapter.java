@@ -57,30 +57,18 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         backgroundWorker = new BackgroundWorker("insertCatches", pokeID, getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
-//        try {
-//            String error = backgroundWorker.get();
-//            System.err.println(error);
-//        } catch (InterruptedException | ExecutionException e) {
-//            e.printStackTrace();
-//        }
     }
 
     void insertCopy (String attackName, String ultiName, String pokeName, int pokeID, Context context) {
         backgroundWorker = new BackgroundWorker("insertCopy", pokeID, attackName, ultiName, pokeName, getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
-//        SQLiteDatabase db = helper.getWritableDatabase();
-//        db.execSQL("INSERT INTO Copy (AttackName, UltiName, PokemonName, PokemonID) VALUES ('"+attackName+"', '"+ultiName+"', '"+pokeName+"', '"+pokeID+"')");
-//        db.close();
     }
 
     void deleteCopy (int pokeId, Context context) {
         backgroundWorker = new BackgroundWorker("deleteCopy", pokeId, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
-//        SQLiteDatabase db = helper.getWritableDatabase();
-//        db.execSQL("DELETE FROM Copy WHERE ID = '"+pokeId+"'");
-//        db.close();
     }
 
     void setRememberME (String username, String password) {
@@ -117,6 +105,12 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
             db.execSQL("UPDATE Settings SET Username = '" + username + "', Password = '" + password + "', RememberME = 0");
             db.close();
         }
+    }
+
+    void resetRememberME (String username) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("UPDATE Settings SET RememberME = 0 WHERE Username = '"+username+"'");
+        db.close();
     }
 
     void erase (String username, Context context) {
@@ -477,8 +471,10 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        String[] division = temp.split("\n");
-        Collections.addAll(strengths, division);
+        if (!temp.equals("")) {
+            String[] division = temp.split("\n");
+            Collections.addAll(strengths, division);
+        }
         return strengths;
     }
 

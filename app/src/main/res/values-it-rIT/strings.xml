@@ -2,7 +2,7 @@
     <string name="contact">Contattaci</string>
     <string name="welcome">Benvenuto!</string>
     <string name="insertname">Inserisci il tuo nome*</string>
-    <string name="smartkedexname">Inserisci il nome dello Smartkédex</string>
+    <string name="smartkedexname">Il Pokédex di Ash si chiamava Dexter\nIl Pokédex di Red, negli ultimi giochi, si chiama Rotox\nE il TUO Pokédex come si chiama?</string>
     <string name="playpokego">Giochi a Pokémon GO?</string>
     <string name="confirmRegistration">Conferma ed Entra</string>
     <string name="enterapp">Entra nell \' App</string>
@@ -321,6 +321,7 @@
     <string name="insertUsername">Inserisci il tuo Username</string>
     <string name="loginFail">Login Fallito: Accesso Negato</string>
     <string name="loginFailMessage">I dati inseriti non sono corretti.\nProva di nuovo</string>
+    <string name="loginFailAutoMessage">I dati inseriti non sono corretti.\nIl Login automatico è stato disinserito.\nProva di nuovo</string>
     <string name="no">No</string>
     <string name="yes">Sì</string>
     <string name="insertPassword">Inserisci la tua Password</string>
@@ -342,4 +343,25 @@
     <string name="FieldsNotNullTitle">Errore Critico</string>
     <string name="versionFail">Versione Obsoleta</string>
     <string name="versionFailMessage">La tua versione di Smartkédex è obsoleta!\nAggiornala ora per continuare ad utilizzare l\'app.\nGrazie!\n\nIl Team RollerCoders</string>
+    <string name="InternetFail">Connessione Internet Assente</string>
+    <string name="InternetFailMessage">Sembra che tu non possa accedere alla rete.\nPer funzionare, Smartkédex deve connettersi ai nostri server.\nControlla la tua connessione di rete e riprova.</string>
+    <string name="unknown">Sconosciuto</string>
+    <string name="acciaio">Acciaio</string>
+    <string name="acqua">Acqua</string>
+    <string name="buio">Buio</string>
+    <string name="coleottero">Coleottero</string>
+    <string name="drago">Drago</string>
+    <string name="elettro">Elettro</string>
+    <string name="erba">Erba</string>
+    <string name="folletto">Folletto</string>
+    <string name="fuoco">Fuoco</string>
+    <string name="ghiaccio">Ghiaccio</string>
+    <string name="lotta">Lotta</string>
+    <string name="normale">Normale</string>
+    <string name="roccia">Roccia</string>
+    <string name="spettro">Spettro</string>
+    <string name="terra">Terra</string>
+    <string name="veleno">Veleno</string>
+    <string name="volante">Volante</string>
+    <string name="psico">Psico</string>
 </resources>

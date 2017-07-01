@@ -21,6 +21,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +44,12 @@ public class EditPokeDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_poke_details);
+
+        AdView mAdView = (AdView) findViewById(R.id.AdView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice("01658E55E3FE332C522AEF747FD402FF")
+                .build();
+        mAdView.loadAd(adRequest);
 
         context = this;
 
@@ -226,7 +235,7 @@ public class EditPokeDetails extends AppCompatActivity {
                     attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     ultiSpinner.setAdapter(ultiAdapter);
 
-                    // add the TextView  to the new TableRow
+                    // add the TextView to the new TableRow
                     params.gravity = Gravity.CENTER_VERTICAL;
                     params.setMargins(0,10,0,0);
                     row.addView(iv);

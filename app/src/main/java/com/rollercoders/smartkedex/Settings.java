@@ -33,7 +33,7 @@ public class Settings extends AppCompatActivity {
         TextView name = (TextView)findViewById(R.id.nomeSmartkedex);
         TextView proprietario = (TextView)findViewById(R.id.proprietario);
         final EditText inputNome = (EditText)findViewById(R.id.inputNomeSmartkedex);
-        final EditText inputProprietario = (EditText)findViewById(R.id.inputProprietario);
+        final TextView inputProprietario = (TextView) findViewById(R.id.inputProprietario);
         Button presentazione = (Button)findViewById(R.id.presentazione);
         final Switch playPokemonGO = (Switch)findViewById(R.id.playPokemonGO);
         final Button reset = (Button)findViewById(R.id.reset);
@@ -50,7 +50,7 @@ public class Settings extends AppCompatActivity {
             setpokeGO = 1;
         }
 
-        name.setText(getResources().getString(getResources().getIdentifier("editsmartkedexname", "string", getPackageName())));
+        name.setText(getResources().getString(getResources().getIdentifier("smartkedexname", "string", getPackageName())));
         proprietario.setText(getResources().getString(getResources().getIdentifier("owner", "string", getPackageName())));
         presentazione.setText(getResources().getString(getResources().getIdentifier("presentazione", "string", getPackageName())));
         reset.setText(getResources().getString(getResources().getIdentifier("erase", "string", getPackageName())));

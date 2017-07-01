@@ -18,7 +18,7 @@
     <string name="insertname">Insert your name*</string>
     <string name="not_strong">Strong Against: Nothing</string>
     <string name="playpokego">Do you play Pokémon GO?</string>
-    <string name="smartkedexname">Insert the Smartkédex name</string>
+    <string name="smartkedexname">Ash\' Pokédex name was "Dexter"\nRed\'s Pokédex in the last game was Rotox\nSo, what\'s YOUR Pokédex name?</string>
     <string name="tipi">Types</string>
     <string name="tipo">Type</string>
     <string name="welcome">Welcome!</string>
@@ -356,5 +356,29 @@
     <string name="regFailDupUNText">The username you entered is already registered in our system\nTry a different one!</string>
     <string name="versionFail">Out-Of-Date Version</string>
     <string name="versionFailMessage">Your version of Smartkédex is outdated!\nPlease update now your app to continue using it.\nThank You\n\nRollerCoders Team</string>
+    <string name="loginFailAutoMessage">The data you\'ve entered are not correct.\nAuto Login has been disabled.\nPlease try again</string>
+    <string name="InternetFail">No Internet Connection</string>
+    <string name="InternetFailMessage">You\'ve no internet access.\nIn order to work properly, Smartkédex needs to connect to our servers.\nPlease check your Internet connection and try again.</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9807330777593753/2140650020</string>
+    <!--TIPI-->
+    <string name="unknown">Unknown</string>
+    <string name="acciaio">Steel</string>
+    <string name="acqua">Water</string>
+    <string name="buio">Dark</string>
+    <string name="coleottero">Bug</string>
+    <string name="drago">Dragon</string>
+    <string name="elettro">Electric</string>
+    <string name="erba">Grass</string>
+    <string name="folletto">Fairy</string>
+    <string name="fuoco">Fire</string>
+    <string name="ghiaccio">Ice</string>
+    <string name="lotta">Fighting</string>
+    <string name="normale">Normal</string>
+    <string name="psico">Psychic</string>
+    <string name="roccia">Rock</string>
+    <string name="spettro">Ghost</string>
+    <string name="terra">Ground</string>
+    <string name="veleno">Poison</string>
+    <string name="volante">Flying</string>
 
 </resources>

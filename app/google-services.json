@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "310812734699",
+    "firebase_url": "https://smartkedex-d7b4f.firebaseio.com",
+    "project_id": "smartkedex-d7b4f",
+    "storage_bucket": "smartkedex-d7b4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310812734699:android:51ef95ef36d81ab9",
+        "android_client_info": {
+          "package_name": "com.rollercoders.smartkedex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310812734699-nblp9544fjanf2dr6sosadtjn7k8fil7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rollercoders.smartkedex",
+            "certificate_hash": "b4f71654e34afd81ac8dc6a32b6bda1e1a576cf8"
+          }
+        },
+        {
+          "client_id": "310812734699-q2ht2ibqhljs84ckau7dq24tat387776.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3AcYb9oCalTzYVcbnQoSceMi4cbmSAxI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310812734699-q2ht2ibqhljs84ckau7dq24tat387776.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
