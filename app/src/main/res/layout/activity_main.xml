@@ -27,6 +27,7 @@
         android:horizontalSpacing="10dp"
         android:stretchMode="columnWidth"
         android:gravity="center"
+        android:listSelector="@drawable/list_selector"
     />
 
     <com.google.android.gms.ads.AdView

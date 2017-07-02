@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -96,6 +97,26 @@ public class PokemonDetails extends AppCompatActivity {
         final Switch pokeSwitch = (Switch) findViewById(R.id.dettagli);
         final Button pokeDetails = (Button) findViewById(R.id.catturato);
         pokeSwitch.setText(getResources().getString(getResources().getIdentifier("caught", "string", getPackageName())));
+
+        RelativeLayout overlay = (RelativeLayout) findViewById(R.id.pokedetails);
+        overlay.setOnTouchListener(new OnSwipeTouchListener(PokemonDetails.this) {
+            public void onSwipeRight() {
+                if (pokeID != 1) {
+                    Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
+                    i.putExtra("id", pokeID-2);
+                    startActivity(i);
+                    finish();
+                }
+            }
+            public void onSwipeLeft() {
+                if (pokeID != 151) {
+                    Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
+                    i.putExtra("id", pokeID);
+                    startActivity(i);
+                    finish();
+                }
+            }
+        });
 
         if (pokemonHelper.getPokemonGO() == 1) { //if my user plays PokémonGO
             pokeDetails.setText(getResources().getString(getResources().getIdentifier("details", "string", getPackageName())));
@@ -295,6 +316,9 @@ public class PokemonDetails extends AppCompatActivity {
                 setStrenght();
                 setWeakness();
 
+                descrButton();
+
+                showhide.setEnabled(true);
                 showhide.setAlpha((float)1.0);
 
                 pokeSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -312,6 +336,8 @@ public class PokemonDetails extends AppCompatActivity {
                         setStrenght();
                         setWeakness();
 
+                        descrButton();
+
                         showhide.setEnabled(true);
                         showhide.setAlpha((float)1.0);
 
@@ -327,6 +353,8 @@ public class PokemonDetails extends AppCompatActivity {
 
                         unsetStrenght();
                         unsetWeakness();
+
+                        descrButton();
 
                         showhide.setEnabled(false);
                         showhide.setAlpha((float)0.0);
@@ -487,6 +515,7 @@ public class PokemonDetails extends AppCompatActivity {
 
         for (int k = 1; k <= 2; k++) {
             tv = (TextView) findViewById(getResources().getIdentifier("tipo" + k, "id", getPackageName()));
+            tv.setAlpha((float)1.0);
             TableRow.LayoutParams params = (TableRow.LayoutParams) tv.getLayoutParams();
             params.width = effectiveWidth / 4;
             tv.setLayoutParams(params);
@@ -502,7 +531,7 @@ public class PokemonDetails extends AppCompatActivity {
     private void setStrenght () {
         List<String> strenghts = pokemonHelper.getStrenghts(pokeID, getApplicationContext());
         if (strenghts.size() == 0) {
-            TextView tv = (TextView)findViewById(R.id.forteContro);
+            tv = (TextView)findViewById(R.id.forteContro);
             tv.setText(getResources().getString(getResources().getIdentifier("not_strong", "string", getPackageName())));
             for (int j=1; j<=4; j++) {
                 tv = (TextView) findViewById(getResources().getIdentifier("tsf" + j, "id", getPackageName()));
@@ -534,8 +563,11 @@ public class PokemonDetails extends AppCompatActivity {
     }
 
     private void unsetStrenght () {
+        tv = (TextView)findViewById(R.id.forteContro);
+        tv.setText(getResources().getString(getResources().getIdentifier("strong", "string", getPackageName())));
         for (int k = 1; k <= 4; k++) {
             tv = (TextView) findViewById(getResources().getIdentifier("tsf" + k, "id", getPackageName()));
+            tv.setAlpha((float)1.0);
             RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
             rlParams.width = effectiveWidth/4;
             tv.setLayoutParams(rlParams);
@@ -575,6 +607,7 @@ public class PokemonDetails extends AppCompatActivity {
     private void unsetWeakness () {
         for (int k = 1; k <= 4; k++) {
             tv = (TextView) findViewById(getResources().getIdentifier("tsd" + k, "id", getPackageName()));
+            tv.setAlpha((float)1.0);
             RelativeLayout.LayoutParams rlParams = (RelativeLayout.LayoutParams) tv.getLayoutParams();
             rlParams.width = effectiveWidth/4;
             tv.setLayoutParams(rlParams);
