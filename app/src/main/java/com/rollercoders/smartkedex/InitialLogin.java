@@ -112,7 +112,6 @@ public class InitialLogin extends Activity {
 //        }
 //        progressDialog.dismiss();
 
-
             if (pokemonDatabaseAdapter.getRememberME() == 1) {
                 String[] loginData = pokemonDatabaseAdapter.getLoginData();
                 if (pokemonDatabaseAdapter.tryLogin(loginData[0], loginData[1], context) == 1) {
@@ -159,11 +158,9 @@ public class InitialLogin extends Activity {
                         if (pokemonDatabaseAdapter.tryLogin(username, password, getApplicationContext()) == 1) {
                             if (checkBox.isChecked()) {
                                 pokemonDatabaseAdapter.setRememberME(username, password);
-                                System.err.println("sono if");
                             }
                             else {
                                 pokemonDatabaseAdapter.setNotRememberME(username, password);
-                                System.err.println("sono else");
                             }
                             Intent i = new Intent(getApplicationContext(), Welcome.class);
                             startActivity(i);
@@ -205,19 +202,16 @@ public class InitialLogin extends Activity {
 
         NetworkInfo wifiNetwork = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (wifiNetwork != null && wifiNetwork.isConnected()) {
-            System.err.println("sono nel primo if");
             return true;
         }
 
         NetworkInfo mobileNetwork = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         if (mobileNetwork != null && mobileNetwork.isConnected()) {
-            System.err.println("sono nel secondo if");
             return true;
         }
 
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         if (activeNetwork != null && activeNetwork.isConnected()) {
-            System.err.println("sono nel terzo if");
             return true;
         }
 

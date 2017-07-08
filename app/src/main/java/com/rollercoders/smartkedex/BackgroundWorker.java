@@ -58,6 +58,7 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
                     case "getPokemonGO":
                     case "erase":
                     case "getTotalCopies":
+                    case "getAllCatched":
                         try {
                             post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8");
                         } catch (UnsupportedEncodingException e) {

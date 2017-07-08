@@ -69,6 +69,16 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.rollercoders.smartkedex.TestMain"
+                  android:parentActivityName="com.rollercoders.smartkedex.MainActivity"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.TestMain" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity android:name="com.rollercoders.smartkedex.PokemonDetails"
                   android:parentActivityName="com.rollercoders.smartkedex.MainActivity"
                   android:screenOrientation="portrait">

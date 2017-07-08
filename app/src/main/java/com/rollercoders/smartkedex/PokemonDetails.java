@@ -109,7 +109,7 @@ public class PokemonDetails extends AppCompatActivity {
                 }
             }
             public void onSwipeLeft() {
-                if (pokeID != 151) {
+                if (pokeID != 154) {
                     Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
                     i.putExtra("id", pokeID);
                     startActivity(i);
@@ -247,6 +247,7 @@ public class PokemonDetails extends AppCompatActivity {
         }
         else { //my user doesn't play PokémonGO
             pokeDetails.setAlpha(0);
+            pokeDetails.setEnabled(false);
             int catched = pokemonHelper.getCatched(pokeID, getApplicationContext());
             if (catched == 0) {
                 imageView[0] = (ImageView) findViewById(R.id.tmppkmn);

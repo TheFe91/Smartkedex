@@ -124,6 +124,8 @@ class ImageAdapter extends BaseAdapter {
             R.drawable.pkmn145, R.drawable.pkmn146,
             R.drawable.pkmn147, R.drawable.pkmn148,
             R.drawable.pkmn149, R.drawable.pkmn150,
-            R.drawable.pkmn151
+            R.drawable.pkmn151, R.drawable.pkmn152,
+            R.drawable.pkmn153, R.drawable.pkmn154,
+            R.drawable.pkmn155
     };
 }

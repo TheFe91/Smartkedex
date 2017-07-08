@@ -125,7 +125,7 @@ public class EditPokeDetails extends AppCompatActivity {
             attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             attackSpinner.setAdapter(attacksAdapter);
             attackSpinner.setSelection(attacksAdapter.getPosition(moves[0]));
-            attackSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[0], "Attack").toLowerCase(), "color", getPackageName())));
+            attackSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[0], "Attack", context).toLowerCase(), "color", getPackageName())));
 
             //this is necessary because there can be Pokémons like Ditto who don't have a ulti, otherwise the app crashes
             if (pokeID != 132) {
@@ -135,7 +135,7 @@ public class EditPokeDetails extends AppCompatActivity {
                 attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 ultiSpinner.setAdapter(ultiAdapter);
                 ultiSpinner.setSelection(ultiAdapter.getPosition(moves[1]));
-                ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti").toLowerCase(), "color", getPackageName())));
+                ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti", context).toLowerCase(), "color", getPackageName())));
             }
 
             editText = new EditText(getApplicationContext());
@@ -268,7 +268,7 @@ public class EditPokeDetails extends AppCompatActivity {
                     String attack = (String) attackSpinner.getSelectedItem();
                     String ulti = "";
                     if (pokeID != 132) {
-                        ultiSpinner = (Spinner) findViewById(pokeId * 11);
+                        ultiSpinner = (Spinner) findViewById(pokeId*11);
                         ulti = (String) ultiSpinner.getSelectedItem();
                     }
                     editText = (EditText)findViewById(pokeId*13);

@@ -1,23 +1,12 @@
 package com.rollercoders.smartkedex;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
@@ -26,10 +15,19 @@ import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private PokemonDatabaseAdapter pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
+    GridView grid;
+    String[] names = new String[151];
+    int[] imageId = new int[151], ids;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (!pokemonDatabaseAdapter.getNumberOfTables()) {
+            pokemonDatabaseAdapter.doBackupAndUpdateDB(this);
+        }
 
         AdView mAdView = (AdView) findViewById(R.id.AdView);
         AdRequest adRequest = new AdRequest.Builder()
@@ -37,12 +35,48 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         mAdView.loadAd(adRequest);
 
-        final GridView gridview = (GridView) findViewById(R.id.gridview);
-        ImageAdapter adapter = new ImageAdapter(this);
-        gridview.setAdapter(adapter);
-        gridview.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+        ids = pokemonDatabaseAdapter.getAllCatched(this);
 
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        for (int k = 0; k < 151; k++) {
+            imageId[k] = 0;
+            if (k+1 < 10) {
+                names[k] = "#00"+String.valueOf(k+1)+" - ???";
+            }
+            else if (k+1 > 9 && k+1 < 100) {
+                names[k] = "#0"+String.valueOf(k+1)+" - ???";
+            }
+            else {
+                names[k] = "#"+String.valueOf(k+1)+" - ???";
+            }
+
+        }
+
+        for (int k = 0; k < 151; k++) {
+            if (contains(ids, k+1)) {
+                imageId[k] = k + 1;
+                if (k+1 < 10) {
+                    names[k] = "#00"+String.valueOf(k+1)+" - "+pokemonDatabaseAdapter.getPokeName(k+1, this);
+                }
+                else if (k+1 > 9 && k+1 < 100) {
+                    names[k] = "#0"+String.valueOf(k+1)+" - "+pokemonDatabaseAdapter.getPokeName(k+1, this);
+                }
+                else {
+                    names[k] = "#"+String.valueOf(k+1)+" - "+pokemonDatabaseAdapter.getPokeName(k+1, this);
+                }
+            }
+        }
+
+        for (int k=0; k<151; k++) {
+            String id = "pkmn"+imageId[k];
+            imageId[k] = getResources().getIdentifier(id, "drawable", getPackageName());
+        }
+
+        CustomAdapter adapter = new CustomAdapter(this, names, imageId);
+        grid = (GridView)findViewById(R.id.gridview);
+        grid.setAdapter(adapter);
+        //grid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
                 i.putExtra("id", position);
@@ -50,11 +84,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        gridview.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+        /*grid.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
 
-                int selectCount = gridview.getCheckedItemCount();
+                int selectCount = grid.getCheckedItemCount();
                 switch (selectCount) {
                     case 1:
                         mode.setSubtitle("One item selected");
@@ -86,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDestroyActionMode(ActionMode mode) {
 
             }
-        });
+        });*/
 
         AppRater.app_launched(this);
     }
@@ -117,5 +151,13 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    public boolean contains(final int[] array, final int key) {
+        for (int n : array) {
+            if (key == n)
+                return true;
+        }
+        return false;
     }
 }
