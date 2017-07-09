@@ -109,12 +109,26 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/break5"/>
 
-        <Button
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:textSize="20sp"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/conferma" />
+            android:layout_alignParentBottom="true">
+                <TableRow
+                    style="?android:attr/buttonBarStyle">
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="20sp"
+                            android:id="@+id/conferma"
+                            style="?android:attr/buttonBarButtonStyle"/>
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/logout"
+                            android:textSize="20sp"
+                            style="?android:attr/buttonBarButtonStyle"/>
+                </TableRow>
+        </TableLayout>
 
 </RelativeLayout>

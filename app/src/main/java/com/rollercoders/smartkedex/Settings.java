@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 public class Settings extends AppCompatActivity {
 
-    public String lingua = "ITA";
     private int setpokeGO = 0;
 
     @Override
@@ -29,18 +28,16 @@ public class Settings extends AppCompatActivity {
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(getApplicationContext());
         getActionBar();
 
-        //final TextView language = (TextView)findViewById(R.id.lingua);
         TextView name = (TextView)findViewById(R.id.nomeSmartkedex);
         TextView proprietario = (TextView)findViewById(R.id.proprietario);
         final EditText inputNome = (EditText)findViewById(R.id.inputNomeSmartkedex);
-        final TextView inputProprietario = (TextView) findViewById(R.id.inputProprietario);
         Button presentazione = (Button)findViewById(R.id.presentazione);
         final Switch playPokemonGO = (Switch)findViewById(R.id.playPokemonGO);
         final Button reset = (Button)findViewById(R.id.reset);
         Button conferma = (Button)findViewById(R.id.conferma);
+        Button logout = (Button)findViewById(R.id.logout);
 
         inputNome.setText(pokemonHelper.getSmartkedex());
-        inputProprietario.setText(pokemonHelper.getOwner());
         final int dbPokemonGO = pokemonHelper.getPokemonGO();
 
         if (dbPokemonGO == 0)
@@ -95,25 +92,27 @@ public class Settings extends AppCompatActivity {
         conferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String smartkedex = inputNome.getText().toString();
-                String owner = inputProprietario.getText().toString();
+                String smartkedex = inputNome.getText().toString();;
 
-                if (owner.equals("")) {
-                    Toast.makeText(getApplicationContext(), getResources().getString(getResources().getIdentifier("editname_error", "string", getPackageName())), Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    String dbSmartkedex = pokemonHelper.getSmartkedex();
-                    String dbOwner = pokemonHelper.getOwner();
+                String dbSmartkedex = pokemonHelper.getSmartkedex();
 
-                    if (!owner.equals("") && !dbOwner.equals(owner))
-                        pokemonHelper.updateOwner(owner, dbOwner);
-                    if (!smartkedex.equals("") && !dbSmartkedex.equals(smartkedex))
-                        pokemonHelper.updateSmartkedex(smartkedex, dbSmartkedex);
-                    if (dbPokemonGO != setpokeGO)
-                        pokemonHelper.updatePokemonGO(setpokeGO, dbPokemonGO);
+                if (!dbSmartkedex.equals(smartkedex))
+                    pokemonHelper.updateSmartkedex(smartkedex, dbSmartkedex);
+                if (dbPokemonGO != setpokeGO)
+                    pokemonHelper.updatePokemonGO(setpokeGO, dbPokemonGO);
 
-                    finish();
-                }
+                finish();
+            }
+        });
+
+        logout.setText(getResources().getString(getResources().getIdentifier("logout", "string", getPackageName())));
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pokemonHelper.doLogout();
+                Intent i = new Intent(getApplicationContext(), InitialLogin.class);
+                startActivity(i);
+                finish();
             }
         });
     }

@@ -96,6 +96,7 @@
         android:textSize="20sp"
         android:id="@+id/enter"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        style="?android:attr/buttonBarButtonStyle"/>
 
 </RelativeLayout>

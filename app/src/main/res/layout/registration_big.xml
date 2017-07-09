@@ -121,6 +121,7 @@
         android:textSize="20sp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/confirmRegistration"/>
+        android:id="@+id/confirmRegistration"
+        style="?android:attr/buttonBarButtonStyle"/>
 
 </RelativeLayout>

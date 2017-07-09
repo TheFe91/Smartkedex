@@ -32,9 +32,9 @@ public class Welcome extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int dpi = displayMetrics.densityDpi;
 
-        String dbSmartkedex = pokemonHelper.getSmartkedex();
+        int pogo = pokemonHelper.getPokemonGO();
 
-        if (dbSmartkedex == null || dbSmartkedex.equals("")) { //it's the first app launch ever
+        if (pogo == 2) { //it's the first app launch ever
             TextView textView = (TextView)findViewById(R.id.welcome);
             textView.setText(getResources().getString(getResources().getIdentifier("welcome", "string", getPackageName())));
             textView = (TextView)findViewById(R.id.smartkedex);

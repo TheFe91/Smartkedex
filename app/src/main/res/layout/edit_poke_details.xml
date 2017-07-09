@@ -125,7 +125,8 @@
         android:id="@+id/apply"
         android:text="@string/apply"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/AdView"/>
+        android:layout_above="@+id/AdView"
+        style="?android:attr/buttonBarButtonStyle"/>
 
     <com.google.android.gms.ads.AdView
         android:layout_width="wrap_content"

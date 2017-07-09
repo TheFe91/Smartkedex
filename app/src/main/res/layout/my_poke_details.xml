@@ -53,7 +53,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/edit"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/AdView"/>
+        android:layout_above="@+id/AdView"
+        style="?android:attr/buttonBarButtonStyle"/>
 
     <com.google.android.gms.ads.AdView
         android:layout_width="wrap_content"

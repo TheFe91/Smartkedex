@@ -109,7 +109,7 @@ public class PokemonDetails extends AppCompatActivity {
                 }
             }
             public void onSwipeLeft() {
-                if (pokeID != 154) {
+                if (pokeID != 151) {
                     Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
                     i.putExtra("id", pokeID);
                     startActivity(i);

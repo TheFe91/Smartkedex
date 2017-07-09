@@ -107,6 +107,12 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         }
     }
 
+    void doLogout () {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        db.execSQL("UPDATE Settings SET RememberME = 0");
+        db.close();
+    }
+
     void resetRememberME (String username) {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("UPDATE Settings SET RememberME = 0 WHERE Username = '"+username+"'");
@@ -602,9 +608,6 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         private static final String OWNER = "Owner";
         private static final String SMARTKEDEXNAME = "SmartkedexName";
         private static final String POKEMONGO = "PokemonGO";
-        private static final String ULTI_NAME = "UltiName";
-        private static final String ATTACK_NAME = "AttackName";
-        private static final String TYPE_NAME = "TypeName";
 
 
 
@@ -627,6 +630,7 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(CREATE_SETTINGS);
+            db.execSQL("INSERT INTO Settings (PokemonGO) VALUES(2)");
             Toast.makeText(context, "Creazione del Database\neseguita correttamente", Toast.LENGTH_SHORT).show();
         }
 
