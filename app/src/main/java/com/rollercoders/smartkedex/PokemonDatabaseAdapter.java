@@ -40,7 +40,7 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     String registration (String email, String username, String password, int appversion, Context context) {
-        backgroundWorker = new BackgroundWorker("registration", email, username, password, appversion, context);
+        backgroundWorker = new BackgroundWorker("registration_big", email, username, password, appversion, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String result = "";

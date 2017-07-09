@@ -337,7 +337,7 @@
     <string name="regSuccessTitle">Registrazione Avvenuta!!!</string>
     <string name="regFailDupUNTitle">Username già esistente!</string>
     <string name="regFailDupUNText">Lo username che hai inserito esiste già nei nostri sistemi.\nProva con uno diverso!</string>
-    <string name="acceptCondition1">"Accetto i "</string>
+    <string name="acceptCondition1">Accetto i\n</string>
     <string name="acceptCondition2">Termini e Condizioni del Servizio</string>
     <string name="FieldsNotNullText">I campi Username, Password e Email NON DEVONO essere vuoti!</string>
     <string name="FieldsNotNullTitle">Errore Critico</string>

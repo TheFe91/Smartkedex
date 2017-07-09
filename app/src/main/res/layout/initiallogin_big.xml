@@ -16,11 +16,10 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:src="@drawable/splashwrite"
-        android:id="@+id/splashwrite"
-        android:scaleType="fitCenter"/>
+        android:id="@+id/splashwrite"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,8 +28,7 @@
         android:labelFor="@+id/setusername"
         android:textSize="15sp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/splashwrite"
-        android:layout_marginTop="40dp"/>
+        android:layout_below="@+id/splashwrite"/>
 
     <EditText
         android:layout_width="wrap_content"

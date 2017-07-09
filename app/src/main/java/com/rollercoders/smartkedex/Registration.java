@@ -3,14 +3,13 @@ package com.rollercoders.smartkedex;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,6 +17,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -28,7 +28,17 @@ public class Registration extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int dpi = displayMetrics.densityDpi;
+
+        if (dpi <= 420) { //Nexus 5X et simila
+            setContentView(R.layout.registration_big);
+        }
+        else if (dpi == 480) { //Nexus 5 et simila
+            setContentView(R.layout.registration);
+        }
 
         final Context context = this;
 
@@ -47,8 +57,15 @@ public class Registration extends AppCompatActivity {
         textView.setText(getResources().getString(getResources().getIdentifier("acceptCondition1", "string", getPackageName())));
         textView = (TextView)findViewById(R.id.acceptConditionText2);
         textView.setText(getResources().getString(getResources().getIdentifier("acceptCondition2", "string", getPackageName())));
-        Pattern pattern = Pattern.compile(getResources().getString(getResources().getIdentifier("acceptCondition2", "string", getPackageName())));
-        Linkify.addLinks(textView, pattern, "http://smartkedexwebservices.altervista.org/termsandconditions.php");
+        Linkify.TransformFilter mentionFilter = new Linkify.TransformFilter() {
+            @Override
+            public String transformUrl(Matcher match, String url) {
+                return "https://smartkedexwebservices.altervista.org/termsandconditions.php";
+            }
+        };
+        Pattern pattern = Pattern.compile(".");
+        String scheme = "";
+        Linkify.addLinks(textView, pattern, scheme, null, mentionFilter);
         final Button button = (Button)findViewById(R.id.confirmRegistration);
         button.setText(getResources().getString(getResources().getIdentifier("confirmRegistration", "string", getPackageName())));
         button.setEnabled(false);

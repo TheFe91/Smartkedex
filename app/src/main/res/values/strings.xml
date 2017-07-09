@@ -8,7 +8,7 @@
     <string name="registerUsername">Register your Username</string>
     <string name="registerPassword">Register your Password</string>
     <string name="registerMail">Register your E-Mail</string>
-    <string name="acceptCondition1">By checking this flag you accept our </string>
+    <string name="acceptCondition1">I accept your\n</string>
     <string name="acceptCondition2">Terms and Conditions</string>
     <string name="FieldsNotNullTitle">Fatal Error</string>
     <string name="FieldsNotNullText">Username, Password and Email fields\nMUST NOT be empty!</string>
