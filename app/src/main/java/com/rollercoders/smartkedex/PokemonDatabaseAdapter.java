@@ -59,8 +59,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         backgroundWorker.execute();
     }
 
-    void insertCopy (String attackName, String ultiName, String pokeName, int pokeID, Context context) {
-        backgroundWorker = new BackgroundWorker("insertCopy", pokeID, attackName, ultiName, pokeName, getLocalUsername(), context);
+    void insertCopy (String attackName, String ultiName, String pokeName, int pokeID, int iv, Context context) {
+        backgroundWorker = new BackgroundWorker("insertCopy", pokeID, iv, attackName, ultiName, pokeName, getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
     }
@@ -150,7 +150,7 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         String[] columnsCopy = {"AttackName", "UltiName", "PokemonName", "PokemonID"};
         cursor = db.query("Copy", columnsCopy, null, null, null, null, null);
         while (cursor.moveToNext()) {
-            insertCopy(cursor.getString(cursor.getColumnIndex("AttackName")), cursor.getString(cursor.getColumnIndex("UltiName")), cursor.getString(cursor.getColumnIndex("PokemonName")), cursor.getInt(cursor.getColumnIndex("PokemonID")), context);
+            insertCopy(cursor.getString(cursor.getColumnIndex("AttackName")), cursor.getString(cursor.getColumnIndex("UltiName")), cursor.getString(cursor.getColumnIndex("PokemonName")), cursor.getInt(cursor.getColumnIndex("PokemonID")), 0, context);
         }
         db.close();
 

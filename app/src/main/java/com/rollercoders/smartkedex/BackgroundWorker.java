@@ -25,14 +25,13 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
 
     WebServicesAsyncResponse delegate = null;
     private String page, table, name, type, post_data, username, password, email, attack, ulti;
-    private int flag = 0, id, appversion;
-    private ProgressDialog progressDialog;
+    private int flag = 0, id, appversion, iv;
     private Context context;
 
     BackgroundWorker (String page, String table, Context context) {this.page=page; this.table=table; this.context=context; flag=1;} //getRows, getOwner, getSmartkedex, getPokemonGO
     BackgroundWorker (String page, String name, String type, Context context) {this.page=page; this.name=name; this.type=type; this.context=context; flag=2;} //getMovesType, getAttacksStuff and setInitialData
     BackgroundWorker (String page, int id, Context context) {this.page=page; this.id=id; this.context=context; flag=3;} //getPokeTypes, getStrengths, getWeakness, getCopyName, getIdsFromPokeID , getPokeAttacks, getAppVersion and getPokeName
-    BackgroundWorker (String page, int id, String attack, String ulti, String name, String username, Context context) {this.context=context; this.page=page; this.id=id; this.attack=attack; this.ulti=ulti; this.name=name; this.username=username; flag=4;}
+    BackgroundWorker (String page, int id, int iv, String attack, String ulti, String name, String username, Context context) {this.context=context; this.page=page; this.id=id; this.iv=iv; this.attack=attack; this.ulti=ulti; this.name=name; this.username=username; flag=4;}
     BackgroundWorker (String page, int id, String table, Context context) {this.page=page; this.id=id; this.table=table; this.context=context; flag=5;} //getMoves, insertCatched, getCatched, getIdsFromPokeID and all the updaters
     BackgroundWorker (String page, String email, String username, String password, int appversion, Context context) {this.page=page; this.context=context; this.username=username; this.password=password; this.email=email; this.appversion=appversion; flag=6;}
 
@@ -144,6 +143,7 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
                                         URLEncoder.encode("ulti", "UTF-8")+"="+URLEncoder.encode(ulti, "UTF-8")+"&"+
                                         URLEncoder.encode("name", "UTF-8")+"="+URLEncoder.encode(name, "UTF-8")+"&"+
                                         URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(username, "UTF-8")+"&"+
+                                        URLEncoder.encode("iv", "UTF-8")+"="+URLEncoder.encode(String.valueOf(iv), "UTF-8")+"&"+
                                         URLEncoder.encode("id", "UTF-8")+"="+URLEncoder.encode(String.valueOf(id), "UTF-8");
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
