@@ -59,8 +59,8 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         backgroundWorker.execute();
     }
 
-    void insertCopy (String attackName, String ultiName, String pokeName, int pokeID, int iv, Context context) {
-        backgroundWorker = new BackgroundWorker("insertCopy", pokeID, iv, attackName, ultiName, pokeName, getLocalUsername(), context);
+    void insertCopy (String attackName, String ultiName, String pokeName, int pokeID, int ivmin, int ivmax, Context context) {
+        backgroundWorker = new BackgroundWorker("insertCopy", pokeID, ivmin, ivmax, attackName, ultiName, pokeName, getLocalUsername(), context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
     }
@@ -150,7 +150,7 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         String[] columnsCopy = {"AttackName", "UltiName", "PokemonName", "PokemonID"};
         cursor = db.query("Copy", columnsCopy, null, null, null, null, null);
         while (cursor.moveToNext()) {
-            insertCopy(cursor.getString(cursor.getColumnIndex("AttackName")), cursor.getString(cursor.getColumnIndex("UltiName")), cursor.getString(cursor.getColumnIndex("PokemonName")), cursor.getInt(cursor.getColumnIndex("PokemonID")), 0, context);
+            insertCopy(cursor.getString(cursor.getColumnIndex("AttackName")), cursor.getString(cursor.getColumnIndex("UltiName")), cursor.getString(cursor.getColumnIndex("PokemonName")), cursor.getInt(cursor.getColumnIndex("PokemonID")), -1, -1, context);
         }
         db.close();
 
@@ -237,6 +237,20 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         }
         String[] cleaner = tmp.split("\n");
         return cleaner[0];
+    }
+
+    String getIVs (int pokeID, Context context) {
+        backgroundWorker = new BackgroundWorker("getPokeIVs", pokeID, context);
+        backgroundWorker.delegate=this;
+        backgroundWorker.execute();
+        String tmp = "";
+        try {
+            tmp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        String[] cleaner = tmp.split("\n");
+        return cleaner[0]+"%-"+cleaner[1]+"%";
     }
 
     String getLocalUsername () {
@@ -578,6 +592,12 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
 
     void updatePokeUlti (String ulti, int pokeID, Context context) {
         backgroundWorker = new BackgroundWorker("updatePokeUlti", pokeID, ulti, context);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+    }
+
+    void updatePokeIVs (int ivMin, int ivMax, int pokeID, Context context) {
+        backgroundWorker = new BackgroundWorker("updatePokeIVs", ivMin, ivMax, pokeID, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
     }

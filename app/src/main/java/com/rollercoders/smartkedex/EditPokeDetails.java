@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -34,11 +35,11 @@ import java.util.List;
 public class EditPokeDetails extends AppCompatActivity {
 
     int pokeID;
-    Spinner attackSpinner;
-    Spinner ultiSpinner;
+    Spinner attackSpinner, ultiSpinner, ivMinSpinner, ivMaxSpinner;
     EditText editText;
     CheckBox checkBox;
     Context context;
+    TableRow.LayoutParams params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +103,6 @@ public class EditPokeDetails extends AppCompatActivity {
             TableRow attackRow = new TableRow(getApplicationContext());
             TableRow ultiRow = new TableRow(getApplicationContext());
 
-            ImageView iv = new ImageView(getApplicationContext());
-            iv.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
-            TableRow.LayoutParams params = new TableRow.LayoutParams(200,200);
-            iv.setLayoutParams(params);
-
             params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             attackSpinner = new Spinner(getApplicationContext());
             attackSpinner.setLayoutParams(params);
@@ -152,22 +148,39 @@ public class EditPokeDetails extends AppCompatActivity {
             editText.setId(pokeId*13);
             editText.setText(pokemonHelper.getCopyName(pokeId, context));
 
+            ivMinSpinner = new Spinner(context);
+            ivMinSpinner.setLayoutParams(params);
+            ivMinSpinner.setId(pokeId*19);
+
+            ivMaxSpinner = new Spinner(context);
+            ivMaxSpinner.setLayoutParams(params);
+            ivMaxSpinner.setId(pokeId*21);
+
+            for (int j=0; j<101; j++) {
+                list.add(j);
+            }
+
+            dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, list);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ivMinSpinner.setAdapter(dataAdapter);
+            ivMaxSpinner.setAdapter(dataAdapter);
+
             checkBox = new CheckBox(getApplicationContext());
             checkBox.setButtonDrawable(R.drawable.checkbox_selector);
             checkBox.setId(pokeId*17);
-            //Toast.makeText(getApplicationContext(), ""+checkBox.getId(), Toast.LENGTH_SHORT).show();
 
             // add the TextView  to the new TableRow
             params.gravity = Gravity.CENTER_VERTICAL;
             params.setMargins(0,10,0,0);
-            row.addView(iv);
             editText.setLayoutParams(params);
             row.addView(editText);
             attackRow.addView(attackSpinner);
             if (pokeID != 132)
                 ultiRow.addView(ultiSpinner);
+            attackRow.addView(ivMinSpinner);
+            ultiRow.addView(ivMaxSpinner);
             internaltable.addView(attackRow);
-            if (pokeID != 132)
+            //if (pokeID != 132)
                 internaltable.addView(ultiRow);
             internaltable.setLayoutParams(params);
             row.addView(internaltable);
@@ -185,7 +198,7 @@ public class EditPokeDetails extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //get a reference for the TableLayout
                 TableLayout table = (TableLayout)findViewById(R.id.internalcopies);
-                table.removeAllViews(); //this is to remove all previous views created from an eventual prevuious tap
+                table.removeAllViews(); //this is to remove all previous views created from an eventual previous tap
 
                 for (int j = 1+pokeIds.size(); j <= (int)spinner.getSelectedItem()+pokeIds.size(); j++) {
                     //create a new TableLayout
@@ -195,11 +208,6 @@ public class EditPokeDetails extends AppCompatActivity {
                     TableRow row = new TableRow(getApplicationContext());
                     TableRow attackRow = new TableRow(getApplicationContext());
                     TableRow ultiRow = new TableRow(getApplicationContext());
-
-                    ImageView iv = new ImageView(getApplicationContext());
-                    iv.setImageResource(imageAdapter.mThumbIds[pokeID-1]);
-                    TableRow.LayoutParams params = new TableRow.LayoutParams(200,200);
-                    iv.setLayoutParams(params);
 
                     attackSpinner = new Spinner(getApplicationContext());
                     ultiSpinner = new Spinner(getApplicationContext());
@@ -235,14 +243,34 @@ public class EditPokeDetails extends AppCompatActivity {
                     attacksAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     ultiSpinner.setAdapter(ultiAdapter);
 
+                    ivMinSpinner = new Spinner(context);
+                    ivMinSpinner.setLayoutParams(params);
+                    ivMinSpinner.setId(j*19);
+
+                    ivMaxSpinner = new Spinner(context);
+                    ivMaxSpinner.setLayoutParams(params);
+                    ivMaxSpinner.setId(j*21);
+
+                    List<Integer> list = new ArrayList<>();
+
+                    for (int k=0; k<101; k++) {
+                        list.add(k);
+                    }
+
+                    ArrayAdapter<Integer> dataAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, list);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    ivMinSpinner.setAdapter(dataAdapter);
+                    ivMaxSpinner.setAdapter(dataAdapter);
+
                     // add the TextView to the new TableRow
                     params.gravity = Gravity.CENTER_VERTICAL;
                     params.setMargins(0,10,0,0);
-                    row.addView(iv);
                     editText.setLayoutParams(params);
                     row.addView(editText);
                     attackRow.addView(attackSpinner);
                     ultiRow.addView(ultiSpinner);
+                    attackRow.addView(ivMinSpinner);
+                    ultiRow.addView(ivMaxSpinner);
                     internaltable.addView(attackRow);
                     internaltable.addView(ultiRow);
                     internaltable.setLayoutParams(params);
@@ -273,6 +301,10 @@ public class EditPokeDetails extends AppCompatActivity {
                     }
                     editText = (EditText)findViewById(pokeId*13);
                     String copyName = editText.getText().toString();
+                    ivMinSpinner = (Spinner)findViewById(pokeId*19);
+                    int ivMin = (int) ivMinSpinner.getSelectedItem();
+                    ivMaxSpinner = (Spinner)findViewById(pokeId*21);
+                    int ivMax = (int) ivMaxSpinner.getSelectedItem();
                     String[] attacks = pokemonHelper.getPokeAttacks(pokeId, getApplicationContext()); //attacks[0] contains the attack, attack[1] contains the ulti
                     if (!attack.equals(attacks[0])) {
                         pokemonHelper.updatePokeAttack(attack, pokeId, getApplicationContext());
@@ -282,6 +314,12 @@ public class EditPokeDetails extends AppCompatActivity {
                     }
                     if (!copyName.equals(pokemonHelper.getCopyName(pokeId, context))) {
                         pokemonHelper.updatePokeName(copyName, pokeId, getApplicationContext());
+                    }
+                    if (ivMax >= ivMin) {
+                        pokemonHelper.updatePokeIVs(ivMin, ivMax, pokeId, context);
+                    }
+                    else {
+                        Toast.makeText(context, getResources().getString(getResources().getIdentifier("failIVs", "string", getPackageName())), Toast.LENGTH_LONG).show();
                     }
                     checkBox = (CheckBox)findViewById(pokeId*17);
                     if (checkBox.isChecked()) {
@@ -297,7 +335,11 @@ public class EditPokeDetails extends AppCompatActivity {
                     String ulti = (String) ultiSpinner.getSelectedItem();
                     editText = (EditText)findViewById(j*11);
                     String copyName = editText.getText().toString();
-                    pokemonHelper.insertCopy(attack, ulti, copyName, pokeID, getApplicationContext());
+                    ivMinSpinner = (Spinner)findViewById(j*19);
+                    int ivMin = (int) ivMinSpinner.getSelectedItem();
+                    ivMaxSpinner = (Spinner)findViewById(j*21);
+                    int ivMax = (int) ivMaxSpinner.getSelectedItem();
+                    pokemonHelper.insertCopy(attack, ulti, copyName, pokeID, ivMin, ivMax, getApplicationContext());
                 }
 
                 Intent i = new Intent (getApplicationContext(), MyPokeDetails.class);

@@ -361,6 +361,7 @@
     <string name="InternetFailMessage">You\'ve no internet access.\nIn order to work properly, Smartkédex needs to connect to our servers.\nPlease check your Internet connection and try again.</string>
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9807330777593753/2140650020</string>
     <string name="logout" translatable="false">Logout</string>
+    <string name="failIVs">Error: Max IV value must be equal or greater than the Min IV one</string>
     <!--TIPI-->
     <string name="unknown">Unknown</string>
     <string name="acciaio">Steel</string>

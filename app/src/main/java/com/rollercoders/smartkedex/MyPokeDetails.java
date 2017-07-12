@@ -28,7 +28,8 @@ import java.util.Map;
 
 public class MyPokeDetails extends AppCompatActivity {
 
-    int pokeID;
+    private int pokeID;
+    private Typeface typeface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,8 @@ public class MyPokeDetails extends AppCompatActivity {
         mAdView.loadAd(adRequest);
 
         getActionBar();
+
+        typeface = Typeface.createFromAsset(getAssets(), "fonts/cmss12.otf");
 
         Context context = this;
 
@@ -86,6 +89,7 @@ public class MyPokeDetails extends AppCompatActivity {
             TextView attack = new TextView(getApplicationContext());
             TextView ulti = new TextView(getApplicationContext());
             TextView name = new TextView(getApplicationContext());
+            name.setTypeface(typeface);
 
             TableRow.LayoutParams trparams = new TableRow.LayoutParams(250,250);
 
@@ -139,12 +143,13 @@ public class MyPokeDetails extends AppCompatActivity {
             }
 
             String copyName = pokemonHelper.getCopyName(element, context);
+            String pokeIVs = pokemonHelper.getIVs(element, context);
 
             if (!copyName.equals("")) {
-                name.setText(copyName);
+                name.setText(copyName+" - IV: "+pokeIVs);
             }
             else
-                name.setText(pokemonHelper.getPokeName(pokeID, getApplicationContext()));
+                name.setText(pokemonHelper.getPokeName(pokeID, getApplicationContext())+" - IV: "+pokeIVs);
 
             trparams.gravity = Gravity.CENTER_VERTICAL;
             attacchi.setLayoutParams(trparams);
