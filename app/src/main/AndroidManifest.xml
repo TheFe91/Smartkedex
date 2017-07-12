@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/smartkedex_ic"
         android:label="Smartkédex"
         android:supportsRtl="true"
@@ -114,6 +114,16 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.Settings"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="com.rollercoders.smartkedex.Destroyer"
+            android:parentActivityName="com.rollercoders.smartkedex.Settings"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.Destroyer"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>

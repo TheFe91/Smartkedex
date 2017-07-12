@@ -365,4 +365,6 @@
     <string name="volante">Volante</string>
     <string name="psico">Psico</string>
     <string name="failIVs">Errore: il valore degli IV massimi deve essere maggiore o uguale a quello dei minimi</string>
+    <string name="mivs">Mosse e % di IV</string>
+    <string name="name">Nome</string>
 </resources>

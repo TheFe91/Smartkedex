@@ -3,6 +3,10 @@ package com.rollercoders.smartkedex;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -23,7 +27,19 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings);
+
+        //setters for the correct display configuration
+        //saving the device's dpi on an int and assigning the proper layout based on this int
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int dpi = displayMetrics.densityDpi;
+
+        if (dpi <= 420) { //Nexus 5X et simila
+            setContentView(R.layout.settings_big);
+        }
+        else if (dpi == 480) { //Nexus 5 et simila
+            setContentView(R.layout.settings);
+        }
 
         final PokemonDatabaseAdapter pokemonHelper = new PokemonDatabaseAdapter(getApplicationContext());
         getActionBar();
@@ -33,7 +49,6 @@ public class Settings extends AppCompatActivity {
         final EditText inputNome = (EditText)findViewById(R.id.inputNomeSmartkedex);
         Button presentazione = (Button)findViewById(R.id.presentazione);
         final Switch playPokemonGO = (Switch)findViewById(R.id.playPokemonGO);
-        final Button reset = (Button)findViewById(R.id.reset);
         Button conferma = (Button)findViewById(R.id.conferma);
         Button logout = (Button)findViewById(R.id.logout);
 
@@ -50,7 +65,6 @@ public class Settings extends AppCompatActivity {
         name.setText(getResources().getString(getResources().getIdentifier("smartkedexname", "string", getPackageName())));
         proprietario.setText(getResources().getString(getResources().getIdentifier("owner", "string", getPackageName())));
         presentazione.setText(getResources().getString(getResources().getIdentifier("presentazione", "string", getPackageName())));
-        reset.setText(getResources().getString(getResources().getIdentifier("erase", "string", getPackageName())));
         conferma.setText(getResources().getString(getResources().getIdentifier("apply", "string", getPackageName())));
         playPokemonGO.setText(getResources().getString(getResources().getIdentifier("inside_playpokego", "string", getPackageName())));
 
@@ -69,23 +83,6 @@ public class Settings extends AppCompatActivity {
                     setpokeGO = 1;
                 else
                     setpokeGO = 0;
-            }
-        });
-
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                reset.setText(getResources().getString(getResources().getIdentifier("erase_confirm", "string", getPackageName())));
-                reset.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        pokemonHelper.erase(pokemonHelper.getLocalUsername(), getApplicationContext());
-                        pokemonHelper.localErase();
-                        Intent i = new Intent(getApplicationContext(), InitialLogin.class);
-                        startActivity(i);
-                        finish();
-                    }
-                });
             }
         });
 
@@ -117,4 +114,25 @@ public class Settings extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater mf = getMenuInflater();
+        mf.inflate(R.menu.destroyer, menu);
+        menu.getItem(0).setIcon(getResources().getDrawable(R.mipmap.ic_warning_white_18dp));
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.destroyer:
+                Intent i = new Intent(getApplicationContext(), Destroyer.class);
+                startActivity(i);
+                finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 }

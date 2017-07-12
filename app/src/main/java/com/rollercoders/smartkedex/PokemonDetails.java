@@ -1,21 +1,14 @@
 package com.rollercoders.smartkedex;
 
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -24,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -61,7 +53,7 @@ public class PokemonDetails extends AppCompatActivity {
         effectiveWidth = totalWidth - 128; //128 is because I have 2 64dp margins on the Right and on the Left
 
         if (dpi <= 420) { //Nexus 5X et simila
-            setContentView(R.layout.pokedetailsbig);
+            setContentView(R.layout.pokedetails_big);
         }
         else if (dpi == 480) { //Nexus 5 et simila
             setContentView(R.layout.pokedetails);

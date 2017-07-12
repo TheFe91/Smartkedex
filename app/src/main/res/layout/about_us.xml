@@ -15,7 +15,7 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_centerHorizontal="true"
         android:src="@drawable/splashwrite"
         android:id="@+id/splashwrite"/>
@@ -23,19 +23,19 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
-        android:text="Brought to you by:"
+        android:layout_centerHorizontal="true"
+        android:text="by"
+        android:layout_below="@+id/splashwrite"
         android:id="@+id/broughtby"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:id="@+id/name"
-        android:textStyle="bold|italic"
-        android:text="@string/team_name"
-        android:layout_toEndOf="@+id/broughtby"
-        android:layout_marginTop="150dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/broughtby"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -131,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/three_d_design_and_brand_communication"
-        android:text=": 3D Design and Brand Communication"
+        android:text=": Marketing and Communication"
         android:layout_toEndOf="@+id/zanaboni"
         android:layout_below="@+id/tagliabue"
         android:layout_marginTop="10dp"
@@ -143,7 +143,6 @@
         android:text="@string/contact"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
         android:id="@+id/contact_us"
         style="?android:attr/buttonBarButtonStyle"/>
 

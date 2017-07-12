@@ -37,6 +37,9 @@
     <string name="apply">Apply</string>
     <string name="pokemon_to_insert">Not Registered Pokémon</string>
     <string name="hint_name">(Name)</string>
+    <string name="name">Name</string>
+    <string name="mivs">Moves and IV\'s %</string>
+    <string name="del" translatable="false">DEL</string>
     <string name="welcome_back">Welcome back %1$s!</string>
     <string name="pokemongo_recap">\n\nPlaying PokémonGO you caught %1$d Pokémon,\nfor a total of %2$d specimens</string>
     <string name="settings">Settings</string>

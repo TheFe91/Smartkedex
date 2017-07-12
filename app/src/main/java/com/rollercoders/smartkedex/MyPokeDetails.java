@@ -29,7 +29,6 @@ import java.util.Map;
 public class MyPokeDetails extends AppCompatActivity {
 
     private int pokeID;
-    private Typeface typeface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class MyPokeDetails extends AppCompatActivity {
 
         getActionBar();
 
-        typeface = Typeface.createFromAsset(getAssets(), "fonts/cmss12.otf");
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/cmss12.otf");
 
         Context context = this;
 
@@ -129,7 +128,7 @@ public class MyPokeDetails extends AppCompatActivity {
                     ulti.setTextColor(getResources().getColor(getResources().getIdentifier(ultiStuff.get("type").toLowerCase(), "color", getPackageName())));
                 }
                 catch (Exception e) {
-                    System.err.println(e);
+                    e.printStackTrace();
                 }
             }
 
@@ -139,7 +138,7 @@ public class MyPokeDetails extends AppCompatActivity {
                 ulti.setLayoutParams(trparams);
             }
             catch (Exception e){
-                System.err.println(e);
+                e.printStackTrace();
             }
 
             String copyName = pokemonHelper.getCopyName(element, context);

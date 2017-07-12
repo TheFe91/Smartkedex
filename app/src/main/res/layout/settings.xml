@@ -15,8 +15,8 @@
             android:src="@drawable/background"/>
 
         <ImageView
-            android:layout_width="300dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
             android:layout_centerHorizontal="true"
             android:id="@+id/settings"
             android:src="@drawable/settings"/>
@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:layout_centerHorizontal="true"
             android:textAlignment="center"
             android:id="@+id/nomeSmartkedex"
@@ -101,13 +101,6 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/playPokemonGO"
             android:id="@+id/break5"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/reset"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/break5"/>
 
         <TableLayout
             android:layout_width="match_parent"
