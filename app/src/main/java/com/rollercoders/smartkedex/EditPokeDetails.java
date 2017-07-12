@@ -88,20 +88,41 @@ public class EditPokeDetails extends AppCompatActivity {
 
         final List<Integer> pokeIds = pokemonHelper.getIdsFromPokeID(pokeID, getApplicationContext());
 
-        final ImageAdapter imageAdapter = new ImageAdapter(getApplicationContext());
+        boolean insertHeader = true;
 
         //defining and Setting-up the already in the database Pokémons
         for (int pokeId:pokeIds) {
             //get a reference for the TableLayout
             TableLayout table = (TableLayout)findViewById(R.id.copies);
 
+            if (insertHeader) {
+                TableRow header = new TableRow(context);
+                header.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+
+                TextView tv = new TextView(context);
+                //tv.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+                tv.setText("Nome");
+                header.addView(tv);
+                tv.setText("Mosse");
+                header.addView(tv);
+                tv.setText("IVs");
+                header.addView(tv);
+                tv.setText("Eliminare");
+                header.addView(tv);
+
+                table.addView(header, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
+                insertHeader = false;
+            }
+
             //create a new TableLayout
             TableLayout internaltable = new TableLayout(getApplicationContext());
 
             // create a new TableRow
-            TableRow row = new TableRow(getApplicationContext());
-            TableRow attackRow = new TableRow(getApplicationContext());
-            TableRow ultiRow = new TableRow(getApplicationContext());
+            TableRow row = new TableRow(context);
+            TableRow attackRow = new TableRow(context);
+            TableRow ultiRow = new TableRow(context);
 
             params = new TableRow.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             attackSpinner = new Spinner(getApplicationContext());
@@ -134,7 +155,7 @@ public class EditPokeDetails extends AppCompatActivity {
                 ultiSpinner.setBackgroundColor(getResources().getColor(getResources().getIdentifier(pokemonHelper.getMovesType(moves[1], "Ulti", context).toLowerCase(), "color", getPackageName())));
             }
 
-            editText = new EditText(getApplicationContext());
+            editText = new EditText(context);
             if (dpi == 480) {
                 editText.setWidth(250);
                 editText.setTextSize(13);
@@ -177,11 +198,12 @@ public class EditPokeDetails extends AppCompatActivity {
             attackRow.addView(attackSpinner);
             if (pokeID != 132)
                 ultiRow.addView(ultiSpinner);
+            else
+                ultiRow.addView(new TextView(context));
             attackRow.addView(ivMinSpinner);
             ultiRow.addView(ivMaxSpinner);
             internaltable.addView(attackRow);
-            //if (pokeID != 132)
-                internaltable.addView(ultiRow);
+            internaltable.addView(ultiRow);
             internaltable.setLayoutParams(params);
             row.addView(internaltable);
             params.setMargins(15,0,0,0);
