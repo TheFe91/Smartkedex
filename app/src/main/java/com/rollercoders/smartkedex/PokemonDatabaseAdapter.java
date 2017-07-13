@@ -128,6 +128,7 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     void localErase () {
         SQLiteDatabase db = helper.getWritableDatabase();
         db.execSQL("DELETE FROM Settings");
+        db.execSQL("INSERT INTO Settings (PokemonGO) VALUES(2)");
         db.close();
     }
 

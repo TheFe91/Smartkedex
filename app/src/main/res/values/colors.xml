@@ -22,7 +22,8 @@
     <color name="terra">#ddbb55</color>
     <color name="veleno">#aa5599</color>
     <color name="volante">#6699ff</color>
+    <color name="unknown">#5e6971</color>
+
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
-    <color name="unknown">#5e6971</color>
 </resources>
