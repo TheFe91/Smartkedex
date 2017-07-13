@@ -102,33 +102,25 @@
         android:layout_below="@+id/playPokemonGO"
         android:id="@+id/break5"/>
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/LinearLayout02"
         android:layout_height="wrap_content"
-        android:id="@+id/reset"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/break5"/>
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_centerHorizontal="true"
+        android:layout_width="fill_parent"
         android:layout_alignParentBottom="true">
-        <TableRow
-            style="?android:attr/buttonBarStyle">
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="20sp"
-                android:id="@+id/conferma"
-                style="?android:attr/buttonBarButtonStyle"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/logout"
-                android:textSize="20sp"
-                style="?android:attr/buttonBarButtonStyle"/>
-        </TableRow>
-    </TableLayout>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:id="@+id/conferma"
+            android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/logout"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            style="?android:attr/buttonBarButtonStyle"/>
+    </LinearLayout>
 
 </RelativeLayout>

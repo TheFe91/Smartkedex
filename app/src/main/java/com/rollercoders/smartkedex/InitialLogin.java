@@ -177,11 +177,8 @@ public class InitialLogin extends Activity {
                         }
                         else {
                             AlertDialog.Builder builder;
-                            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                builder = new AlertDialog.Builder(context, android.R.style.Theme_Dialog);
-                            else
                                 builder = new AlertDialog.Builder(context);
-                            builder.setTitle(getResources().getString(getResources().getIdentifier("loginFail", "string", getPackageName())))
+                                builder.setTitle(getResources().getString(getResources().getIdentifier("loginFail", "string", getPackageName())))
                                     .setMessage(getResources().getString(getResources().getIdentifier("loginFailMessage", "string", getPackageName())))
                                     .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
                                         @Override

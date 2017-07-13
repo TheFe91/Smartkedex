@@ -40,7 +40,7 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
     }
 
     String registration (String email, String username, String password, int appversion, Context context) {
-        backgroundWorker = new BackgroundWorker("registration_big", email, username, password, appversion, context);
+        backgroundWorker = new BackgroundWorker("registration", email, username, password, appversion, context);
         backgroundWorker.delegate = this;
         backgroundWorker.execute();
         String result = "";
@@ -208,10 +208,11 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        int[] allCatched = {};
+        int[] allCatched;
         List<Integer> tmpAllCatched = new ArrayList<>();
         String[] cleaner;
-        if (tmp.equals("\n")) {
+        if (tmp.equals("")) {
+            allCatched = new int[1];
             allCatched[0] = 0;
         }
         else {

@@ -367,4 +367,12 @@
     <string name="failIVs">Errore: il valore degli IV massimi deve essere maggiore o uguale a quello dei minimi</string>
     <string name="mivs">Mosse e % di IV</string>
     <string name="name">Nome</string>
+    <string name="back">Torna Indietro</string>
+    <string name="confirm">Sono sicuro, elimina tutto</string>
+    <string name="cornerSave">No, riportami all\'App</string>
+    <string name="lastWarningText">Sei proprio sicuro di volertene andare?\nPotresti ripensarci un pochino di più...</string>
+    <string name="lastWarningTitle">Ultimo Avviso</string>
+    <string name="switchText">Voglio abbandonare Smartkédex\nSono consapevole che tutti i miei dati saranno persi per sempre</string>
+    <string name="warning">PERICOLO!!!</string>
+    <string name="warningText">Attenzione:\n\nCliccando sul bottone qui sotto, DISTRUGGERAI TUTTI I TUOI DATI , qui e sui nostri Server!\nQuesta operazione e\' IRREVERSIBILE.\n\nSiamo molto dispiaciuti di vedere che vuoi abbandonare Smartkédex, quindi ascolta il nostro consiglio:\nConsidera l\'idea di disinstallare l\'App senza distruggere tutti i tuoi dati, e noi li custodiremo nel frattempo, così potrai tornare.\n\nSe tuttavia sei convinto di quello che vuoi fare, clicca sul bottone qui sotto.</string>
 </resources>

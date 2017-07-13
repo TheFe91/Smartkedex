@@ -209,7 +209,6 @@
     <string name="pkmn151">Mew is said to possess the genetic composition of all Pokémon. It is capable of making itself invisible at will, so it entirely avoids notice even if it approaches people</string>
     <string name="editsmartkedexname">Smartkédex Name</string>
     <string name="erase">Erase all data</string>
-    <string name="erase_confirm">You\'re going to erase all data\nTouch to Confirm</string>
     <string name="inside_playpokego">I Play Pokémon GO</string>
     <string name="owner">This Smartkédex is property of:</string>
     <string name="presentazione">Presentation</string>
@@ -365,6 +364,7 @@
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-9807330777593753/2140650020</string>
     <string name="logout" translatable="false">Logout</string>
     <string name="failIVs">Error: Max IV value must be equal or greater than the Min IV one</string>
+
     <!--TIPI-->
     <string name="unknown">Unknown</string>
     <string name="acciaio">Steel</string>
@@ -385,5 +385,15 @@
     <string name="terra">Ground</string>
     <string name="veleno">Poison</string>
     <string name="volante">Flying</string>
+
+    <!--WARNING MESSAGES-->
+    <string name="warning">DANGER!!!</string>
+    <string name="warningText">Attention:\n\nBy tapping on the button below, you are going to DESTROY ALL YOUR DATA here and on our Servers!\nThis operation CAN NOT BE UNDONE.\n\nWe are very sad to see that you want to leave Smartkédex, so here\'s our tip:\n\tConsider simply uninstalling the App without destroying all your personal data and we\'ll keep care of them in the meanwhile.\n\nBy the way, if you\'re really want to leave now, click on the button below.</string>
+    <string name="switchText">I want to leave Smartkèdex\nI know that all my personal data wil be lost forever</string>
+    <string name="back">Go\nBack</string>
+    <string name="lastWarningTitle">Latest Warning</string>
+    <string name="lastWarningText">Are you really sure you want to leave?\nYou can think it about a little bit more…</string>
+    <string name="confirm">I\'m sure, erase everything</string>
+    <string name="cornerSave">No, bring me back to the App</string>
 
 </resources>

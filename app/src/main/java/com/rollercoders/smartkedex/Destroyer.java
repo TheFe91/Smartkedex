@@ -42,6 +42,7 @@ public class Destroyer extends Activity {
         mSwitch.setText(getResources().getString(getResources().getIdentifier("switchText", "string", getPackageName())));
         back.setText(getResources().getString(getResources().getIdentifier("back", "string", getPackageName())));
 
+        confirm.setText(getResources().getString(getResources().getIdentifier("erase", "string", getPackageName())));
         confirm.setEnabled(false);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +81,7 @@ public class Destroyer extends Activity {
                                 finish();
                             }
                         })
-                        .setNegativeButton(getResources().getString(getResources().getIdentifier("confirm", "string", getPackageName())), new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getResources().getString(getResources().getIdentifier("cornerSave", "string", getPackageName())), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //DISMISS, DO NOTHING

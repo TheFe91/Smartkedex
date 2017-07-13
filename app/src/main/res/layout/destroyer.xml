@@ -26,7 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/warning"
         android:layout_marginTop="20dp"
-        android:textSize="15sp"
         android:id="@+id/warningtext"
         />
 
