@@ -12,13 +12,13 @@ import android.widget.TextView;
  * Created by TheFe on 05/07/2017.
  */
 
-public class CustomAdapter extends BaseAdapter {
+class CustomAdapter extends BaseAdapter {
 
     private Context context;
     private final String[] name;
     private final int[] Imageid;
 
-    public CustomAdapter(Context context, String[] name, int[] Imageid) {
+    CustomAdapter(Context context, String[] name, int[] Imageid) {
         this.context = context;
         this.name = name;
         this.Imageid = Imageid;

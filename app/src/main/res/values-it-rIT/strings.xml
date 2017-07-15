@@ -33,7 +33,6 @@
     <string name="presentazione">Presentazione</string>
     <string name="inside_playpokego">Gioco a Pokémon GO</string>
     <string name="erase">Cancella Tutti i dati</string>
-    <string name="erase_confirm">Stai per eliminare tutto\nTocca per Confermare</string>
     <string name="pkmn1">È possibile vedere Bulbasaur mentre schiaccia un pisolino sotto al sole. Ha un seme piantato sulla schiena. Grazie ai raggi solari, il seme cresce, ingrandendosi progressivamente</string>
     <string name="pkmn2">C\'è un germoglio piantato nella schiena di Ivysaur. Per sopportarne il peso, le zampe e il corpo crescono robusti. Quando inizia a passare più tempo esposto al sole, significa che il germoglio sboccerà presto in un grande fiore</string>
     <string name="pkmn3">C\'è un grande fiore sulla schiena di Venusaur. Si dice che i colori diventino più vividi con il giusto nutrimento e i raggi solari. Il suo profumo calma le reazioni emotive delle persone</string>
@@ -333,7 +332,7 @@
     <string name="registerMail">Registra la tua E-Mail</string>
     <string name="regFailText">Si è verificato un problema durante la registrazione.\nPer favore scrivere a <i>rollercodersteam@gmail.com</i> per ottenere supporto</string>
     <string name="regFailTitle">Registrazione Fallita</string>
-    <string name="regSuccessText">La registrazione è andata a buon fine!\nOra puoi fare Log-In</string>
+    <string name="regSuccessText">La registrazione è andata a buon fine!\nOra puoi fare Log-In\nVuoi fare Log-In subito?</string>
     <string name="regSuccessTitle">Registrazione Avvenuta!!!</string>
     <string name="regFailDupUNTitle">Username già esistente!</string>
     <string name="regFailDupUNText">Lo username che hai inserito esiste già nei nostri sistemi.\nProva con uno diverso!</string>
@@ -375,4 +374,8 @@
     <string name="switchText">Voglio abbandonare Smartkédex\nSono consapevole che tutti i miei dati saranno persi per sempre</string>
     <string name="warning">PERICOLO!!!</string>
     <string name="warningText">Attenzione:\n\nCliccando sul bottone qui sotto, DISTRUGGERAI TUTTI I TUOI DATI , qui e sui nostri Server!\nQuesta operazione e\' IRREVERSIBILE.\n\nSiamo molto dispiaciuti di vedere che vuoi abbandonare Smartkédex, quindi ascolta il nostro consiglio:\nConsidera l\'idea di disinstallare l\'App senza distruggere tutti i tuoi dati, e noi li custodiremo nel frattempo, così potrai tornare.\n\nSe tuttavia sei convinto di quello che vuoi fare, clicca sul bottone qui sotto.</string>
+    <string name="passwordLength">La password deve essere lunga almeno 8 caratteri</string>
+    <string name="loginNoSave">Log-In, non ricordarmi</string>
+    <string name="loginSave">Log-In e ricordami</string>
+    <string name="noLogin">No, farò Log-In più tardi</string>
 </resources>

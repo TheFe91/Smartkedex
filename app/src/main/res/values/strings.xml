@@ -351,7 +351,11 @@
     <string name='Ventogelato'>Icy Wind</string>
     <string name='Vigorcolpo'>Power Whip</string>
     <string name="regSuccessTitle">Registration Success!!!</string>
-    <string name="regSuccessText">Your registration has been approved!\nYou may now Log-In</string>
+    <string name="regSuccessText">Your registration has been approved!\nYou may now Log-In\nDo you want to Log-In now?</string>
+    <string name="passwordLength">Your password must be at least 8 characters long.</string>
+    <string name="loginSave">Log-In and remember me</string>
+    <string name="loginNoSave">Log-In, don\'t remember me</string>
+    <string name="noLogin">No, I will Log-In later</string>
     <string name="regFailTitle">Registration Failed</string>
     <string name="regFailText">There was a problem with your registration\nPlease write to us at <i>rollercodersteam@gmail.com</i> for support on your problem</string>
     <string name="regFailDupUNTitle">Existing Username!</string>

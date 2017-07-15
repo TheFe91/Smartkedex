@@ -59,6 +59,7 @@ class BackgroundWorker extends AsyncTask<Void, Void, String> {
                     case "erase":
                     case "getTotalCopies":
                     case "getAllCatched":
+                    case "getAllCatchedNames":
                         try {
                             post_data = URLEncoder.encode("username", "UTF-8")+"="+URLEncoder.encode(table, "UTF-8");
                         } catch (UnsupportedEncodingException e) {

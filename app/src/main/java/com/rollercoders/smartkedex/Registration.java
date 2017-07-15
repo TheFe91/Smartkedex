@@ -3,6 +3,7 @@ package com.rollercoders.smartkedex;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -25,6 +26,9 @@ import java.util.regex.Pattern;
  */
 
 public class Registration extends AppCompatActivity {
+
+    boolean blocker = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +73,7 @@ public class Registration extends AppCompatActivity {
         final Button button = (Button)findViewById(R.id.confirmRegistration);
         button.setText(getResources().getString(getResources().getIdentifier("confirmRegistration", "string", getPackageName())));
         button.setEnabled(false);
+
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -80,46 +85,76 @@ public class Registration extends AppCompatActivity {
                 }
             }
         });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText getUsername = (EditText)findViewById(R.id.setusername);
-                EditText getPassword = (EditText)findViewById(R.id.setpassword);
-                EditText getMail = (EditText)findViewById(R.id.setmail);
-                String username = getUsername.getText().toString();
-                String password = getPassword.getText().toString();
-                String mail = getMail.getText().toString();
-                String result;
-                if (username.equals("") || password.equals("") || mail.equals(""))
-                    result = "error";
-                else {
-                    PackageInfo packageInfo;
-                    int appversion = 0;
-                    try {
-                        packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-                        appversion = packageInfo.versionCode;
-                    } catch (PackageManager.NameNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                    result = pokemonDatabaseAdapter.registration(mail, username, password, appversion, getApplicationContext());
-                    String[] cleaner = result.split("\n");
-                    result = cleaner[0];
+            AlertDialog.Builder builder;
+            EditText getUsername = (EditText)findViewById(R.id.setusername);
+            EditText getPassword = (EditText)findViewById(R.id.setpassword);
+            EditText getMail = (EditText)findViewById(R.id.setmail);
+            final String username = getUsername.getText().toString();
+            final String password = getPassword.getText().toString();
+            String mail = getMail.getText().toString();
+            String result = "";
+            if (username.equals("") || password.equals("") || mail.equals(""))
+                result = "error";
+            else if (password.length() < 8) {
+                builder = new AlertDialog.Builder(context);
+                builder.setTitle(getResources().getString(getResources().getIdentifier("FieldsNotNullTitle", "string", getPackageName())))
+                       .setMessage(getResources().getString(getResources().getIdentifier("passwordLength", "string", getPackageName())))
+                       .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               //do nothing
+                           }
+                       })
+                       .setIcon(android.R.drawable.ic_dialog_alert)
+                       .show();
+                blocker = true;
+            }
+            else {
+                PackageInfo packageInfo;
+                int appversion = 0;
+                try {
+                    packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                    appversion = packageInfo.versionCode;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
                 }
+                result = pokemonDatabaseAdapter.registration(mail, username, password, appversion, getApplicationContext());
+                String[] cleaner = result.split("\n");
+                result = cleaner[0];
+            }
 
-                AlertDialog.Builder builder;
-
-                if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    builder = new AlertDialog.Builder(context, android.R.style.Theme_Dialog);
-                else
-                    builder = new AlertDialog.Builder(context);
+            if (!blocker) {
+                builder = new AlertDialog.Builder(context);
 
                 switch (result) {
                     case "registration_success":
                         builder.setTitle(getResources().getString(getResources().getIdentifier("regSuccessTitle", "string", getPackageName())))
                                 .setMessage(getResources().getString(getResources().getIdentifier("regSuccessText", "string", getPackageName())))
-                                .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
+                                .setPositiveButton(getResources().getString(getResources().getIdentifier("loginSave", "string", getPackageName())), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        pokemonDatabaseAdapter.setRememberME(username, password);
+                                        Intent k = new Intent(context, Welcome.class);
+                                        startActivity(k);
+                                        finish();
+                                    }
+                                })
+                                .setNegativeButton(getResources().getString(getResources().getIdentifier("loginNoSave", "string", getPackageName())), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        pokemonDatabaseAdapter.setNotRememberME(username, password);
+                                        Intent k = new Intent(context, Welcome.class);
+                                        startActivity(k);
+                                        finish();
+                                    }
+                                })
+                                .setNeutralButton(getResources().getString(getResources().getIdentifier("noLogin", "string", getPackageName())), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
                                         finish();
                                     }
                                 })
@@ -163,6 +198,7 @@ public class Registration extends AppCompatActivity {
                                 .show();
                         break;
                 }
+            }
             }
         });
     }

@@ -227,6 +227,34 @@ class PokemonDatabaseAdapter implements WebServicesAsyncResponse {
         return allCatched;
     }
 
+    String[] getAllCatchedNames (Context context) {
+        backgroundWorker = new BackgroundWorker("getAllCatchedNames", getLocalUsername(), context);
+        backgroundWorker.delegate = this;
+        backgroundWorker.execute();
+        String tmp = "";
+        try {
+            tmp = backgroundWorker.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        String[] allCatchedNames;
+        List<String> tmpAllCatched = new ArrayList<>();
+        String[] cleaner;
+        if (tmp.equals("")) {
+            allCatchedNames = new String[1];
+            allCatchedNames[0] = "";
+        }
+        else {
+            cleaner = tmp.split("\n");
+            Collections.addAll(tmpAllCatched, cleaner);
+            allCatchedNames = new String[tmpAllCatched.size()];
+            for (int i =0; i< tmpAllCatched.size(); i++) {
+                allCatchedNames[i] = tmpAllCatched.get(i);
+            }
+        }
+        return allCatchedNames;
+    }
+
     String getPokeName(int pokeID, Context context) {
         backgroundWorker = new BackgroundWorker("getPokeName", pokeID, context);
         backgroundWorker.delegate = this;

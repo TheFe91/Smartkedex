@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private PokemonDatabaseAdapter pokemonDatabaseAdapter = new PokemonDatabaseAdapter(this);
     GridView grid;
-    String[] names = new String[151];
+    String[] names = new String[151], allCatchedNames;
     int[] imageId = new int[151], ids;
 
     @Override
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         mAdView.loadAd(adRequest);
 
         ids = pokemonDatabaseAdapter.getAllCatched(this);
+        allCatchedNames = pokemonDatabaseAdapter.getAllCatchedNames(this);
 
         for (int k = 0; k < 151; k++) {
             imageId[k] = 0;
@@ -51,17 +52,20 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        for (int k = 0; k < 151; k++) {
+        for (int k = 0, j=0; k < 151; k++) {
             if (contains(ids, k+1)) {
                 imageId[k] = k + 1;
                 if (k+1 < 10) {
-                    names[k] = "#00"+String.valueOf(k+1)+" - "+pokemonDatabaseAdapter.getPokeName(k+1, this);
+                    names[k] = "#00"+String.valueOf(k+1)+" - "+allCatchedNames[j];
+                    j++;
                 }
                 else if (k+1 > 9 && k+1 < 100) {
-                    names[k] = "#0"+String.valueOf(k+1)+" - "+pokemonDatabaseAdapter.getPokeName(k+1, this);
+                    names[k] = "#0"+String.valueOf(k+1)+" - "+allCatchedNames[j];
+                    j++;
                 }
                 else {
-                    names[k] = "#"+String.valueOf(k+1)+" - "+pokemonDatabaseAdapter.getPokeName(k+1, this);
+                    names[k] = "#"+String.valueOf(k+1)+" - "+allCatchedNames[j];
+                    j++;
                 }
             }
         }
