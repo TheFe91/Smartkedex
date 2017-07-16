@@ -7,8 +7,8 @@ android {
         applicationId "com.rollercoders.smartkedex"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 12
-        versionName "1.4.7"
+        versionCode 13
+        versionName "1.5 Alpha"
         //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -32,9 +32,11 @@ dependencies {
     // https://mvnrepository.com/artifact/com.facebook.android/facebook-android-sdk
     //compile group: 'com.facebook.android', name: 'facebook-android-sdk', version: '4.+'
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.google.firebase:firebase-ads:10.0.1'
+    compile 'com.google.firebase:firebase-ads:11.0.2'
     testCompile 'junit:junit:4.12'
 }
 
-
 //apply plugin: 'com.google.gms.google-services'
+
+
+apply plugin: 'com.google.gms.google-services'

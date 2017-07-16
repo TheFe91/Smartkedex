@@ -12,6 +12,10 @@ import android.widget.GridView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+
+import java.sql.Timestamp;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,18 +23,29 @@ public class MainActivity extends AppCompatActivity {
     GridView grid;
     String[] names = new String[151], allCatchedNames;
     int[] imageId = new int[151], ids;
+    float[] alphas = new float[151];
+    AdRequest adRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MobileAds.initialize(this, "ca-app-pub-9807330777593753~2280250826");
+
+        /*InterstitialAd mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-9807330777593753/2216958029");
+        adRequest = new AdRequest.Builder()
+                .addTestDevice("01658E55E3FE332C522AEF747FD402FF")
+                .build();
+        mInterstitialAd.loadAd(adRequest);
+        mInterstitialAd.show();*/
 
         if (!pokemonDatabaseAdapter.getNumberOfTables()) {
             pokemonDatabaseAdapter.doBackupAndUpdateDB(this);
         }
 
         AdView mAdView = (AdView) findViewById(R.id.AdView);
-        AdRequest adRequest = new AdRequest.Builder()
+        adRequest = new AdRequest.Builder()
                 .addTestDevice("01658E55E3FE332C522AEF747FD402FF")
                 .build();
         mAdView.loadAd(adRequest);
@@ -39,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         allCatchedNames = pokemonDatabaseAdapter.getAllCatchedNames(this);
 
         for (int k = 0; k < 151; k++) {
-            imageId[k] = 0;
             if (k+1 < 10) {
                 names[k] = "#00"+String.valueOf(k+1)+" - ???";
             }
@@ -53,8 +67,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         for (int k = 0, j=0; k < 151; k++) {
+            imageId[k] = k + 1;
             if (contains(ids, k+1)) {
-                imageId[k] = k + 1;
+                alphas[k] = (float)1.0;
                 if (k+1 < 10) {
                     names[k] = "#00"+String.valueOf(k+1)+" - "+allCatchedNames[j];
                     j++;
@@ -68,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
                     j++;
                 }
             }
+            else
+                alphas[k] = (float)0.1;
         }
 
         for (int k=0; k<151; k++) {
@@ -75,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             imageId[k] = getResources().getIdentifier(id, "drawable", getPackageName());
         }
 
-        CustomAdapter adapter = new CustomAdapter(this, names, imageId);
+        CustomAdapter adapter = new CustomAdapter(this, names, imageId, alphas);
         grid = (GridView)findViewById(R.id.gridview);
         grid.setAdapter(adapter);
         //grid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);

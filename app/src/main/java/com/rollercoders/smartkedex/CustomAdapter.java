@@ -17,11 +17,13 @@ class CustomAdapter extends BaseAdapter {
     private Context context;
     private final String[] name;
     private final int[] Imageid;
+    private final float[] alphas;
 
-    CustomAdapter(Context context, String[] name, int[] Imageid) {
+    CustomAdapter(Context context, String[] name, int[] Imageid, float[] alphas) {
         this.context = context;
         this.name = name;
         this.Imageid = Imageid;
+        this.alphas = alphas;
     }
 
 
@@ -56,6 +58,7 @@ class CustomAdapter extends BaseAdapter {
         textView.setText(name[position]);
         imageView.setImageResource(Imageid[position]);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setAlpha(alphas[position]);
 
         return grid;
     }
