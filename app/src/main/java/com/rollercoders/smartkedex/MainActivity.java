@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
                 i.putExtra("id", position);
+                // Save grid view position to restore it later
                 scrollPos = grid.getPositionForView(v);
                 startActivity(i);
             }
@@ -186,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Resume grid view on previous position
         grid.setSelection(scrollPos);
     }
 }
