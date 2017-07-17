@@ -12,7 +12,6 @@ import android.widget.GridView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
 import java.sql.Timestamp;
@@ -25,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     int[] imageId = new int[151], ids;
     float[] alphas = new float[151];
     AdRequest adRequest;
+    private int scrollPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
                 i.putExtra("id", position);
+                scrollPos = grid.getPositionForView(v);
                 startActivity(i);
             }
         });
@@ -180,5 +181,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        grid.setSelection(scrollPos);
     }
 }
