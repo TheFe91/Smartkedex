@@ -2,13 +2,16 @@ package com.rollercoders.smartkedex;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.ListView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -25,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     int[] imageId = new int[151], ids;
     float[] alphas = new float[151];
     AdRequest adRequest;
+    private String[] menuVoices = {"Voce 1", "Voce 2", "Voce 3", "Voce 4", "Voce 5", "Voce 6"};
+    private ListView listView;
+    private ArrayAdapter<String> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +102,11 @@ public class MainActivity extends AppCompatActivity {
         grid = (GridView)findViewById(R.id.gridview);
         grid.setAdapter(adapter);
         //grid.setChoiceMode(GridView.CHOICE_MODE_MULTIPLE_MODAL);
+
+        listView = (ListView)findViewById(R.id.left_drawer);
+
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, menuVoices);
+        listView.setAdapter(mAdapter);
 
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
