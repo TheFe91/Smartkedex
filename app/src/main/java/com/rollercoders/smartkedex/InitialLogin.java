@@ -90,115 +90,97 @@ public class InitialLogin extends Activity {
                 homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(homeIntent);
             }
-
-//        final ProgressDialog progressDialog = ProgressDialog.show(this,"Please Wait","Retreiving data from the DataBase...",true);
-//        progressDialog.setCancelable(false);
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    Thread.sleep(10000);
-//                    appoggio = pokemonDatabaseAdapter.getRememberME();
-//                } catch(Exception e) {e.printStackTrace();}
-//                progressDialog.dismiss();
-//            }
-//        }).start();
-//        try {
-//            Thread.sleep(5000);
-//            appoggio = pokemonDatabaseAdapter.getRememberME();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        progressDialog.dismiss();
-
-            if (pokemonDatabaseAdapter.getRememberME() == 1) {
-                String[] loginData = pokemonDatabaseAdapter.getLoginData();
-                if (pokemonDatabaseAdapter.tryLogin(loginData[0], loginData[1], context) == 1) {
-                    Intent i = new Intent(getApplicationContext(), Welcome.class);
-                    startActivity(i);
-                    finish();
+            else {
+                if (pokemonDatabaseAdapter.getRememberME() == 1) {
+                    String[] loginData = pokemonDatabaseAdapter.getLoginData();
+                    if (pokemonDatabaseAdapter.tryLogin(loginData[0], loginData[1], context) == 1) {
+                        Intent i = new Intent(getApplicationContext(), Welcome.class);
+                        startActivity(i);
+                        finish();
+                    }
+                    else {
+                        String username = pokemonDatabaseAdapter.getLocalUsername();
+                        pokemonDatabaseAdapter.resetRememberME(username);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle(getResources().getString(getResources().getIdentifier("loginFail", "string", getPackageName())))
+                                .setMessage(getResources().getString(getResources().getIdentifier("loginFailAutoMessage", "string", getPackageName())))
+                                .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //DO NOTHING
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                        recreate();
+                    }
                 }
                 else {
-                    String username = pokemonDatabaseAdapter.getLocalUsername();
-                    pokemonDatabaseAdapter.resetRememberME(username);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle(getResources().getString(getResources().getIdentifier("loginFail", "string", getPackageName())))
-                            .setMessage(getResources().getString(getResources().getIdentifier("loginFailAutoMessage", "string", getPackageName())))
-                            .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    //DO NOTHING
+                    DisplayMetrics displayMetrics = new DisplayMetrics();
+                    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                    int dpi = displayMetrics.densityDpi;
+
+                    if (dpi <= 420) { //Nexus 5X et simila
+                        setContentView(R.layout.initiallogin_big);
+                    }
+                    else if (dpi == 480) { //Nexus 5 et simila
+                        setContentView(R.layout.initiallogin);
+                    }
+
+                    TextView textView = (TextView)findViewById(R.id.insertusername);
+                    textView.setText(getResources().getString(getResources().getIdentifier("insertUsername", "string", getPackageName())));
+                    textView = (TextView)findViewById(R.id.insertpassword);
+                    textView.setText(getResources().getString(getResources().getIdentifier("insertPassword", "string", getPackageName())));
+                    final CheckBox checkBox = (CheckBox)findViewById(R.id.remeberMe);
+                    checkBox.setText(getResources().getString(getResources().getIdentifier("rememberME", "string", getPackageName())));
+                    Button enter = (Button)findViewById(R.id.confirmRegistration);
+                    final Button registration = (Button)findViewById(R.id.register);
+                    registration.setText(getResources().getString(getResources().getIdentifier("register", "string", getPackageName())));
+                    enter.setText(getResources().getString(getResources().getIdentifier("confirmLogin", "string", getPackageName())));
+
+                    enter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            EditText editText = (EditText)findViewById(R.id.setusername);
+                            String username = editText.getText().toString();
+                            editText = (EditText)findViewById(R.id.setpassword);
+                            String password = editText.getText().toString();
+                            if (pokemonDatabaseAdapter.tryLogin(username, password, getApplicationContext()) == 1) {
+                                if (checkBox.isChecked()) {
+                                    pokemonDatabaseAdapter.setRememberME(username, password);
                                 }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-                    recreate();
-                }
-            }
-            else {
-                DisplayMetrics displayMetrics = new DisplayMetrics();
-                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                int dpi = displayMetrics.densityDpi;
-
-                if (dpi <= 420) { //Nexus 5X et simila
-                    setContentView(R.layout.initiallogin_big);
-                }
-                else if (dpi == 480) { //Nexus 5 et simila
-                    setContentView(R.layout.initiallogin);
-                }
-
-                TextView textView = (TextView)findViewById(R.id.insertusername);
-                textView.setText(getResources().getString(getResources().getIdentifier("insertUsername", "string", getPackageName())));
-                textView = (TextView)findViewById(R.id.insertpassword);
-                textView.setText(getResources().getString(getResources().getIdentifier("insertPassword", "string", getPackageName())));
-                final CheckBox checkBox = (CheckBox)findViewById(R.id.remeberMe);
-                checkBox.setText(getResources().getString(getResources().getIdentifier("rememberME", "string", getPackageName())));
-                Button enter = (Button)findViewById(R.id.confirmRegistration);
-                final Button registration = (Button)findViewById(R.id.register);
-                registration.setText(getResources().getString(getResources().getIdentifier("register", "string", getPackageName())));
-                enter.setText(getResources().getString(getResources().getIdentifier("confirmLogin", "string", getPackageName())));
-                enter.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        EditText editText = (EditText)findViewById(R.id.setusername);
-                        String username = editText.getText().toString();
-                        editText = (EditText)findViewById(R.id.setpassword);
-                        String password = editText.getText().toString();
-                        if (pokemonDatabaseAdapter.tryLogin(username, password, getApplicationContext()) == 1) {
-                            if (checkBox.isChecked()) {
-                                pokemonDatabaseAdapter.setRememberME(username, password);
+                                else {
+                                    pokemonDatabaseAdapter.setNotRememberME(username, password);
+                                }
+                                Intent i = new Intent(getApplicationContext(), Welcome.class);
+                                startActivity(i);
+                                finish();
                             }
                             else {
-                                pokemonDatabaseAdapter.setNotRememberME(username, password);
-                            }
-                            Intent i = new Intent(getApplicationContext(), Welcome.class);
-                            startActivity(i);
-                            finish();
-                        }
-                        else {
-                            AlertDialog.Builder builder;
+                                AlertDialog.Builder builder;
                                 builder = new AlertDialog.Builder(context);
                                 builder.setTitle(getResources().getString(getResources().getIdentifier("loginFail", "string", getPackageName())))
-                                    .setMessage(getResources().getString(getResources().getIdentifier("loginFailMessage", "string", getPackageName())))
-                                    .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                        .setMessage(getResources().getString(getResources().getIdentifier("loginFailMessage", "string", getPackageName())))
+                                        .setPositiveButton(getResources().getString(getResources().getIdentifier("OK", "string", getPackageName())), new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
 
-                                        }
-                                    })
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
 
+                            }
                         }
-                    }
-                });
-                registration.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent i = new Intent(getApplicationContext(), Registration.class);
-                        startActivity(i);
-                    }
-                });
+                    });
+                    registration.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent i = new Intent(getApplicationContext(), Registration.class);
+                            startActivity(i);
+                        }
+                    });
+                }
             }
         }
     }

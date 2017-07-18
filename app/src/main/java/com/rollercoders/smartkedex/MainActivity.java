@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(), PokemonDetails.class);
                 i.putExtra("id", position);
                 startActivity(i);
+                finish();
             }
         });
 
